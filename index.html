@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>ByteCoin Clicker</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link  rel="stylesheet" id="style" type="text/css" href="css/day.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+
+    <script src="js/scripts.js"></script>
+</head>
+<body>
+    <div id="normaleScreen">
+    <header id="topbar">
+        <a href="https://bytecoin.org"><img id="logo" src="images/favicon.png"></a>
+        <div id="helpNight">
+            <p id="howtoplay" class="entypo-help" title="Spielanleitung" onclick="helpScreen()"></p>
+            <p id="dayNight" class="iconicfill-moon-fill" title="Nachtmodus/Tagmodus" style="color: white;" onclick="changeDayNight()"></p>
+        </div>
+        <nav id="leftNav">
+            <ul>
+                <li id="amount">ByteCoins: 0</li>
+                <li id="amountSecond">Coins Per Second: 0</li>
+                <li id="coinsPerClick">Coins Per Click: 1</li>
+            </ul>
+        </nav>
+    </header>
+    <div id="clickCenter">
+           <!-- <p id="amount">ByteCoins: 0</p>
+            <p id="amountSecond">Coins Per Second: 0</p>
+            <p id="coinsPerClick">Coins Per Click: 1</p>
+            -->
+        <img id="clickPicture" src="images/clickPicture.png" onclick="clickCoin()">
+    </div>
+    <div id="upgradeField">
+        <h1 onclick="addCoins(500)">Upgrades</h1>
+        <div class="upgradeFields">
+            <p class="upgradeNames">KTX 1030TI+ x0</p>
+            <img class="upgradeImages" src="images/GTX1080Upgrade.png" name="0">
+            <button class="upgrade notAffordable" onclick="buyUpgrade('GTX1080Ti')">200</button>
+            <p>Erhöht die Coins per Seconds um 1.</p>
+        </div>
+        <div class="upgradeFields">
+            <p class="upgradeNames">KT 1020 x0</p>
+            <img class="upgradeImages" src="images/GT1030Upgrade.png" name="0">
+            <button class="upgrade notAffordable" onclick="buyUpgrade('GT1030')">70</button>
+            <p>Erhöht die Coins per Seconds um 0.1</p>
+        </div>
+        <div class="upgradeFields">
+            <p class="upgradeNames">Eisenspitzhacke</p>
+            <img class="upgradeImages" src="images/GT1030Upgrade.png" name="0">
+            <button class="upgrade notAffordable" onclick="buyUpgrade('ES')">100</button>
+            <p>Verdoppelt die Coins per Click</p>
+        </div>
+        <div class="upgradeFields">
+            <p class="upgradeNames">Goldspitzhacke</p>
+            <img class="upgradeImages" src="images/GT1030Upgrade.png" name="0">
+            <button class="upgrade notAffordable" onclick="buyUpgrade('GS')">1000</button>
+            <p>Verdoppelt die Coins per Click</p>
+        </div>
+    </div>
+    </div>
+    <div id="howToPlayScreen">
+
+    </div>
+</body>
+</html>

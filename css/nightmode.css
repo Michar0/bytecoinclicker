@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300');
+
+body{
+    background-color: #263947;
+    color:#C6CCC2;
+}
+#topbar{
+    background-color: #68868E;
+}
+.upgradeFields{
+    border: 1px solid #C6CCC2;
+}
+#helpNight{
+    color:#C6CCC2;
+}
+#leftNav{
+    color:#C6CCC2;
+}
+.flyingNumber{
+    font-weight: bolder;
+    font-size: 200%;
+    color:#C6CCC2;
+    position: absolute;
+    opacity:0;
+    top: 50%;
+    left: 50%;
+    text-shadow: 2px 2px black;
+    animation: animationFrames ease-in 2s;
+    animation-iteration-count: 1;
+}
+@keyframes animationFrames
+{
+    0% {top:50%; opacity:1;}  /* start 20 pixels down  and vissable */
+    100% {top:5%; opacity:0; display:none} /* move up to 217 pixels while fading out */
+}
