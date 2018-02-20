@@ -12,7 +12,7 @@ function clickCoin(event) {
     document.getElementById("amount").innerText="ByteCoins: "+amountCoins;
     var clickHit = document.createElement("P");
     clickHit.textContent="+"+coinsPerClick;
-    clickHit.className="flyingNumber";
+    clickHit.className="flyingNumber noselect";
     clickHit.name=new Date().getTime();
     document.body.appendChild(clickHit);
     checkUpgradesAffordable();

@@ -17,16 +17,8 @@ body{
     color:#C6CCC2;
 }
 .flyingNumber{
-    font-weight: bolder;
-    font-size: 200%;
     color:#C6CCC2;
-    position: absolute;
-    opacity:0;
-    top: 50%;
-    left: 50%;
     text-shadow: 2px 2px black;
-    animation: animationFrames ease-in 2s;
-    animation-iteration-count: 1;
 }
 @keyframes animationFrames
 {
