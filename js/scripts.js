@@ -110,14 +110,16 @@ function helpScreen(){
 }
 function changeDayNight() {
     removeInvisibleObjects();
-    if(document.getElementById("dayNight").style.color==="white") {
+    if(document.getElementById("dayNightSwitch").classList.contains("fa-sun")){
         document.getElementById('style').setAttribute('href', 'css/nightmode.css');
-        document.getElementById("dayNight").style.color="black";
+        document.getElementById("dayNightSwitch").classList.remove("fa-sun");
+        document.getElementById("dayNightSwitch").classList.add("fa-moon");
     }
     else
     {
         document.getElementById('style').setAttribute('href', 'css/day.css');
-        document.getElementById("dayNight").style.color="white";
+        document.getElementById("dayNightSwitch").classList.remove("fa-moon");
+        document.getElementById("dayNightSwitch").classList.add("fa-sun");
     }
 }
 function removeInvisibleObjects(){

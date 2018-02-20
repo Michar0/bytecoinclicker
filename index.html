@@ -6,16 +6,17 @@
     <link rel="icon" type="image/png" href="images/favicon.png">
     <link  rel="stylesheet" id="style" type="text/css" href="css/day.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
-
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script> <!--Austauschen durch lokale Version-->
+    
     <script src="js/scripts.js"></script>
 </head>
-<body>
+<body onload="loadCache()">
     <div id="normaleScreen">
     <header id="topbar">
         <a href="https://bytecoin.org"><img id="logo" src="images/favicon.png"></a>
         <div id="helpNight">
-            <p id="howtoplay" class="entypo-help" title="Spielanleitung" onclick="helpScreen()"></p>
-            <p id="dayNight" class="iconicfill-moon-fill" title="Nachtmodus/Tagmodus" style="color: white;" onclick="changeDayNight()"></p>
+            <p id="howtoplay" title="Spielanleitung" onclick="helpScreen()"><i class="fas fa-question-circle"></i></p>
+            <p id="dayNight" title="Nachtmodus/Tagmodus" style="color: white;" onclick="changeDayNight()"><i id="dayNightSwitch" class="fas fa-sun"></i></p>
         </div>
         <nav id="leftNav">
             <ul>
