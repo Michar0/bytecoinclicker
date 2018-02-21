@@ -35,6 +35,7 @@ function buyUpgrade(upgrade)
                 upgradesImages[0].name=parseInt(upgradesImages[0].name)+1;
                 parts=upgradesNames[0].textContent.split(" ");
                 upgradesNames[0].textContent=parts[0]+" "+parts[1]+" x"+upgradesImages[0].name;
+                playSound("sounds/buySound.mp3");
             }
             break;
         case "GT1030":
@@ -47,6 +48,7 @@ function buyUpgrade(upgrade)
                 upgradesImages[1].name=parseInt(upgradesImages[1].name)+1;
                 parts=upgradesNames[1].textContent.split(" ");
                 upgradesNames[1].textContent=parts[0]+" "+parts[1]+" x"+upgradesImages[1].name;
+                playSound("sounds/buySound.mp3");
             }
             break;
         case "ES":
@@ -55,6 +57,7 @@ function buyUpgrade(upgrade)
                 coinsPerClick*=2;
                 amountCoins-=parseInt(upgrades[2].textContent);
                 document.getElementById("upgradeField").removeChild(upgradeFields[2]);
+                playSound("sounds/buySound.mp3");
             }
             break;
         case "GS":
@@ -63,6 +66,7 @@ function buyUpgrade(upgrade)
                 coinsPerClick*=2;
                 amountCoins-=parseInt(upgrades[2].textContent);
                 document.getElementById("upgradeField").removeChild(upgradeFields[2]);
+                playSound("sounds/buySound.mp3");
             }
             break;
 
