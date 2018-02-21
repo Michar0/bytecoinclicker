@@ -34,7 +34,7 @@ ul {
 li{
     display:inline;
 }
-#howtoplay{
+#volume{
     cursor: pointer;
 }
 header{
@@ -54,6 +54,8 @@ nav{
 }
 #clickPicture{
     transition: transform 0.1s;
+    width: 99%;
+    height: 99%;
 }
 #clickPicture:hover{
     transform: scale(1.1);
@@ -65,10 +67,10 @@ nav{
     cursor: pointer;
     float: left;
 }
-#howtoplay{
+#volume{
     color:white;
 }
-#helpNight{
+#dayMusic{
     float:right;
     margin-right: 2%;
     padding-top: 0.1%;
@@ -93,4 +95,7 @@ nav{
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-  }
+}
+#audioplayer{
+    display: none;
+}

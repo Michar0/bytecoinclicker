@@ -11,11 +11,10 @@
     <script src="js/scripts.js"></script>
 </head>
 <body onload="loadCache()">
-    <div id="normaleScreen">
     <header id="topbar">
         <a href="https://bytecoin.org"><img id="logo" src="images/favicon.png"></a>
-        <div id="helpNight">
-            <p id="howtoplay" title="Spielanleitung" onclick="helpScreen()"><i class="fas fa-question-circle"></i></p>
+        <div id="dayMusic">
+            <p id="volume" title="Stumm/Laut" onclick="changeVolume()"><i id="volumes" class="fas fa-volume-up"></i></p>
             <p id="dayNight" title="Nachtmodus/Tagmodus" style="color: white;" onclick="changeDayNight()"><i id="dayNightSwitch" class="fas fa-sun"></i></p>
         </div>
         <nav id="leftNav">
@@ -60,9 +59,6 @@
             <p>Verdoppelt die Coins per Click</p>
         </div>
     </div>
-    </div>
-    <div id="howToPlayScreen">
-
-    </div>
+    <audio id="audioplayer"></audio>
 </body>
 </html>

@@ -104,8 +104,6 @@ function addCoins(coinsAdd)
 {
     amountCoins+=coinsAdd;
 }
-function helpScreen(){
-}
 function changeDayNight() {
     removeInvisibleObjects();
     if(document.getElementById("dayNightSwitch").classList.contains("fa-sun")){
@@ -120,6 +118,20 @@ function changeDayNight() {
         document.getElementById("dayNightSwitch").classList.add("fa-sun");
     }
 }
+function changeVolume(){
+    var audio = document.getElementById("audioplayer");
+    if(document.getElementById("volumes").classList.contains("fa-volume-up")){
+        audio.muted=true;
+        document.getElementById("volumes").classList.remove("fa-volume-up");
+        document.getElementById("volumes").classList.add("fa-volume-off");
+    }
+    else
+    {
+        audio.muted=false;
+        document.getElementById("volumes").classList.remove("fa-volume-off");
+        document.getElementById("volumes").classList.add("fa-volume-up");
+    }
+}
 function removeInvisibleObjects(){
     var items = document.getElementsByClassName("flyingNumber");
     var body = document.body;
@@ -132,12 +144,8 @@ function removeInvisibleObjects(){
     }
 }
 function playSound(url){
-    var audio = document.createElement('audio');
-    audio.style.display = "none";
+    var audio = document.getElementById("audioplayer");
     audio.src = url;
     audio.autoplay = true;
-    audio.onended = function(){
-        audio.remove();
-    };
-    document.body.appendChild(audio);
+    audio.play();
 }
