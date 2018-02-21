@@ -6,7 +6,6 @@ setInterval(clickAutomatic,1000);
 function clickCoin(event) {
     //var x = event.screenX;
     //var y = event.screenY;
-
     amountCoins+=coinsPerClick;
     amountCoins=decimalRound(amountCoins,1);
     document.getElementById("amount").innerText="ByteCoins: "+amountCoins;
@@ -16,6 +15,7 @@ function clickCoin(event) {
     clickHit.name=new Date().getTime();
     document.body.appendChild(clickHit);
     checkUpgradesAffordable();
+    playSound("sounds/coinClick.mp3");
 }
 function buyUpgrade(upgrade)
 {
@@ -54,8 +54,7 @@ function buyUpgrade(upgrade)
             {
                 coinsPerClick*=2;
                 amountCoins-=parseInt(upgrades[2].textContent);
-                var object = upgradeFields[2];
-                document.getElementById("upgradeField").removeChild(object);
+                document.getElementById("upgradeField").removeChild(upgradeFields[2]);
             }
             break;
         case "GS":
@@ -63,8 +62,7 @@ function buyUpgrade(upgrade)
             {
                 coinsPerClick*=2;
                 amountCoins-=parseInt(upgrades[2].textContent);
-                var object = upgradeFields[2];
-                document.getElementById("upgradeField").removeChild(object);
+                document.getElementById("upgradeField").removeChild(upgradeFields[2]);
             }
             break;
 
@@ -132,4 +130,14 @@ function removeInvisibleObjects(){
             body.removeChild(items[i]);
         }
     }
+}
+function playSound(url){
+    var audio = document.createElement('audio');
+    audio.style.display = "none";
+    audio.src = url;
+    audio.autoplay = true;
+    audio.onended = function(){
+        audio.remove();
+    };
+    document.body.appendChild(audio);
 }
