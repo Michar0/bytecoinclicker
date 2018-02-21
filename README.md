@@ -1,3 +1,3 @@
-# Bytecoin Clicker [![GitHub issues](https://img.shields.io/github/issues/Michar0/bytecoinclicker.svg)](https://github.com/Michar0/bytecoinclicker/issues)
+# ![Bytecoin Clicker Banner](https://github.com/Michar0/bytecoinclicker/blob/master/images/readme-banner.png)
 
 A small clicker game made as a school project.
