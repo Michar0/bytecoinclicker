@@ -19,7 +19,7 @@
 }
 #upgradeField{
     height: 100%;
-    width: 10%;
+    width: 11.5%;
     float: left;
 }
 .upgradeImages{
@@ -98,4 +98,27 @@ nav{
 }
 #audioplayer{
     display: none;
+}
+.upgradePrice{
+    display:none;
+}
+span.tooltip {
+    position: relative;
+    text-decoration: none;
+}
+
+span.tooltip:hover:after {
+    bottom: 100%;
+}
+span.tooltip:hover:before {
+    bottom: 70%;
+}
+span.tooltip:hover:after, a:hover:before {
+    opacity: 1;
+}
+#upgradeHeader{
+    cursor: pointer;
+    text-align: center;
+    padding: 0.2%;
+    width: 11.1%;
 }

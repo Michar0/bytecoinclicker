@@ -20,6 +20,11 @@ body{
     color:#C6CCC2;
     text-shadow: 2px 2px black;
 }
+#upgradeHeader{
+    background-color: #68868E;
+    color:#C6CCC2;
+}
+
 @keyframes animationFrames
 {
     0% {top:50%; opacity:1;}  /* start 20 pixels down  and vissable */

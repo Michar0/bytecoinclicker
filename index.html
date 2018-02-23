@@ -19,44 +19,46 @@
         </div>
         <nav id="leftNav">
             <ul>
-                <li id="amount">ByteCoins: 0</li>
+                <li id="amount" onclick="addCoins(10000)">ByteCoins: 0</li>
                 <li id="amountSecond">Coins Per Second: 0</li>
                 <li id="coinsPerClick">Coins Per Click: 1</li>
             </ul>
         </nav>
     </header>
     <div id="clickCenter">
-           <!-- <p id="amount">ByteCoins: 0</p>
-            <p id="amountSecond">Coins Per Second: 0</p>
-            <p id="coinsPerClick">Coins Per Click: 1</p>
-            -->
         <img id="clickPicture" src="images/clickPicture.png" onclick="clickCoin()">
     </div>
-    <div id="upgradeField">
-        <h1 onclick="addCoins(500)">Upgrades</h1>
-        <div class="upgradeFields">
-            <p class="upgradeNames">KTX 1030TI+ x0</p>
-            <img class="upgradeImages" src="images/GTX1080Upgrade.png" name="0">
-            <button class="upgrade notAffordable" onclick="buyUpgrade('GTX1080Ti')">200</button>
-            <p>Erhöht die Coins per Seconds um 1.</p>
+    <p id="upgradeHeader" class="noselect" onclick="toogleUpgradeMenu()">Upgrades&#11206</p>
+    <div id="upgradeField" style="display:none">
+        <div class="upgradeFields notAffordable" onclick="buyUpgrade('GTX1080Ti')">
+            <p class="upgradeNames">KTX 1030Ti x0 200 &#8383;</p>
+            <span class="tooltip" data-tooltip="Erhöht die Coins pro Sekunde um 1"></span>
+            <img class="upgradeImages" src="images/GTX1080Upgrade.png" alt="KTX 1030Ti Upgrade">
+            <p class="upgradePrice">200</p>
         </div>
-        <div class="upgradeFields">
-            <p class="upgradeNames">KT 1020 x0</p>
-            <img class="upgradeImages" src="images/GT1030Upgrade.png" name="0">
-            <button class="upgrade notAffordable" onclick="buyUpgrade('GT1030')">70</button>
-            <p>Erhöht die Coins per Seconds um 0.1</p>
+        <div class="upgradeFields notAffordable" onclick="buyUpgrade('GT1030')">
+            <p class="upgradeNames">KT 1020 x0 70 &#8383;</p>
+            <span class="tooltip" data-tooltip="Erhöht die Coins pro Sekunde um 0.1"></span>
+            <img class="upgradeImages" src="images/GT1030Upgrade.png" alt="KT 1020+ Upgrade">
+            <p class="upgradePrice">70</p>
         </div>
-        <div class="upgradeFields">
-            <p class="upgradeNames">Eisenspitzhacke</p>
-            <img class="upgradeImages" src="images/GT1030Upgrade.png" name="0">
-            <button class="upgrade notAffordable" onclick="buyUpgrade('ES')">100</button>
-            <p>Verdoppelt die Coins per Click</p>
+        <div class="upgradeFields notAffordable" onclick="buyUpgrade('OCKTX1030Ti')">
+            <p class="upgradeNames">OC KTX 1030Ti 2000 &#8383;</p>
+            <span class="tooltip" data-tooltip="Verdoppelt die Coins pro Sekunde der KTX 1030Ti"></span>
+            <img class="upgradeImages" src="images/overclockUpgrade.png" alt="Overclock">
+            <p class="upgradePrice">2000</p>
         </div>
-        <div class="upgradeFields">
-            <p class="upgradeNames">Goldspitzhacke</p>
-            <img class="upgradeImages" src="images/GT1030Upgrade.png" name="0">
-            <button class="upgrade notAffordable" onclick="buyUpgrade('GS')">1000</button>
-            <p>Verdoppelt die Coins per Click</p>
+        <div class="upgradeFields notAffordable" onclick="buyUpgrade('ES')">
+            <p class="upgradeNames">Eisenspitzhacke 100 &#8383;</p>
+            <span class="tooltip" data-tooltip="Verdoppelt die Coins pro Klick"></span>
+            <img class="upgradeImages" src="images/GT1030Upgrade.png" alt="Eisenspitzhacke Upgrade">
+            <p class="upgradePrice">100</p>
+        </div>
+        <div class="upgradeFields notAffordable" onclick="buyUpgrade('GS')">
+            <p class="upgradeNames">Goldspitzhacke 1000 &#8383;</p>
+            <span class="tooltip" data-tooltip="Verdoppelt die Coins pro Klick"></span>
+            <img class="upgradeImages" src="images/GT1030Upgrade.png" alt="Goldspitzhacke Upgrade">
+            <p class="upgradePrice">1000</p>
         </div>
     </div>
     <audio id="audioplayer"></audio>
