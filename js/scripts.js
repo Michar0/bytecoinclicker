@@ -90,7 +90,7 @@ function buyUpgrade(upgrade)
             {
                 coinsPerSecondUpgradeParts[0]*=2;
                 multiplierUpgrade[0]*=2;
-                coinsPerSecond=coinsPerSecondUpgradeParts[0]+coinsPerSecondUpgradeParts[1];
+                coinsPerSecond=decimalRound(coinsPerSecondUpgradeParts[0]+coinsPerSecondUpgradeParts[1],1);
                 amountCoins-=parseInt(upgradePrices[2].textContent);
                 document.getElementById("upgradeField").removeChild(upgradeFields[2]);
                 playSound("sounds/buySound.mp3");
