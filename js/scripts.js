@@ -1,13 +1,21 @@
 var amountCoins=0;
 var coinsPerSecond=0;
 var coinsPerClick=1;
-var coinsPerSecondUpgradeParts=[0,0];
-var multiplierUpgrade=[1,1];
+var coinsPerSecondUpgradeParts = [];
+var coinsPerSecondAddUpgrade=[];
+var upgrades=document.getElementsByClassName("upgradeFields");
+var cordinates=[0,0];
+
+document.addEventListener('mousemove',getMousePosition);
 setInterval(clickAutomatic,1000);
 
-function clickCoin(event) {
-    //var x = event.screenX;
-    //var y = event.screenY;
+//will be changed in near future because crappy code
+coinsPerSecondUpgradeParts['KTX1030Ti']=0;
+coinsPerSecondUpgradeParts['KT1020']=0;
+coinsPerSecondAddUpgrade['KTX1030Ti']=1;
+coinsPerSecondAddUpgrade['KT1020']=0.1;
+
+function clickCoin() {
     amountCoins+=coinsPerClick;
     amountCoins=decimalRound(amountCoins,1);
     document.getElementById("amount").innerText="ByteCoins: "+amountCoins;
@@ -15,89 +23,74 @@ function clickCoin(event) {
     clickHit.textContent="+"+coinsPerClick;
     clickHit.className="flyingNumber noselect";
     clickHit.name=new Date().getTime();
+    clickHit.style.top=(cordinates[1]-30)+"px";
+    clickHit.style.left=cordinates[0]+"px";
+    clickHit.style.position='absolute';
     document.body.appendChild(clickHit);
     checkUpgradesAffordable();
     playSound("sounds/coinClick.mp3");
 }
+
 function buyUpgrade(upgrade)
 {
-    var upgradesNames = document.getElementsByClassName("upgradeNames");
-    var upgradeFields = document.getElementsByClassName("upgradeFields");
-    var upgradePrices = document.getElementsByClassName("upgradePrice");
     var parts;
-    var amount;
-    var value="";
-    switch(upgrade)
+    var price;
+    var text="";
+    var tiles;
+
+    for(var i=0;i<upgrades.length;i++)
     {
-        case "GTX1080Ti":
-            if(amountCoins>=parseInt(upgradePrices[0].textContent))
+        price=upgrades[i].childNodes[7].textContent.split(" ");
+        parts=upgrades[i].childNodes[1].textContent.split(" ");
+        if(upgrades[i].title===upgrade&&amountCoins>=parseFloat(price[0]))
+        {
+            amountCoins-=parseInt(price[0]);
+            if(upgrades[i].childNodes[1].textContent.indexOf("x")!==-1)
             {
-                coinsPerSecond+=multiplierUpgrade[0];
-                coinsPerSecondUpgradeParts[0]+=multiplierUpgrade[0];
-                parts=upgradesNames[0].textContent.split(" ");
-                amountCoins-=parseInt(upgradePrices[0].textContent);
-                upgradePrices[0].textContent=parseInt(upgradePrices[0].textContent)+30;
-                amount=parts[2].split("");
-                for(var i=1;i<amount.length;i++)
+                price[0]=parseFloat(price[0],10)*parseFloat(price[1],10);
+                price[0]=decimalRound(price[0],0);
+
+                upgrades[i].childNodes[7].textContent=price[0]+" "+price[1];
+                var y=0;
+                while(parts[y].indexOf("x")===-1)
                 {
-                    value=String(value)+String(amount[i]);
+                    text+=parts[y]+" ";
+                    y++;
+                }
+                tiles=parts[y].split("");
+                var value="";
+                for(var z=1;z<tiles.length;z++){
+                    value+=tiles[z]
                 }
                 value=parseInt(value)+1;
-                upgradesNames[0].textContent=parts[0]+" "+parts[1]+" x"+value+" "+upgradePrices[0].textContent+" \u20BF";
-                playSound("sounds/buySound.mp3");
+                text=text+"x"+value+" "+price[0]+" \u20BF";
+                upgrades[i].childNodes[1].textContent=text;
             }
-            break;
-        case "GT1030":
-            if(amountCoins>=parseInt(upgradePrices[1].textContent))
+            switch(upgrades[i].childNodes[9].title)
             {
-                coinsPerSecond+=(0.1);
-                coinsPerSecondUpgradeParts[1]+=0.1;
-                coinsPerSecond=decimalRound(coinsPerSecond,1);
-                parts=upgradesNames[1].textContent.split(" ");
-                amountCoins-=parseInt(upgradePrices[1].textContent);
-                upgradePrices[1].align=parseInt(upgradePrices[1].textContent)+5;
-                amount=parts[2].split("");
-                for(var i=1;i<amount.length;i++)
-                {
-                    value=String(value)+String(amount[i]);
-                }
-                value=parseInt(value)+1;
-                upgradesNames[1].textContent=parts[0]+" "+parts[1]+" x"+value+" "+upgradePrices[1].textContent+"  \u20BF";
-                playSound("sounds/buySound.mp3");
+                case "1":
+                    coinsPerSecondUpgradeParts[upgrades[i].title]+=coinsPerSecondAddUpgrade[upgrades[i].title];
+                    coinsPerSecond+=coinsPerSecondAddUpgrade[upgrades[i].title];
+                    coinsPerSecond=decimalRound(coinsPerSecond,2);
+                    break;
+                case "2":
+                    coinsPerClick*=decimalRound(parseInt(upgrades[i].childNodes[9].textContent),1);
+                    break;
+                case "3":
+                    tiles= upgrades[i].childNodes[9].textContent.split(" ");
+                    coinsPerSecondAddUpgrade[tiles[1]]*=parseFloat(tiles[0]);
+                    coinsPerSecond-=coinsPerSecondUpgradeParts[tiles[1]];
+                    coinsPerSecondUpgradeParts[tiles[1]]*=parseFloat(tiles[0]);
+                    coinsPerSecond+=coinsPerSecondUpgradeParts[tiles[1]];
+                    break;
             }
-            break;
-        case "ES":
-            if(amountCoins>=parseInt(upgradePrices[3].textContent))
+            if(parseInt(price[1])===0)
             {
-                coinsPerClick*=2;
-                amountCoins-=parseInt(upgradePrices[3].textContent);
-                document.getElementById("upgradeField").removeChild(upgradeFields[3]);
-                playSound("sounds/buySound.mp3");
+                document.getElementById("upgradeField").removeChild(upgrades[i]);
             }
+            playSound("sounds/buySound.mp3");
             break;
-        case "GS":
-
-            if(amountCoins>=parseInt(upgradePrices[3].textContent))
-            {
-                coinsPerClick*=2;
-                amountCoins-=parseInt(upgradePrices[3].textContent);
-                document.getElementById("upgradeField").removeChild(upgradeFields[3]);
-                playSound("sounds/buySound.mp3");
-            }
-            break;
-        case "OCKTX1030Ti":
-            if(amountCoins>=parseInt(upgradePrices[2].textContent))
-            {
-                coinsPerSecondUpgradeParts[0]*=2;
-                multiplierUpgrade[0]*=2;
-                coinsPerSecond=decimalRound(coinsPerSecondUpgradeParts[0]+coinsPerSecondUpgradeParts[1],1);
-                amountCoins-=parseInt(upgradePrices[2].textContent);
-                document.getElementById("upgradeField").removeChild(upgradeFields[2]);
-                playSound("sounds/buySound.mp3");
-
-            }
-            break;
-
+        }
     }
     document.getElementById("amountSecond").innerText="Coins Per Second: "+coinsPerSecond;
     document.getElementById("amount").innerText="ByteCoins: "+amountCoins;
@@ -105,7 +98,6 @@ function buyUpgrade(upgrade)
 
 }
 function clickAutomatic(){
-    coinsPerSecond=decimalRound(coinsPerSecondUpgradeParts[0]+coinsPerSecondUpgradeParts[1],1);
     amountCoins+=coinsPerSecond;
     amountCoins=decimalRound(amountCoins,1);
     document.getElementById("amount").innerText="ByteCoins: "+amountCoins;
@@ -116,12 +108,13 @@ function checkUpgradesAffordable(){
     var upgradePrices = document.getElementsByClassName("upgradePrice");
     for(var i=0;i< upgradePrices.length;i++)
     {
-        if(amountCoins>=parseInt(upgradePrices[i].textContent))
+        var parts=upgradePrices[i].textContent.split(" ");
+        if(amountCoins>=parseInt(parts[0]))
         {
             upgradePrices[i].parentElement.classList.add("affordable");
             upgradePrices[i].parentElement.classList.remove("notAffordable");
         }
-        if(amountCoins<parseInt(upgradePrices[i].textContent))
+        if(amountCoins<parseInt(parts[0]))
         {
             upgradePrices[i].parentElement.classList.add("notAffordable");
             upgradePrices[i].parentElement.classList.remove("affordable");
@@ -192,4 +185,8 @@ function toogleUpgradeMenu(){
         document.getElementById("upgradeHeader").textContent="Upgrades\u2BC6";
         document.getElementById("upgradeField").style.display="none";
     }
+}
+function getMousePosition(event){
+    cordinates[0] = event.pageX;
+    cordinates[1] = event.pageY;
 }

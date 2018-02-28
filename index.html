@@ -26,39 +26,51 @@
         </nav>
     </header>
     <div id="clickCenter">
-        <img id="clickPicture" src="images/clickPicture.png" onclick="clickCoin()">
+        <img id="clickPicture" class="noselect" src="images/clickPicture.png" onclick="clickCoin()">
     </div>
     <p id="upgradeHeader" class="noselect" onclick="toogleUpgradeMenu()">Upgrades&#11206</p>
     <div id="upgradeField" style="display:none">
-        <div class="upgradeFields notAffordable" onclick="buyUpgrade('GTX1080Ti')">
+        <div class="upgradeFields notAffordable" title="KTX1030Ti" onclick="buyUpgrade('KTX1030Ti')">
             <p class="upgradeNames">KTX 1030Ti x0 200 &#8383;</p>
             <span class="tooltip" data-tooltip="Erhöht die Coins pro Sekunde um 1"></span>
-            <img class="upgradeImages" src="images/GTX1080Upgrade.png" alt="KTX 1030Ti Upgrade">
-            <p class="upgradePrice">200</p>
+            <img class="upgradeImages noselect" src="images/KTX1030Ti_Upgrade.png" alt="KTX 1030Ti Upgrade">
+            <p class="upgradePrice">200 1.3</p>
+            <p class="upgradeMechanic" title="1">2</p>
         </div>
-        <div class="upgradeFields notAffordable" onclick="buyUpgrade('GT1030')">
+        <div class="upgradeFields notAffordable" title="KT1020" onclick="buyUpgrade('KT1020')">
             <p class="upgradeNames">KT 1020 x0 70 &#8383;</p>
             <span class="tooltip" data-tooltip="Erhöht die Coins pro Sekunde um 0.1"></span>
-            <img class="upgradeImages" src="images/GT1030Upgrade.png" alt="KT 1020+ Upgrade">
-            <p class="upgradePrice">70</p>
+            <img class="upgradeImages noselect" src="images/KT1020_Upgrade.png" alt="KT 1020 Upgrade">
+            <p class="upgradePrice">70 1.15</p>
+            <p class="upgradeMechanic" title="1">0.1</p>
         </div>
-        <div class="upgradeFields notAffordable" onclick="buyUpgrade('OCKTX1030Ti')">
-            <p class="upgradeNames">OC KTX 1030Ti 2000 &#8383;</p>
-            <span class="tooltip" data-tooltip="Verdoppelt die Coins pro Sekunde der KTX 1030Ti"></span>
-            <img class="upgradeImages" src="images/overclockUpgrade.png" alt="Overclock">
-            <p class="upgradePrice">2000</p>
-        </div>
-        <div class="upgradeFields notAffordable" onclick="buyUpgrade('ES')">
+        <div class="upgradeFields notAffordable" title="ES" onclick="buyUpgrade('ES')">
             <p class="upgradeNames">Eisenspitzhacke 100 &#8383;</p>
             <span class="tooltip" data-tooltip="Verdoppelt die Coins pro Klick"></span>
-            <img class="upgradeImages" src="images/GT1030Upgrade.png" alt="Eisenspitzhacke Upgrade">
-            <p class="upgradePrice">100</p>
+            <img class="upgradeImages noselect" src="images/iron_pickaxeUprade.png" alt="Eisenspitzhacke Upgrade">
+            <p class="upgradePrice">100 0</p>
+            <p class="upgradeMechanic" title="2">2</p>
         </div>
-        <div class="upgradeFields notAffordable" onclick="buyUpgrade('GS')">
+        <div class="upgradeFields notAffordable" title="GS" onclick="buyUpgrade('GS')">
             <p class="upgradeNames">Goldspitzhacke 1000 &#8383;</p>
             <span class="tooltip" data-tooltip="Verdoppelt die Coins pro Klick"></span>
-            <img class="upgradeImages" src="images/GT1030Upgrade.png" alt="Goldspitzhacke Upgrade">
-            <p class="upgradePrice">1000</p>
+            <img class="upgradeImages noselect" src="images/gold_pickaxeUpgrade.png" alt="Goldspitzhacke Upgrade">
+            <p class="upgradePrice">1000 0 </p>
+            <p class="upgradeMechanic" title="2">2</p>
+        </div>
+        <div class="upgradeFields notAffordable" title="OCKTX1030Ti" onclick="buyUpgrade('OCKTX1030Ti')">
+            <p class="upgradeNames">OC KTX 1030Ti 2000 &#8383;</p>
+            <span class="tooltip" data-tooltip="Verdoppelt die Coins pro Sekunde der KTX 1030Ti"></span>
+            <img class="upgradeImages noselect" src="images/overclockUpgrade.png" alt="Overclock">
+            <p class="upgradePrice">2000 0</p>
+            <p class="upgradeMechanic" title="3">2 KTX1030Ti</p>
+        </div>
+        <div class="upgradeFields notAffordable" title="OCKT1020" onclick="buyUpgrade('OCKT1020')">
+            <p class="upgradeNames">OC KT 1020 1000 &#8383;</p>
+            <span class="tooltip" data-tooltip="Verdoppelt die Coins pro Sekunde der KT 1020"></span>
+            <img class="upgradeImages noselect" src="images/overclockUpgrade.png" alt="Overclock">
+            <p class="upgradePrice">1000 0</p>
+            <p class="upgradeMechanic" title="3">2 KT1020</p>
         </div>
     </div>
     <audio id="audioplayer"></audio>
