@@ -16,7 +16,7 @@
 
 @keyframes animationFrames
 {
-    0% {top:50%; opacity:1;}  /* start 20 pixels down  and vissable */
+    0% {opacity:0.8;}  /* start 20 pixels down  and vissable */
     100% {top:5%; opacity:0; } /* move up to 217 pixels while fading out */
 }
 #upgradeHeader{
