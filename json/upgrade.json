@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Eisenspitzhacke",
+    "cost": 2000,
+    "target-property": "coinsPerClick",
+    "target-multiplier": 2
+  },
+  {
+    "name": "Beidseitige Eisenspitzhacke",
+    "cost": 5000,
+    "target-property": "coinsPerClick",
+    "target-multiplier": 2
+  },
+  {
+    "name": "Goldspitzhacke",
+    "cost": 10000,
+    "target-property": "coinsPerClick",
+    "target-multiplier": 4
+  }
+  {
+    "name": "Beidseitige Goldspitzhacke",
+    "cost": 20000,
+    "target-property": "coinsPerClick",
+    "target-multiplier": 4
+  }
+]
