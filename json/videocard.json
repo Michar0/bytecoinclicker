@@ -1,58 +1,58 @@
 [
   {
     "name": "Geforce 8800 GTX",
-    "cost": 10,
-    "cost increase": 1.4,
-    "target-property": "coinsPerSecond",
-    "target-increase": 0.1
+    "price": 10,
+    "costincrease": 1.4,
+    "targetproperty": "coinsPerSecond",
+    "targetincrease": 0.1
   },
   {
     "name": "GTX 295",
-    "cost": 250,
-    "cost increase": 1.5,
-    "target-property": "coinsPerSecond",
-    "target-increase": 1
+    "price": 250,
+    "costincrease": 1.5,
+    "targetproperty": "coinsPerSecond",
+    "targetincrease": 1
   },
   {
     "name": "GTX 480",
-    "cost": 650,
-    "cost increase": 1.5,
-    "target-property": "coinsPerSecond",
-    "target-increase": 2.5
+    "price": 650,
+    "costincrease": 1.5,
+    "targetproperty": "coinsPerSecond",
+    "targetincrease": 2.5
   },
   {
     "name": "GTX 580",
-    "cost": 3500,
-    "cost increase": 1.6,
-    "target-property": "coinsPerSecond",
-    "target-increase": 10
+    "price": 3500,
+    "costincrease": 1.6,
+    "targetproperty": "coinsPerSecond",
+    "targetincrease": 10
   },
   {
     "name": "GTX 690",
-    "cost": 12000,
-    "cost increase": 1.6,
-    "target-property": "coinsPerSecond",
-    "target-increase": 25
+    "price": 12000,
+    "costincrease": 1.6,
+    "targetproperty": "coinsPerSecond",
+    "targetincrease": 25
   },
   {
     "name": "GTX Titan Z",
-    "cost": 75000,
-    "cost increase": 1.6,
-    "target-property": "coinsPerSecond",
-    "target-increase": 100
+    "price": 75000,
+    "costincrease": 1.6,
+    "targetproperty": "coinsPerSecond",
+    "targetincrease": 100
   },
   {
     "name": "GTX Titan X",
-    "cost": 250000,
-    "cost increase": 1.6,
-    "target-property": "coinsPerSecond",
-    "target-increase": 250
+    "price": 250000,
+    "costincrease": 1.6,
+    "targetproperty": "coinsPerSecond",
+    "targetincrease": 250
   },
   {
     "name": "GTX Titan V",
-    "cost": 1500000,
-    "cost increase": 1.6,
-    "target-property": "coinsPerSecond",
-    "target-increase": 1000
+    "price": 1500000,
+    "costincrease": 1.6,
+    "targetproperty": "coinsPerSecond",
+    "targetincrease": 1000
   }
 ]

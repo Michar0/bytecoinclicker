@@ -24,9 +24,20 @@ body{
     background-color: #68868E;
     color:#C6CCC2;
 }
-
+#statsPage{
+    background-color:#576f75;
+    color:#e5e8e3;
+}
+#shopPage{
+    background-color:#576f75;
+    color:#e5e8e3;
+}
 @keyframes animationFrames
 {
-    0% {opacity:0.8;}  /* start 20 pixels down  and vissable */
-    100% {top:5%; opacity:0; display:none} /* move up to 217 pixels while fading out */
+    0% {opacity:0.8;}
+    100% {top:5%; opacity:0; display:none}
+}
+#bottomBar{
+    background-color: #68868E;
+    color:#C6CCC2;
 }

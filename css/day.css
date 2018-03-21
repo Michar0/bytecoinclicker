@@ -13,6 +13,9 @@
 #leftNav{
     color:white;
 }
+#statsPage{
+    background-color:whitesmoke;
+}
 
 @keyframes animationFrames
 {
@@ -22,4 +25,11 @@
 #upgradeHeader{
     background-color: rgba(227,226,226,1);;
     color:white;
+}
+#bottomBar{
+    background-color: rgba(227,226,226,1);
+    color:white;
+}
+#shopPage{
+    background-color:whitesmoke;
 }
