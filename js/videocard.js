@@ -21,15 +21,8 @@ class Videocard{
     getEffectOperand(){
         return this.effectOperand;
     }
-    setEffectOperand(newEffectOperand){
-        this.effectOperand=newEffectOperand;
-    }
     getCoinsPerSecond(){
         return this.coinsPerSecond;
-    }
-    multiplyCoinsPerSecond(multiplier)
-    {
-        this.coinsPerSecond*=multiplier;
     }
     addCoinsPerSecond(add){
         this.coinsPerSecond+=add;
@@ -37,6 +30,8 @@ class Videocard{
     overclock()
     {
         this.overclocked=true;
+        this.coinsPerSecond*=2;
+        this.effectOperand*=2;
     }
     raiseLevel()
     {

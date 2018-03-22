@@ -11,8 +11,10 @@
     <script src="js/jquery.scrollbar.js"></script>
     <script src="js/upgrade.js"></script>
     <script src="js/videocard.js"></script>
+    <script src="js/overclock.js"></script>
     <script src="js/scripts.js"></script>
     <link rel="stylesheet" type="text/css" href="css/jquery.scrollbar.css">
+</head>
 <body onload="loadCache()">
     <header id="topbar">
         <a href="https://bytecoin.org"><img id="logo" src="images/favicon.png"></a>
@@ -30,6 +32,7 @@
     </header>
     <div id="clickCenter">
         <img id="clickPicture" class="noselect" src="images/clickPicture.png" onclick="clickCoin()">
+        <p id="coinHealth">100%</p>
     </div>
     <div id="statsPage" class="invisible">
         <h1 id="statisticsHeader">Statistics</h1>
@@ -40,6 +43,9 @@
             <li class="stat" title="coinsClicks">Coinclicks: 0</li>
             <li class="stat" title="time">Playing for 0</li>
             <li class="stat" title="boughtVideocards">Bought Videocards: 0</li>
+            <li class="stat" title="boughtUpgrades">Bought Upgrades: 0</li>
+            <li class="stat" title="overclockVideocards">Overclocked Videocards: 0</li>
+            <li class="stat" title="lootedDrops">Looted Drops: 0</li>
         </ul>
     </div>
     <div id="shopPage" class="invisible">
@@ -65,7 +71,7 @@
         <ul id="pagesList">
             <li id="statsShow" onclick="togglePage('statsPage')">Statistics</li>
             <li onclick="togglePage('shopPage')">Shop</li>
-            <li onclick="test()">About</li>
+            <li>Settings</li>
         </ul>
     </footer>
 </body>
