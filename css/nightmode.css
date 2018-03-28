@@ -20,18 +20,6 @@ body{
     color:#C6CCC2;
     text-shadow: 2px 2px black;
 }
-#upgradeHeader{
-    background-color: #68868E;
-    color:#C6CCC2;
-}
-#statsPage{
-    background-color:#576f75;
-    color:#e5e8e3;
-}
-#shopPage{
-    background-color:#576f75;
-    color:#e5e8e3;
-}
 @keyframes animationFrames
 {
     0% {opacity:0.8;}
@@ -43,4 +31,8 @@ body{
 }
 .lootScreen{
     background-color:#68868E;
+}
+.page{
+    background-color:#576f75;
+    color:#e5e8e3;
 }

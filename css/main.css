@@ -8,7 +8,7 @@
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-70%, -50%);
+    transform: translate(-75%, -50%);
 }
 
 .affordable{
@@ -55,8 +55,8 @@ nav{
 }
 #clickPicture{
     transition: transform 0.1s;
-    width: 100%;
-    height: 100%;
+    width: 125%;
+    height: 125%;
     cursor: pointer;
 }
 #clickPicture:hover{
@@ -102,16 +102,6 @@ nav{
 .upgradeMechanic{
     display:none;
 }
-#statsPage{
-    opacity:0.9;
-    top: 10%;
-    left:10%;
-    position: absolute;
-    height: 80%;
-    width: 80%;
-    border:2px solid black;
-
-}
 #statsShow{
     cursor: pointer;
 }
@@ -121,12 +111,6 @@ nav{
 .stat{
     opacity: 1;
     display: block;
-}
-#statisticsHeader{
-    text-align: center;
-    left: 40%;
-    top: 5%;
-    position: absolute;
 }
 #statisticsList{
     margin-left:2%;
@@ -145,21 +129,6 @@ nav{
 #pagesList{
     margin-top:0.5%;
 }
-#shopPage{
-    opacity:0.9;
-    top: 10%;
-    left:10%;
-    position: absolute;
-    height: 80%;
-    width: 80%;
-    border:2px solid black;
-}
-#shopHeader{
-    text-align: center;
-    left: 40%;
-    top: 5%;
-    position: absolute;
-}
 #videocardsShop{
     position: absolute;
     top:30%;
@@ -169,12 +138,13 @@ nav{
     position: absolute;
     top: 30%;
     left: 40%;
-    width:25%;
+    width:23%;
 }
 #overclockShop{
     position: absolute;
     top:30%;
     left:70%;
+    width: 25%;
 }
 .shopHeaders{
     border-bottom: 1px solid black;
@@ -198,4 +168,37 @@ nav{
 }
 #coinHealth{
     text-align: center;
+}
+.drop{
+    -webkit-filter: drop-shadow(5px 5px 5px #222);
+    filter: drop-shadow(5px 5px 5px #222);
+}
+.page{
+    opacity:0.9;
+    top: 10%;
+    left:10%;
+    position: absolute;
+    height: 80%;
+    width: 80%;
+    border:2px solid black;
+}
+
+.pageHeader{
+    text-align: center;
+    left: 45%;
+    top: 5%;
+    position: absolute;
+}
+#settingsList{
+    margin-left:2%;
+    margin-top:10%;
+    list-style-type: none;
+}
+.setting{
+    cursor: pointer;
+}
+.toolTipHeader{
+    top:1%;
+    left:40%;
+    position: absolute;
 }

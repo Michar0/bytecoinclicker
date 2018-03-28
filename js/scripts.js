@@ -8,7 +8,6 @@ var stats = [];
 var startTime = new Date().getTime();
 var coinHealth = 100;
 
-
 $(document).ready(function () {
     loadJsonItemsToShop();
     createStats();
@@ -27,8 +26,7 @@ function clickCoin() {
     stats["coinsClicked"] += coinsPerClick;
     stats["coinsClicked"] = decimalRound(stats["coinsClicked"], 1);
     stats["coinsClicks"]++;
-    if(coinHealth<1)
-    {
+    if (coinHealth < 1) {
         setupNewClickCoin();
     }
     coinHealth--;
@@ -104,11 +102,11 @@ function clickAutomatic() {
     amountCoins = decimalRound(amountCoins, 1);
     stats["coinsEver"] += coinsPerSecond;
     stats["coinsEver"] = decimalRound(stats["coinsEver"], 1);
-    if (coinsPerSecond > 0&&coinHealth>0) {
+    if (coinsPerSecond > 0 && coinHealth > 0) {
         coinHealth--;
         document.getElementById("coinHealth").textContent = coinHealth + "%";
     }
-    else if(coinHealth===0) {
+    else if (coinHealth === 0) {
         setupNewClickCoin();
     }
     document.getElementById("amount").innerText = "ByteCoins: " + amountCoins;
@@ -147,14 +145,21 @@ function changeDayNight() {
 }
 
 function changeVolume() {
-    var audio = document.getElementById("audioplayer");
+    var audioPlayers = document.getElementsByClassName("audioSource");
     if (document.getElementById("volumes").classList.contains("fa-volume-up")) {
-        audio.muted = true;
+
+        for(var i=0;i<audioPlayers.length;i++)
+        {
+            audioPlayers[i].muted=true;
+        }
         document.getElementById("volumes").classList.remove("fa-volume-up");
         document.getElementById("volumes").classList.add("fa-volume-off");
     }
     else {
-        audio.muted = false;
+        for(var i=0;i<audioPlayers.length;i++)
+        {
+            audioPlayers[i].muted=false;
+        }
         document.getElementById("volumes").classList.remove("fa-volume-off");
         document.getElementById("volumes").classList.add("fa-volume-up");
     }
@@ -208,41 +213,97 @@ function loadJsonItemsToShop() {
     $.ajaxSetup({
         async: true
     });
-    var target = document.getElementById("videocardsShopContent");
+    var targets = document.getElementsByClassName("shopContent");
     for (var i = 0; i < upgrades[0].length; i++) {
         var newCard = document.createElement("LI");
-        newCard.textContent = upgrades[0][i].toString();
+        var newDiv=document.createElement("div");
+        var newImage=document.createElement("IMG");
+        var name = upgrades[0][i].getName().split(" ");
+        var z=0;
+        var text="";
+        do{
+            text+=name[z];
+            z++;
+        }while(z<name.length);
+        z=0;
+        newImage.src="images/"+text+".png";
+        text="";
+        newImage.style.width="10%";
+        newImage.style.height="10%";
+        newImage.style.float="left";
+        newImage.style.marginTop="2%";
+        newDiv.appendChild(newImage);
+        var newP = document.createElement("P");
+        newP.textContent=upgrades[0][i].toString();
+        newDiv.appendChild(newP);
+        newCard.appendChild(newDiv);
         newCard.classList.add("notAffordable");
         newCard.classList.add("shopItem");
         newCard.id = upgrades[0][i].getName();
         newCard.onclick = function (e) {
             buyItem(e.currentTarget.id);
         };
-        target.appendChild(newCard);
+        newCard.onmouseover=function(e){
+          createToolTip(e.currentTarget);
+        };
+        newCard.onmouseout=function (e) {
+          document.body.removeChild((document.getElementById(e.currentTarget.id+"T")));
+        };
+        targets[0].appendChild(newCard);
     }
-    target = document.getElementById("upgradesShopContent");
     for (var i = 0; i < upgrades[1].length; i++) {
         var newUpgrade = document.createElement("LI");
-        newUpgrade.textContent = upgrades[1][i].toString();
+        var newDiv=document.createElement("div");
+        var newImage=document.createElement("IMG");
+        var name = upgrades[1][i].getName().split(" ");
+        var z=0;
+        var text="";
+        do{
+            text+=name[z];
+            z++;
+        }while(z<name.length);
+        z=0;
+        newImage.src="images/"+text+".png";
+        text="";
+        newImage.style.width="5%";
+        newImage.style.height="5%";
+        newImage.style.float="left";
+        newImage.style.marginTop="1%";
+        newDiv.appendChild(newImage);
+        var newP = document.createElement("P");
+        newP.textContent=upgrades[1][i].toString();
+        newDiv.appendChild(newP);
+        newUpgrade.appendChild(newDiv);
         newUpgrade.classList.add("notAffordable");
         newUpgrade.classList.add("shopItem");
         newUpgrade.id = upgrades[1][i].getName();
         newUpgrade.onclick = function (e) {
             buyItem(e.currentTarget.id);
         };
-        target.appendChild(newUpgrade);
+        targets[1].appendChild(newUpgrade);
     }
     target = document.getElementById("overclockShopContent");
     for (var i = 0; i < upgrades[2].length; i++) {
         var newOverclock = document.createElement("LI");
-        newOverclock.textContent = upgrades[2][i].toString();
+        var newDiv=document.createElement("div");
+        var newImage=document.createElement("IMG");
+        newImage.src="images/overclock.png";
+        newImage.style.width="10%";
+        newImage.style.height="10%";
+        newImage.style.float="left";
+        newImage.style.marginTop="2%";
+        newDiv.appendChild(newImage);
+        var newP = document.createElement("P");
+        newP.textContent=upgrades[2][i].toString();
+        newDiv.appendChild(newP);
+        newOverclock.appendChild(newDiv);
         newOverclock.classList.add("notAffordable");
         newOverclock.classList.add("shopItem");
         newOverclock.id = upgrades[2][i].getName();
         newOverclock.onclick = function (e) {
             buyItem(e.currentTarget.id);
         };
-        target.appendChild(newOverclock);
+        targets[2].appendChild(newOverclock);
     }
     shopItems = document.getElementsByClassName("shopItem");
 }
@@ -288,6 +349,20 @@ function addCoins(number) {
 function togglePage(name) {
     if (document.getElementById(name).classList.contains("invisible")) {
         document.getElementById(name).classList.remove("invisible");
+        if(name==="statsPage")
+        {
+            document.getElementById("shopPage").classList.add("invisible");
+            document.getElementById("settingsPage").classList.add("invisible");
+        }
+        else if(name==="shopPage")
+        {
+            document.getElementById("statsPage").classList.add("invisible");
+            document.getElementById("settingsPage").classList.add("invisible");
+        }
+        else{
+            document.getElementById("statsPage").classList.add("invisible");
+            document.getElementById("shopPage").classList.add("invisible");
+        }
     }
     else {
         document.getElementById(name).classList.add("invisible");
@@ -301,57 +376,116 @@ function getItemInShop(nameItem) {
         }
     }
 }
-function setupNewClickCoin(){
-    coinHealth=100;
+
+function setupNewClickCoin() {
+    coinHealth = 100;
     document.getElementById("coinHealth").textContent = coinHealth + "%";
-    var drop=document.createElement("IMG");
-    drop.src="images/dropUSB.png";
-    drop.onclick=function() {
+    var drop = document.createElement("IMG");
+    drop.src = "images/dropUSB.png";
+    drop.classList.add("drop");
+    drop.onclick = function () {
         buildItemGetWindow();
         document.body.removeChild(this);
     };
-    drop.style.top = (cordinates[1] - 30) + "px";
-    drop.style.left = (cordinates[0]-400) + "px";
-    drop.style.cursor="pointer";
-    drop.style.width=64+"px";
-    drop.style.height=64+"px";
+    drop.style.top =Math.floor((Math.random() *600) + 1)+"px";
+    drop.style.left =Math.floor((Math.random() * 600) + 1) +"px";
+    drop.style.cursor = "pointer";
+    drop.style.width = 64 + "px";
+    drop.style.height = 64 + "px";
     drop.style.position = 'absolute';
+    var audio = document.createElement("AUDIO");
+    audio.classList.add("audioSource");
+    audio.src="sounds/drop.mp3";
+    audio.loop = true;
+    audio.play();
+    if(document.getElementById("volumes").classList.contains("fa-volume-off"))
+    {
+        audio.muted=true;
+    }
+    drop.appendChild(audio);
     document.body.appendChild(drop);
 }
-function buildItemGetWindow(){
+
+function buildItemGetWindow() {
     var lootScreen = document.createElement("div");
-    lootScreen.style.width="30%";
-    lootScreen.style.height="30%";
+    lootScreen.style.width = "30%";
+    lootScreen.style.height = "30%";
     lootScreen.style.top = "35%";
     lootScreen.style.left = "30%";
-    lootScreen.style.position="absolute";
-    lootScreen.style.border="2px solid black";
+    lootScreen.style.position = "absolute";
+    lootScreen.style.border = "2px solid black";
     lootScreen.classList.add("lootScreen");
-    var loot=Math.floor((Math.random() * 100) + 1);
-    var lootText=document.createElement("P");
-    lootText.textContent="ByteCoins x"+loot;
-    lootText.style.top="50%";
-    lootText.style.left="40%";
-    lootText.style.position="absolute";
+    var loot = Math.floor((Math.random() * 100) + 1);
+    var lootText = document.createElement("P");
+    lootText.textContent = "ByteCoins x" + loot;
+    lootText.style.top = "50%";
+    lootText.style.left = "40%";
+    lootText.style.position = "absolute";
     lootScreen.appendChild(lootText);
-    var header=document.createElement("P");
-    header.textContent="New Loot";
-    header.style.top="5%";
-    header.style.left="43%";
-    header.style.position="absolute";
+    var header = document.createElement("P");
+    header.textContent = "New Loot";
+    header.style.top = "5%";
+    header.style.left = "43%";
+    header.style.position = "absolute";
     lootScreen.appendChild(header);
-    var lootButton=document.createElement("BUTTON");
-    lootButton.style.top="80%";
-    lootButton.style.right="45%";
-    lootButton.style.position="absolute";
-    lootButton.style.width="10%";
-    lootButton.style.height="10%";
-    lootButton.textContent="Loot";
-    lootButton.onclick=function(){
+    var lootButton = document.createElement("BUTTON");
+    lootButton.style.top = "80%";
+    lootButton.style.right = "45%";
+    lootButton.style.position = "absolute";
+    lootButton.style.width = "10%";
+    lootButton.style.height = "10%";
+    lootButton.textContent = "Loot";
+    lootButton.onclick = function () {
         addCoins(loot);
         document.body.removeChild(this.parentElement);
         stats["lootedDrops"]++;
     };
     lootScreen.appendChild(lootButton);
     document.body.appendChild(lootScreen);
+}
+
+function showCoinHealth(){
+    if(document.getElementById("coinHealth").classList.contains("invisible")) {
+        document.getElementById("coinHealth").classList.remove("invisible");
+    }
+    else{
+        document.getElementById("coinHealth").classList.add("invisible");
+    }
+}
+
+function createToolTip(object){
+    var item = getItemAsObject(object.id);
+    var toolTip=document.createElement("DIV");
+    toolTip.id=object.id+"T";
+    var toolHeader=document.createElement("P");
+    toolHeader.textContent=item.getName()+" "+item.getPrice();
+    toolHeader.style.left="20%";
+    toolHeader.style.top="1%";
+    toolHeader.style.position="absolute";
+    toolTip.appendChild(toolHeader);
+    var toolText=document.createElement("P");
+    toolText.textContent="Erhöht die Coins pro Sekunde um "+item.getEffectOperand();
+    toolText.style.left="2%";
+    toolText.style.top="40%";
+    toolText.style.position="absolute";
+    toolTip.appendChild(toolHeader);
+    toolTip.appendChild(toolText);
+    toolTip.style.top=(cordinates[0]-50)+"px";
+    toolTip.style.left=cordinates[1]+"px";
+    toolTip.style.width="15%";
+    toolTip.style.height="10%";
+    toolTip.style.position="absolute";
+    toolTip.style.backgroundColor="whitesmoke";
+    toolTip.style.border="2px solid black";
+    document.body.appendChild(toolTip);
+}
+
+function getItemAsObject(name){
+    for (var i = 0; i < upgrades.length; i++) {
+        for(var y=0;y<upgrades[i].length;y++) {
+            if (upgrades[i][y].getName() === name) {
+                return upgrades[i][y];
+            }
+        }
+    }
 }

@@ -34,8 +34,8 @@
         <img id="clickPicture" class="noselect" src="images/clickPicture.png" onclick="clickCoin()">
         <p id="coinHealth">100%</p>
     </div>
-    <div id="statsPage" class="invisible">
-        <h1 id="statisticsHeader">Statistics</h1>
+    <div id="statsPage" class="invisible page">
+        <h1 class="pageHeader">Statistics</h1>
         <ul id="statisticsList">
             <li class="stat" title="coinsEver">Mined ByteCoins ever: 0</li>
             <li class="stat" title="coinsCurrent">ByteCoins in the Bank: 0</li>
@@ -48,8 +48,8 @@
             <li class="stat" title="lootedDrops">Looted Drops: 0</li>
         </ul>
     </div>
-    <div id="shopPage" class="invisible">
-        <h1 id="shopHeader">Shop</h1>
+    <div id="shopPage" class="invisible page">
+        <h1 class="pageHeader">Shop</h1>
         <div class="shop" id="videocardsShop">
             <p class="shopHeaders">GPU</p>
             <ul class="shopContent" id="videocardsShopContent">
@@ -62,16 +62,23 @@
         </div>
         <div class="shop" id="overclockShop">
             <p class="shopHeaders">OC</p>
-            <ul class="shopContent" id="overclockShopContent">
+            <ul class="shopContent" id=overclockShopContent">
             </ul>
         </div>
     </div>
-    <audio id="audioplayer"></audio>
+    <div id="settingsPage" class="invisible page">
+        <h1 class="pageHeader">Settings</h1>
+        <ul id="settingsList">
+            <li class="setting" onclick="showCoinHealth()">Show Coinhealth</li>
+        </ul>
+    </div>
+    <audio class="audioSource" id="audioplayer"></audio>
     <footer id="bottomBar">
         <ul id="pagesList">
             <li id="statsShow" onclick="togglePage('statsPage')">Statistics</li>
             <li onclick="togglePage('shopPage')">Shop</li>
-            <li>Settings</li>
+            <li onclick="togglePage('settingsPage')">Settings</li>
+            <li>About</li>
         </ul>
     </footer>
 </body>
