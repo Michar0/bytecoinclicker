@@ -10,9 +10,6 @@ body{
 .upgradeFields{
     border: 1px solid #C6CCC2;
 }
-#dayMusic{
-    color:#C6CCC2;
-}
 #leftNav{
     color:#C6CCC2;
 }
@@ -24,10 +21,6 @@ body{
 {
     0% {opacity:0.8;}
     100% {top:5%; opacity:0; display:none}
-}
-#bottomBar{
-    background-color: #68868E;
-    color:#C6CCC2;
 }
 .lootScreen{
     background-color:#68868E;

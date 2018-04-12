@@ -7,14 +7,20 @@
 }
 
 #clickCenter {
-    position: fixed;
     top: 50%;
     left: 50%;
+    position: absolute;
     transform: translate(-75%, -50%);
 }
 
 .affordable {
     opacity: 1.0;
+}
+
+#topbar{
+    font-weight: bolder;
+    width: 100%;
+    height:20%;
 }
 
 .notAffordable {
@@ -56,20 +62,22 @@ header {
     margin-left: 3%;
     margin-top: 0.4%;
     margin-bottom: 0.1%;
+    width: 8%;
+    height: 8%;
 }
 
 nav {
-    float: right;
-    margin-right: 40%;
-    margin-top: 0.8%;
+    padding: 1%;
+    margin-left:10%;
     color: white;
 }
 
 #clickPicture {
     transition: transform 0.1s;
-    width: 125%;
-    height: 125%;
+    width: 140%;
+    height: 140%;
     cursor: pointer;
+    margin-bottom: 5%;
 }
 
 #clickPicture:hover {
@@ -140,12 +148,12 @@ nav {
 
 #statisticsList {
     margin-left: 2%;
-    margin-top: 10%;
+    margin-top: 25%;
     list-style-type: none;
 }
 
 #bottomBar {
-    height: 5%;
+    height: 15%;
     cursor: pointer;
     position: absolute;
     right: 0;
@@ -158,26 +166,6 @@ nav {
     margin-top: 0.5%;
 }
 
-#videocardsShop {
-    position: absolute;
-    top: 30%;
-    left: 10%;
-}
-
-#upgradesShop {
-    position: absolute;
-    top: 30%;
-    left: 40%;
-    width: 23%;
-}
-
-#overclockShop {
-    position: absolute;
-    top: 30%;
-    left: 70%;
-    width: 25%;
-}
-
 .shopHeaders {
     border-bottom: 1px solid black;
     text-align: center;
@@ -185,9 +173,12 @@ nav {
 }
 
 .shop {
-    width: 20%;
-    height: 60%;
+    width: 85%;
+    height: 80%;
     border: 1px solid black;
+    margin-left: 8%;
+    margin-top: 25%;
+    overflow: auto;
 }
 
 .shopContent {
@@ -216,21 +207,21 @@ nav {
     top: 10%;
     left: 10%;
     position: absolute;
-    height: 80%;
+    height: 70%;
     width: 80%;
     border: 2px solid black;
 }
 
 .pageHeader {
     text-align: center;
-    left: 40%;
+    left: 35%;
     top: 5%;
     position: absolute;
 }
 
 #settingsList {
     margin-left: 2%;
-    margin-top: 10%;
+    margin-top: 20%;
     list-style-type: none;
 }
 
@@ -293,4 +284,21 @@ nav {
     width: 20%;
     height: 20%;
     font-weight: bolder;
+}
+.Show img{
+    width: 20%;
+    height: 20%;
+}
+.Show li{
+    margin-right: 1%;
+    margin-bottom: 5%;
+}
+#myProgress {
+    width: 100%;
+    background-color: grey;
+}
+#myBar {
+    width: 100%;
+    height: 30px;
+    background-color: green;
 }

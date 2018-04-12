@@ -2,11 +2,11 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>ByteCoin Clicker</title>
     <link rel="icon" type="image/png" href="images/favicon.png">
-    <link rel="stylesheet" id="style" type="text/css" href="css/day.css">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/main_mobile.css">
+    <link rel="stylesheet" id="style" type="text/css" href="css/day_mobile.css">
     <!--Austauschen durch lokale Version-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bowser/1.9.3/bowser.min.js"></script>
@@ -19,12 +19,6 @@
 </head>
 <body onload="loadCache()">
 <header id="topbar">
-    <a href="https://bytecoin.org"><img id="logo" src="images/favicon.png"></a>
-    <div id="dayMusic">
-        <p id="volume" title="Stumm/Laut" onclick="changeVolume()"><i id="volumes" class="fas fa-volume-up"></i></p>
-        <p id="dayNight" title="Nachtmodus/Tagmodus" onclick="changeDayNight()"><i id="dayNightSwitch"
-                                                                                   class="fas fa-sun"></i></p>
-    </div>
     <nav id="leftNav">
         <ul>
             <li id="amount" onclick="addCoins(1000000)">ByteCoins: 0</li>
@@ -35,7 +29,9 @@
 </header>
 <div id="clickCenter">
     <img id="clickPicture" class="noselect" src="images/clickPicture.png" onclick="clickCoin()">
-    <p id="myProgress">100%</p>
+    <div id="myProgress">
+        <div id="myBar"></div>
+    </div>
 </div>
 <div id="statsPage" class="invisible page">
     <h1 class="pageHeader">Statistics</h1>
@@ -53,19 +49,8 @@
 </div>
 <div id="shopPage" class="invisible page">
     <h1 class="pageHeader">Shop</h1>
-    <div class="shop" id="videocardsShop">
-        <p class="shopHeaders">GPU</p>
-        <ul class="shopContent" id="videocardsShopContent">
-        </ul>
-    </div>
-    <div class="shop" id="upgradesShop">
-        <p class="shopHeaders">Upgrades</p>
-        <ul class="shopContent" id="upgradesShopContent">
-        </ul>
-    </div>
-    <div class="shop" id="overclockShop">
-        <p class="shopHeaders">OC</p>
-        <ul class="shopContent" id=overclockShopContent">
+    <div class="shop">
+        <ul class="shopContent">
         </ul>
     </div>
 </div>
@@ -80,30 +65,6 @@
 <div id="aboutPage" class="invisible page">
     <h1 class="pageHeader">How To Play</h1>
     <table id="helpTable">
-        <tr>
-            <td><img id="showPic" src="images/clickPicture.png"></td>
-            <td>Das grundlegende Element des Bytecoinclickers ist der Clickcoin. <br> Wenn man auf diesen klickt bekommt man anfangs einen Bytecoin <br> Mit den erclickten Coins kann man schlussendlich Unterstützungen <br> kaufen die z.B automatisch für einen klicken etc.</td>
-        </tr>
-        <tr>
-            <td>Centro comercial Moctezuma</td>
-            <td>Francisco Chang</td>
-        </tr>
-        <tr>
-            <td>Ernst Handel</td>
-            <td>Roland Mendel</td>
-        </tr>
-        <tr>
-            <td>Island Trading</td>
-            <td>Helen Bennett</td>
-        </tr>
-        <tr>
-            <td>Laughing Bacchus Winecellars</td>
-            <td>Yoshi Tannamuri</td>
-        </tr>
-        <tr>
-            <td>Magazzini Alimentari Riuniti</td>
-            <td>Giovanni Rovelli</td>
-        </tr>
     </table>
 </div>
 <div id="mobileMessage" class="invisible">
@@ -113,10 +74,10 @@
 <audio class="audioSource" id="audioplayer"></audio>
 <footer id="bottomBar">
     <ul id="pagesList">
-        <li id="statsShow" onclick="togglePage('statsPage')">Statistics</li>
-        <li onclick="togglePage('shopPage')">Shop</li>
-        <li onclick="togglePage('settingsPage')">Settings</li>
-        <li onclick="togglePage('aboutPage')">About</li>
+        <li class="Show" onclick="togglePage('statsPage')"><img src="images/stats_mobile.png"></li>
+        <li class="Show" onclick="togglePage('shopPage')"><img src="images/shop_mobile.png"></li>
+        <li class="Show" onclick="togglePage('settingsPage')"><img src="images/settings_mobile.png"></li>
+        <li class="Show" onclick="togglePage('aboutPage')"><img src="images/about_mobile.png"></li>
     </ul>
 </footer>
 </body>

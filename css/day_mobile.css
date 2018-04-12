@@ -7,9 +7,6 @@
     color:black;
     text-shadow: 2px 2px white;
 }
-#dayMusic{
-    color:white;
-}
 #leftNav{
     color:white;
 }
@@ -17,10 +14,6 @@
 {
     0% {opacity:0.8;}  /* start 20 pixels down  and vissable */
     100% {top:5%; opacity:0; } /* move up to 217 pixels while fading out */
-}
-#bottomBar{
-    background-color: rgba(227,226,226,1);
-    color:white;
 }
 .lootScreen{
     background-color: whitesmoke;
