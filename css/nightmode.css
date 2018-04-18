@@ -1,41 +1,52 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300');
 
-body{
+body {
     background-color: #263947;
-    color:#C6CCC2;
+    color: #C6CCC2;
 }
-#topbar{
+
+#topbar {
     background-color: #68868E;
 }
-.upgradeFields{
+
+.upgradeFields {
     border: 1px solid #C6CCC2;
 }
-#dayMusic{
-    color:#C6CCC2;
+
+#leftNav {
+    color: #C6CCC2;
 }
-#leftNav{
-    color:#C6CCC2;
-}
-.flyingNumber{
-    color:#C6CCC2;
+
+.flyingNumber {
+    color: #C6CCC2;
     text-shadow: 2px 2px black;
 }
-@keyframes animationFrames
-{
-    0% {opacity:0.8;}
-    100% {top:5%; opacity:0; display:none}
+
+@keyframes animationFrames {
+    0% {
+        opacity: 0.8;
+    }
+    100% {
+        top: 5%;
+        opacity: 0;
+        display: none
+    }
 }
-#bottomBar{
+
+#bottomBar {
     background-color: #68868E;
-    color:#C6CCC2;
+    color: #e5e8e3;
 }
-.lootScreen{
-    background-color:#68868E;
+
+.lootScreen {
+    background-color: #68868E;
 }
-.page{
-    background-color:#576f75;
-    color:#e5e8e3;
+
+.page {
+    background-color: #68868E;
+    color: #e5e8e3;
 }
-.tooltip{
-    background-color:#576f75;
+
+.tooltip {
+    background-color: #576f75;
 }

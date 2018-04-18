@@ -1,33 +1,45 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300');
 
-.upgradeFields{
+body {
+    color: black;
+}
+
+.upgradeFields {
     border: 1px solid black;
 }
-.flyingNumber{
-    color:black;
+
+.flyingNumber {
+    color: black;
     text-shadow: 2px 2px white;
 }
-#dayMusic{
-    color:white;
+
+#leftNav {
+    color: white;
 }
-#leftNav{
-    color:white;
+
+@keyframes animationFrames {
+    0% {
+        opacity: 0.8;
+    }
+    100% {
+        top: 5%;
+        opacity: 0;
+    }
 }
-@keyframes animationFrames
-{
-    0% {opacity:0.8;}  /* start 20 pixels down  and vissable */
-    100% {top:5%; opacity:0; } /* move up to 217 pixels while fading out */
-}
-#bottomBar{
-    background-color: rgba(227,226,226,1);
-    color:white;
-}
-.lootScreen{
+
+.lootScreen {
     background-color: whitesmoke;
 }
-.page{
+
+.page {
     background-color: whitesmoke;
 }
-.tooltip{
+
+.tooltip {
     background-color: whitesmoke;
+}
+
+#bottomBar {
+    background-color: rgba(227, 226, 226, 1);
+    color: white;
 }

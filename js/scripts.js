@@ -2,31 +2,57 @@ var amountCoins = 0;
 var coinsPerSecond = 0;
 var coinsPerClick = 1;
 var upgrades = [];
-var events = [];
 var shopItems;
 var cordinates = [0, 0];
 var stats = [];
 var startTime = new Date().getTime();
 var coinHealth = 100;
 var colorMode = "day";
-var screenmode = "desktop";
+var screenMode = "desktop";
+var volume = true;
 
 
 $(document).ready(function () {
-    if(document.getElementsByClassName("Show").length>0)
-    {
-        screenmode="mobile";
+    if (document.getElementsByClassName("Show").length > 0) {
+        screenMode = "mobile";
     }
-    if(screenmode!=="mobile") {
-        createStats();
+    if (screenMode !== "mobile") {
         detectMobile();
     }
     loadJsonItemsToShop();
+    createStats();
 });
+window.onbeforeunload = function (e) {
+    saveGame();
+};
 document.addEventListener('mousemove', getMousePosition);
 setInterval(clickAutomatic, 1000);
 
 function loadCache() {
+    // if(localStorage.getItem("CssMode")==="night")
+    // {
+    //     changeDayNight();
+    // }
+    // if(localStorage.getItem("Volume")==="false") {
+    //     changeVolume();
+    // }
+    // if(screenMode==="desktop")
+    // {
+    //     var text = document.getElementById("myProgress");
+    //     text.textContent = localStorage.getItem("CoinHealth") + "%";
+    // }
+    // else
+    // {
+    //     var bar = document.getElementById("myBar");
+    //     bar.style.width = localStorage.getItem("CoinHealth") + "%";
+    // }
+    // amountCoins=parseFloat(localStorage.getItem("Coins"));
+    // coinsPerSecond=parseFloat(localStorage.getItem("CPS"));
+    // coinsPerClick=parseFloat(localStorage.getItem("CPC"));
+    //
+    // document.getElementById("amountSecond").innerText = "Coins Per Second: " + coinsPerSecond;
+    // document.getElementById("amount").innerText = "ByteCoins: " + amountCoins;
+    // document.getElementById("coinsPerClick").innerText = "Coins Per Click: " + coinsPerClick;
 }
 
 function clickCoin() {
@@ -41,7 +67,7 @@ function clickCoin() {
         setupNewClickCoin();
     }
     coinHealth--;
-    if (screenmode === "desktop") {
+    if (screenMode === "desktop") {
         var text = document.getElementById("myProgress");
         text.textContent = coinHealth + "%";
     }
@@ -60,7 +86,6 @@ function clickCoin() {
     document.body.appendChild(clickHit);
     checkItemsAffordable();
     playSound("sounds/coinClick.mp3");
-
 }
 
 function buyItem(itemName) {
@@ -124,7 +149,7 @@ function clickAutomatic() {
     stats["coinsEver"] = decimalRound(stats["coinsEver"], 1);
     if (coinsPerSecond > 0 && coinHealth > 0) {
         coinHealth--;
-        if (screenmode === "desktop") {
+        if (screenMode === "desktop") {
             document.getElementById("myProgress").textContent = coinHealth + "%";
         }
         else {
@@ -158,18 +183,24 @@ function checkItemsAffordable() {
 function changeDayNight() {
     removeInvisibleObjects();
     if (colorMode === "day") {
-        document.getElementById('style').setAttribute('href', 'css/nightmode_mobile.css');
-        if (window.location.href.indexOf("mobile") === -1) {
+        if (screenMode === "desktop") {
             document.getElementById("dayNightSwitch").classList.remove("fa-sun");
             document.getElementById("dayNightSwitch").classList.add("fa-moon");
+            document.getElementById('style').setAttribute('href', 'css/nightmode.css');
+        }
+        else {
+            document.getElementById('style').setAttribute('href', 'css/nightmode_mobile.css');
         }
         colorMode = "night";
     }
     else {
-        document.getElementById('style').setAttribute('href', 'css/day_mobile.css');
-        if (window.location.href.indexOf("mobile") === -1) {
+        if (screenMode === "desktop") {
+            document.getElementById('style').setAttribute('href', 'css/day.css');
             document.getElementById("dayNightSwitch").classList.remove("fa-moon");
             document.getElementById("dayNightSwitch").classList.add("fa-sun");
+        }
+        else {
+            document.getElementById('style').setAttribute('href', 'css/day_mobile.css');
         }
         colorMode = "day";
     }
@@ -177,32 +208,33 @@ function changeDayNight() {
 
 function changeVolume() {
     var audioPlayers = document.getElementsByClassName("audioSource");
-    if (audioPlayers[0].muted === true) {
+    if (volume === true) {
         for (var i = 0; i < audioPlayers.length; i++) {
             audioPlayers[i].muted = true;
         }
-        if (screenmode === "desktop") {
+        if (screenMode === "desktop") {
             document.getElementById("volumes").classList.remove("fa-volume-up");
             document.getElementById("volumes").classList.add("fa-volume-off");
         }
+        volume = false;
     }
     else {
         for (var i = 0; i < audioPlayers.length; i++) {
             audioPlayers[i].muted = false;
         }
-        if (screenmode === "desktop") {
+        if (screenMode === "desktop") {
             document.getElementById("volumes").classList.remove("fa-volume-off");
             document.getElementById("volumes").classList.add("fa-volume-up");
         }
+        volume = true;
     }
 }
 
 function removeInvisibleObjects() {
     var items = document.getElementsByClassName("flyingNumber");
-    var body = document.body;
     for (var i = 0; i < items.length; i++) {
         if (parseInt(new Date().getTime()) > (parseInt(items[i].name + 2000))) {
-            body.removeChild(items[i]);
+            document.body.removeChild(items[i]);
         }
     }
 }
@@ -317,11 +349,10 @@ function loadJsonItemsToShop() {
         newUpgrade.onclick = function (e) {
             buyItem(e.currentTarget.id);
         };
-        if(screenmode==="desktop") {
+        if (screenMode === "desktop") {
             targets[1].appendChild(newUpgrade);
         }
-        else
-        {
+        else {
             targets[0].appendChild(newUpgrade);
         }
     }
@@ -346,11 +377,10 @@ function loadJsonItemsToShop() {
         newOverclock.onclick = function (e) {
             buyItem(e.currentTarget.id);
         };
-        if(screenmode==="desktop") {
+        if (screenMode === "desktop") {
             targets[2].appendChild(newOverclock);
         }
-        else
-        {
+        else {
             targets[0].appendChild(newOverclock);
         }
     }
@@ -434,8 +464,9 @@ function getItemInShop(nameItem) {
 
 function setupNewClickCoin() {
     coinHealth = 100;
-    if (screenmode === "desktop") {
-        document.getElementById("myProgess").textContent = "100%";
+    if (screenMode === "desktop") {
+        var elm = document.getElementById("myProgress");
+        elm.textContent = "100%";
     }
     else {
         document.getElementById("myBar").style.width = "100%";
@@ -447,8 +478,15 @@ function setupNewClickCoin() {
         buildItemGetWindow();
         document.body.removeChild(this);
     };
-    drop.style.top = Math.floor((Math.random() * 600) + 1) + "px";
-    drop.style.left = Math.floor((Math.random() * 600) + 1) + "px";
+    if(screenMode==="desktop") {
+        drop.style.top = Math.floor((Math.random() * 600) + 1) + "px";
+        drop.style.left = Math.floor((Math.random() * 600) + 1) + "px";
+    }
+    else
+    {
+        drop.style.top = "35%";
+        drop.style.left = "20%";
+    }
     drop.style.cursor = "pointer";
     drop.style.width = 64 + "px";
     drop.style.height = 64 + "px";
@@ -458,7 +496,7 @@ function setupNewClickCoin() {
     audio.src = "sounds/drop.mp3";
     audio.loop = true;
     audio.play();
-    if (document.getElementById("volumes").classList.contains("fa-volume-off")) {
+    if (volume === false) {
         audio.muted = true;
     }
     drop.appendChild(audio);
@@ -467,18 +505,35 @@ function setupNewClickCoin() {
 
 function buildItemGetWindow() {
     var lootScreen = document.createElement("div");
-    lootScreen.style.width = "30%";
-    lootScreen.style.height = "30%";
-    lootScreen.style.top = "35%";
-    lootScreen.style.left = "30%";
+    if (screenMode === "desktop")
+    {
+        lootScreen.style.width = "30%";
+        lootScreen.style.height = "30%";
+        lootScreen.style.top = "35%";
+        lootScreen.style.left = "30%";
+    }
+    else
+    {
+        lootScreen.style.width = "80%";
+        lootScreen.style.height = "30%";
+        lootScreen.style.top = "20%";
+        lootScreen.style.left = "10%";
+    }
     lootScreen.style.position = "absolute";
     lootScreen.style.border = "2px solid black";
     lootScreen.classList.add("lootScreen");
     var loot = Math.floor((Math.random() * 100) + 1);
     var lootText = document.createElement("P");
     lootText.textContent = "ByteCoins x" + loot;
-    lootText.style.top = "50%";
-    lootText.style.left = "40%";
+    if(screenMode==="desktop") {
+        lootText.style.top = "40%";
+        lootText.style.left = "30%";
+    }
+    else
+    {
+        lootText.style.top = "50%";
+        lootText.style.left = "30%";
+    }
     lootText.style.position = "absolute";
     lootScreen.appendChild(lootText);
     var header = document.createElement("P");
@@ -488,11 +543,20 @@ function buildItemGetWindow() {
     header.style.position = "absolute";
     lootScreen.appendChild(header);
     var lootButton = document.createElement("BUTTON");
-    lootButton.style.top = "80%";
-    lootButton.style.right = "45%";
     lootButton.style.position = "absolute";
-    lootButton.style.width = "10%";
-    lootButton.style.height = "10%";
+    if(screenMode==="desktop") {
+        lootButton.style.top = "80%";
+        lootButton.style.right = "45%";
+        lootButton.style.width = "10%";
+        lootButton.style.height = "10%";
+    }
+    else
+    {
+        lootButton.style.top = "65%";
+        lootButton.style.right = "40%";
+        lootButton.style.width = "30%";
+        lootButton.style.height = "30%";
+    }
     lootButton.textContent = "Loot";
     lootButton.onclick = function () {
         addCoins(loot);
@@ -537,25 +601,27 @@ function createToolTip(object) {
     document.body.appendChild(toolTip);
 }
 
-function getItemAsObject(name) {
-    for (var i = 0; i < upgrades.length; i++) {
-        for (var y = 0; y < upgrades[i].length; y++) {
-            if (upgrades[i][y].getName() === name) {
-                return upgrades[i][y];
-            }
-        }
-    }
-}
-
 function mobile() {
     window.location.replace("index_mobile.html");
 }
 
 function detectMobile() {
-    if (screenmode==="desktop") {
+    if (screenMode === "desktop") {
         var width = screen.width;
         if (width < 700) {
             document.getElementById("mobileMessage").classList.remove("invisible");
         }
     }
+}
+function closeMobileMessage(){
+    document.getElementById("mobileMessage").classList.add("invisible");
+}
+
+function saveGame() {
+    // localStorage.setItem("CssMode",colorMode);
+    // localStorage.setItem("Volume",volume);
+    // localStorage.setItem("Coins",amountCoins);
+    // localStorage.setItem("CoinHealth",coinHealth);
+    // localStorage.setItem("CPS",coinsPerSecond);
+    // localStorage.setItem("CPC",coinsPerClick);
 }

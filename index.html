@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>ByteCoin Clicker</title>
     <link rel="icon" type="image/png" href="images/favicon.png">
-    <link rel="stylesheet" id="style" type="text/css" href="css/day.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" id="style" type="text/css" href="css/day.css">
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
     <!--Austauschen durch lokale Version-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -22,12 +22,11 @@
     <a href="https://bytecoin.org"><img id="logo" src="images/favicon.png"></a>
     <div id="dayMusic">
         <p id="volume" title="Stumm/Laut" onclick="changeVolume()"><i id="volumes" class="fas fa-volume-up"></i></p>
-        <p id="dayNight" title="Nachtmodus/Tagmodus" onclick="changeDayNight()"><i id="dayNightSwitch"
-                                                                                   class="fas fa-sun"></i></p>
+        <p id="dayNight" title="Nachtmodus/Tagmodus" onclick="changeDayNight()"><i id="dayNightSwitch"class="fas fa-sun"></i></p>
     </div>
     <nav id="leftNav">
         <ul>
-            <li id="amount" onclick="addCoins(1000000)">ByteCoins: 0</li>
+            <li id="amount">ByteCoins: 0</li>
             <li id="amountSecond">Coins Per Second: 0</li>
             <li id="coinsPerClick">Coins Per Click: 1</li>
         </ul>
@@ -107,6 +106,7 @@
     </table>
 </div>
 <div id="mobileMessage" class="invisible">
+    <p id="closeMobileMessage" onclick="closeMobileMessage()">X</p>
     <p id="mobilMessageText">Es wurde erkannt dass du mit einem mobilen Endgerät unterwegs bist! <br> Wechseln auf die mobile Ansicht ?</p>
     <button id="mobileSwitch" onclick="mobile()">Wechseln</button>
 </div>

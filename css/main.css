@@ -94,6 +94,7 @@ nav {
     margin-right: 2%;
     padding-top: 0.1%;
     padding-bottom: 0.1%;
+    color:white;
 }
 
 .flyingNumber {
@@ -258,39 +259,58 @@ nav {
         opacity: 0;
     }
 }
-#helpTable{
-    border:none;
-    top:20%;
-    left:25%;
+
+#helpTable {
+    border: none;
+    top: 20%;
+    left: 25%;
     position: absolute;
 }
-#showPic{
+
+#showPic {
     width: 20%;
     height: 20%;
 }
-.setting{
+
+.setting {
     display: block;
 }
-#mobileMessage{
-    width:80%;
+
+#mobileMessage {
+    width: 80%;
     height: 20%;
-    top:45%;
-    left:10%;
+    top: 45%;
+    left: 10%;
     position: absolute;
     background-color: red;
-    color:white;
+    color: white;
     font-size: 200%;
 }
-#mobilMessageText{
-    top:20%;
-    left:5%;
+
+#mobilMessageText {
+    top: 20%;
+    left: 5%;
     position: absolute;
 }
-#mobileSwitch{
-    top:70%;
-    left:50%;
+
+#mobileSwitch {
+    top: 70%;
+    left: 50%;
     position: absolute;
     width: 20%;
     height: 20%;
     font-weight: bolder;
+}
+#myProgress{
+    margin-left:50%;
+    margin-top:5%;
+}
+#closeMobileMessage{
+    position: absolute;
+    top:3%;
+    left:95%;
+    font-weight: bold;
+    color:white;
+    cursor: pointer;
+    font-size: 105%;
 }
