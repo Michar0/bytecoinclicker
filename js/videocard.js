@@ -1,12 +1,12 @@
 class Videocard{
-    constructor(name,price,priceRaise,effectTarget,effectOperand) {
+    constructor(name,price,priceRaise,effectTarget,effectOperand,level) {
         this.name = name;
         this.price = price;
         this.priceRaise = priceRaise;
         this.effectTarget = effectTarget;
         this.effectOperand = effectOperand;
-        this.coinsPerSecond = 0;
-        this.level=0;
+        this.coinsPerSecond = level*effectOperand;
+        this.level=level;
         this.overclocked=false;
     }
     getName(){
@@ -14,6 +14,10 @@ class Videocard{
     }
     getPrice(){
         return this.price;
+    }
+    getLevel()
+    {
+        return this.level;
     }
     getEffectTarget(){
         return this.effectTarget;
@@ -23,6 +27,9 @@ class Videocard{
     }
     getCoinsPerSecond(){
         return this.coinsPerSecond;
+    }
+    getOverclock(){
+        return this.overclocked;
     }
     addCoinsPerSecond(add){
         this.coinsPerSecond+=add;
@@ -41,6 +48,6 @@ class Videocard{
     }
     toString()
     {
-        return this.name+" x"+this.level+" \n "+this.price+" \u20BF";
+        return this.name+" x"+this.level+" \n "+this.price+" \u0E3F";
     }
 }

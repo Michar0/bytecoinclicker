@@ -20,39 +20,40 @@ $(document).ready(function () {
         detectMobile();
     }
     loadJsonItemsToShop();
+    detectBrowser();
     createStats();
+    setInterval(clickAutomatic, 1000);
+    document.addEventListener('mousemove', getMousePosition);
 });
 window.onbeforeunload = function (e) {
     saveGame();
 };
-document.addEventListener('mousemove', getMousePosition);
-setInterval(clickAutomatic, 1000);
 
 function loadCache() {
-    // if(localStorage.getItem("CssMode")==="night")
-    // {
-    //     changeDayNight();
-    // }
-    // if(localStorage.getItem("Volume")==="false") {
-    //     changeVolume();
-    // }
-    // if(screenMode==="desktop")
-    // {
-    //     var text = document.getElementById("myProgress");
-    //     text.textContent = localStorage.getItem("CoinHealth") + "%";
-    // }
-    // else
-    // {
-    //     var bar = document.getElementById("myBar");
-    //     bar.style.width = localStorage.getItem("CoinHealth") + "%";
-    // }
-    // amountCoins=parseFloat(localStorage.getItem("Coins"));
-    // coinsPerSecond=parseFloat(localStorage.getItem("CPS"));
-    // coinsPerClick=parseFloat(localStorage.getItem("CPC"));
-    //
-    // document.getElementById("amountSecond").innerText = "Coins Per Second: " + coinsPerSecond;
-    // document.getElementById("amount").innerText = "ByteCoins: " + amountCoins;
-    // document.getElementById("coinsPerClick").innerText = "Coins Per Click: " + coinsPerClick;
+    if (localStorage.length > 0) {
+        if (localStorage.getItem("CssMode") === "night") {
+            changeDayNight();
+        }
+        if (localStorage.getItem("Volume") === "false") {
+            changeVolume();
+        }
+        if (screenMode === "desktop") {
+            var text = document.getElementById("myProgress");
+            text.textContent = localStorage.getItem("CoinHealth") + "%";
+        }
+        else {
+            var bar = document.getElementById("myBar");
+            bar.style.width = localStorage.getItem("CoinHealth") + "%";
+        }
+        coinHealth = localStorage.getItem("CoinHealth");
+        amountCoins = parseFloat(localStorage.getItem("Coins"));
+        coinsPerSecond = parseFloat(localStorage.getItem("CPS"));
+        coinsPerClick = parseFloat(localStorage.getItem("CPC"));
+
+        document.getElementById("amountSecond").innerText = "Coins Per Second: " + coinsPerSecond;
+        document.getElementById("amount").innerText = "ByteCoins: " + amountCoins;
+        document.getElementById("coinsPerClick").innerText = "Coins Per Click: " + coinsPerClick;
+    }
 }
 
 function clickCoin() {
@@ -258,21 +259,58 @@ function loadJsonItemsToShop() {
     upgrades[upgrades.length] = [];
     $.getJSON('https://api.myjson.com/bins/1bgsyl', function (data) { //Austauschen durch ein lokale json datei und anderem Algorithmus wegen Chrome
         console.log(data);
+        if(localStorage.length>0) {
+            var videoLevel = localStorage.getItem("VideoCard").split(";");
+        }
         for (var i = 0; i < data.length; i++) {
-            upgrades[0][i] = new Videocard(data[i].name, data[i].price, data[i].costincrease, data[i].targetproperty, data[i].targetincrease);
+            if (localStorage.length > 0) {
+                var videoTiles = videoLevel[i].split("_");
+                upgrades[0][i] = new Videocard(data[i].name, data[i].price, data[i].costincrease, data[i].targetproperty, data[i].targetincrease, parseFloat(videoTiles[1]));
+                if(videoTiles[2]==="true")
+                {
+                    upgrades[0][i].overclock();
+                }
+            }
+            else {
+                upgrades[0][i] = new Videocard(data[i].name, data[i].price, data[i].costincrease, data[i].targetproperty, data[i].targetincrease, 0);
+            }
         }
     });
     upgrades[upgrades.length] = [];
+    var upgradeTiles;
+    if (localStorage.length > 0) {
+        upgradeTiles = localStorage.getItem("Upgrades").split(";");
+    }
+    var found = false;
+    var z = 0;
     $.getJSON('https://api.myjson.com/bins/1cptbx', function (data) { //Austauschen durch ein lokale json datei und anderem Algorithmus wegen Chrome
         for (var i = 0; i < data.length; i++) {
-            upgrades[1][i] = new Upgrade(data[i].name, data[i].price, data[i].targetproperty, data[i].targetmultiplier);
+            if(upgradeTiles!=null&&upgradeTiles!=="") {
+                do {
+                    if (data[i].name === upgradeTiles[z]) {
+                        found = true;
+                        upgradeTiles.splice(z,1);
+                        z = -1;
+                    }
+                    z++;
+                } while (!found && z < upgradeTiles.length);
+                if (found) {
+                    upgrades[1][i] = new Upgrade(data[i].name, data[i].price, data[i].targetproperty, data[i].targetmultiplier);
+                }
+            }
+            else{
+                upgrades[1][i] = new Upgrade(data[i].name, data[i].price, data[i].targetproperty, data[i].targetmultiplier);
+            }
         }
     });
     upgrades[upgrades.length] = [];
     $.getJSON('https://api.myjson.com/bins/9pawz', function (data) { //Austauschen durch ein lokale json datei und anderem Algorithmus wegen Chrome
         for (var i = 0; i < data.length; i++) {
-            upgrades[2][i] = new Overclock(data[i].name, data[i].price, data[i].targetCard);
+            if(!upgrades[0][i].getOverclock()) {
+                upgrades[2][i] = new Overclock(data[i].name, data[i].price, data[i].targetCard);
+            }
         }
+        upgrades[2]=cleanArray(upgrades[2]);
     });
     $.ajaxSetup({
         async: true
@@ -317,7 +355,9 @@ function loadJsonItemsToShop() {
             document.getElementById(e.currentTarget.id + "T").classList.add("invisible");
         };
         targets[0].appendChild(newCard);
-        createToolTip(upgrades[0][i]);
+        if(screenMode==="desktop") {
+            createToolTip(upgrades[0][i]);
+        }
     }
 
     for (var i = 0; i < upgrades[1].length; i++) {
@@ -410,8 +450,17 @@ function updateStats() {
 
 function createStats() {
     var stat = document.getElementsByClassName("stat");
+    if (localStorage.length > 0) {
+        var statsString = localStorage.getItem("Statistics").split(";");
+    }
     for (var i = 0; i < stat.length; i++) {
-        stats[stat[i].title] = 0;
+        if (localStorage.length > 0) {
+            var statsTiles = statsString[i].split("_");
+            stats[statsTiles[0]] = parseFloat(statsTiles[1]);
+        }
+        else {
+            stats[stat[i].title] = 0;
+        }
     }
     setInterval(updateStats, 3000);
 }
@@ -422,7 +471,7 @@ function decimalRound(number, precision) {
 }
 
 function addCoins(number) {
-    amountCoins += number;
+    amountCoins += parseInt(number);
 }
 
 function togglePage(name) {
@@ -462,6 +511,17 @@ function getItemInShop(nameItem) {
     }
 }
 
+function getItemByName(nameItem) {
+    for (var i = 0; i < upgrades.length; i++) {
+        for (var z = 0; z < upgrades[i].length; z++) {
+            if(upgrades[i][z].getName()===nameItem)
+            {
+                return upgrades[i][z];
+            }
+        }
+    }
+}
+
 function setupNewClickCoin() {
     coinHealth = 100;
     if (screenMode === "desktop") {
@@ -478,12 +538,11 @@ function setupNewClickCoin() {
         buildItemGetWindow();
         document.body.removeChild(this);
     };
-    if(screenMode==="desktop") {
+    if (screenMode === "desktop") {
         drop.style.top = Math.floor((Math.random() * 600) + 1) + "px";
         drop.style.left = Math.floor((Math.random() * 600) + 1) + "px";
     }
-    else
-    {
+    else {
         drop.style.top = "35%";
         drop.style.left = "20%";
     }
@@ -505,15 +564,13 @@ function setupNewClickCoin() {
 
 function buildItemGetWindow() {
     var lootScreen = document.createElement("div");
-    if (screenMode === "desktop")
-    {
+    if (screenMode === "desktop") {
         lootScreen.style.width = "30%";
         lootScreen.style.height = "30%";
         lootScreen.style.top = "35%";
         lootScreen.style.left = "30%";
     }
-    else
-    {
+    else {
         lootScreen.style.width = "80%";
         lootScreen.style.height = "30%";
         lootScreen.style.top = "20%";
@@ -525,12 +582,11 @@ function buildItemGetWindow() {
     var loot = Math.floor((Math.random() * 100) + 1);
     var lootText = document.createElement("P");
     lootText.textContent = "ByteCoins x" + loot;
-    if(screenMode==="desktop") {
+    if (screenMode === "desktop") {
         lootText.style.top = "40%";
         lootText.style.left = "30%";
     }
-    else
-    {
+    else {
         lootText.style.top = "50%";
         lootText.style.left = "30%";
     }
@@ -544,14 +600,13 @@ function buildItemGetWindow() {
     lootScreen.appendChild(header);
     var lootButton = document.createElement("BUTTON");
     lootButton.style.position = "absolute";
-    if(screenMode==="desktop") {
+    if (screenMode === "desktop") {
         lootButton.style.top = "80%";
         lootButton.style.right = "45%";
         lootButton.style.width = "10%";
         lootButton.style.height = "10%";
     }
-    else
-    {
+    else {
         lootButton.style.top = "65%";
         lootButton.style.right = "40%";
         lootButton.style.width = "30%";
@@ -613,15 +668,61 @@ function detectMobile() {
         }
     }
 }
-function closeMobileMessage(){
+
+function closeMobileMessage() {
     document.getElementById("mobileMessage").classList.add("invisible");
 }
 
+function closeMicrosoftMessage() {
+    document.getElementById("microsoftMessage").classList.add("invisible");
+}
+
+function detectBrowser() {
+    var userAgent = navigator.userAgent.split(" ");
+    var browser = userAgent[userAgent.length - 1].split("/");
+    if (browser[0] === "Edge" || userAgent[userAgent.length - 1] === "Gecko") {
+        document.getElementById("microsoftMessage").classList.remove("invisible");
+        document.getElementById()
+    }
+}
+
 function saveGame() {
-    // localStorage.setItem("CssMode",colorMode);
-    // localStorage.setItem("Volume",volume);
-    // localStorage.setItem("Coins",amountCoins);
-    // localStorage.setItem("CoinHealth",coinHealth);
-    // localStorage.setItem("CPS",coinsPerSecond);
-    // localStorage.setItem("CPC",coinsPerClick);
+    localStorage.clear();
+    localStorage.setItem("CssMode", colorMode);
+    localStorage.setItem("Volume", volume);
+    localStorage.setItem("Coins", amountCoins);
+    localStorage.setItem("CoinHealth", coinHealth);
+    localStorage.setItem("CPS", coinsPerSecond);
+    localStorage.setItem("CPC", coinsPerClick);
+    var statisticsString = "";
+    var stat = document.getElementsByClassName("stat");
+    for (var i = 0; i < stat.length; i++) {
+        statisticsString += (stat[i].title + "_" + stats[stat[i].title] + ";");
+    }
+    localStorage.setItem("Statistics", statisticsString);
+    var videoLevels = "";
+    for (var i = 0; i < upgrades[0].length; i++) {
+        videoLevels += upgrades[0][i].getName() + "_" + upgrades[0][i].getLevel() + "_" + upgrades[0][i].getOverclock() + ";";
+    }
+    localStorage.setItem("VideoCard", videoLevels);
+    var upgradesString = "";
+    for (var i = 0; i < upgrades[1].length; i++) {
+        upgradesString += upgrades[1][i].getName() + ";";
+    }
+    localStorage.setItem("Upgrades", upgradesString);
+}
+
+function resetGame() {
+    localStorage.clear();
+}
+function cleanArray(array){
+    var arrayNew=[];
+    for(var i=0;i<array.length;i++)
+    {
+        if(array[i])
+        {
+            arrayNew.push(array[i]);
+        }
+    }
+    return arrayNew;
 }

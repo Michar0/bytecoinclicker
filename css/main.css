@@ -314,3 +314,30 @@ nav {
     cursor: pointer;
     font-size: 105%;
 }
+
+#microsoftMessage {
+    width: 85%;
+    height: 35%;
+    top: 30%;
+    left: 5%;
+    position: absolute;
+    background-color: red;
+    color: white;
+    font-size: 200%;
+}
+
+#microsoftMessageText {
+    top: 30%;
+    left: 5%;
+    position: absolute;
+}
+
+#closeMicrosoftMessage{
+    position: absolute;
+    top:3%;
+    left:95%;
+    font-weight: bold;
+    color:white;
+    cursor: pointer;
+    font-size: 105%;
+}

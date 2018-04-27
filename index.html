@@ -74,6 +74,7 @@
         <li class="setting" onclick="showCoinHealth()">Show Coinhealth</li>
         <li class="setting" onclick="changeVolume()">Mute Sound</li>
         <li class="setting" onclick="changeDayNight()">Dark/Daymode</li>
+        <li class="setting" onclick="resetGame()">Reset Game</li>
     </ul>
 </div>
 <div id="aboutPage" class="invisible page">
@@ -109,6 +110,10 @@
     <p id="closeMobileMessage" onclick="closeMobileMessage()">X</p>
     <p id="mobilMessageText">Es wurde erkannt dass du mit einem mobilen Endgerät unterwegs bist! <br> Wechseln auf die mobile Ansicht ?</p>
     <button id="mobileSwitch" onclick="mobile()">Wechseln</button>
+</div>
+<div id="microsoftMessage" class="invisible">
+    <p id="closeMicrosoftMessage" onclick="closeMicrosoftMessage()">X</p>
+    <p id="microsoftMessageText">Es wurde erkannt dass du mit dem Internet Explorer/Microsoft Edge unterwegs bist!<br> Aus einem unbekannten Grund funktioniert auf diesen Browsern diese Website nicht richtig.</p>
 </div>
 <audio class="audioSource" id="audioplayer"></audio>
 <footer id="bottomBar">
