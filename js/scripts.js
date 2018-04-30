@@ -10,6 +10,7 @@ var coinHealth = 100;
 var colorMode = "day";
 var screenMode = "desktop";
 var volume = true;
+var reset = false;
 
 
 $(document).ready(function () {
@@ -682,7 +683,6 @@ function detectBrowser() {
     var browser = userAgent[userAgent.length - 1].split("/");
     if (browser[0] === "Edge" || userAgent[userAgent.length - 1] === "Gecko") {
         document.getElementById("microsoftMessage").classList.remove("invisible");
-        document.getElementById()
     }
 }
 
@@ -710,10 +710,15 @@ function saveGame() {
         upgradesString += upgrades[1][i].getName() + ";";
     }
     localStorage.setItem("Upgrades", upgradesString);
+    if(reset)
+    {
+        localStorage.clear();
+    }
 }
 
 function resetGame() {
-    localStorage.clear();
+    reset=true;
+    location.reload();
 }
 function cleanArray(array){
     var arrayNew=[];
