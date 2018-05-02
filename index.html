@@ -45,13 +45,20 @@
         <li class="stat" title="coinsClicks">Coinclicks: 0</li>
         <li class="stat" title="time">Playing for 0</li>
         <li class="stat" title="boughtVideocards">Bought Videocards: 0</li>
+        <li class="stat" title="soldVideocards">Sold Videocards: 0</li>
         <li class="stat" title="boughtUpgrades">Bought Upgrades: 0</li>
+        <li class="stat" title="soldUpgrades">Sold Upgrades: 0</li>
         <li class="stat" title="overclockVideocards">Overclocked Videocards: 0</li>
+        <li class="stat" title="underclockVideocards">Underclocked Videocards: 0</li>
         <li class="stat" title="lootedDrops">Looted Drops: 0</li>
     </ul>
 </div>
 <div id="shopPage" class="invisible page">
     <h1 class="pageHeader">Shop</h1>
+    <ul id="buyModes">
+        <li id="buy" class="buyMode" onclick="changeShopMode('buy')">Buy</li>
+        <li id="sell" onclick="changeShopMode('sell')">Sell</li>
+    </ul>
     <div class="shop" id="videocardsShop">
         <p class="shopHeaders">GPU</p>
         <ul class="shopContent" id="videocardsShopContent">
@@ -118,8 +125,8 @@
 <audio class="audioSource" id="audioplayer"></audio>
 <footer id="bottomBar">
     <ul id="pagesList">
-        <li id="statsShow" onclick="togglePage('statsPage')">Statistics</li>
         <li onclick="togglePage('shopPage')">Shop</li>
+        <li id="statsShow" onclick="togglePage('statsPage')">Statistics</li>
         <li onclick="togglePage('settingsPage')">Settings</li>
         <li onclick="togglePage('aboutPage')">About</li>
     </ul>

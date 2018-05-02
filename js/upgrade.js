@@ -20,6 +20,6 @@ class Upgrade{
     }
     toString()
     {
-        return this.name+" "+this.price+" \u20BF";
+        return this.name+" "+this.price+" \u0E3F";
     }
 }

@@ -49,6 +49,13 @@
     "targetincrease": 250
   },
   {
+    "name": "Radeon RX Vega 56",
+    "price": 1000000,
+    "costincrease": 1.6,
+    "targetproperty": "coinsPerSecond",
+    "targetincrease": 500
+  },
+  {
     "name": "GTX Titan V",
     "price": 1500000,
     "costincrease": 1.6,

@@ -42,13 +42,20 @@
         <li class="stat" title="coinsClicks">Coinclicks: 0</li>
         <li class="stat" title="time">Playing for 0</li>
         <li class="stat" title="boughtVideocards">Bought Videocards: 0</li>
+        <li class="stat" title="soldVideocards">Sold Videocards: 0</li>
         <li class="stat" title="boughtUpgrades">Bought Upgrades: 0</li>
+        <li class="stat" title="soldUpgrades">Sold Upgrades: 0</li>
         <li class="stat" title="overclockVideocards">Overclocked Videocards: 0</li>
+        <li class="stat" title="underclockVideocards">Underclocked Videocards: 0</li>
         <li class="stat" title="lootedDrops">Looted Drops: 0</li>
     </ul>
 </div>
 <div id="shopPage" class="invisible page">
     <h1 class="pageHeader">Shop</h1>
+    <ul id="buyModes">
+        <li id="buy" class="buyMode" onclick="changeShopMode('buy')">Buy</li>
+        <li id="sell" onclick="changeShopMode('sell')">Sell</li>
+    </ul>
     <div class="shop">
         <ul class="shopContent">
         </ul>
@@ -60,6 +67,7 @@
         <li class="setting" onclick="showCoinHealth()">Show Coinhealth</li>
         <li class="setting" onclick="changeVolume()">Mute Sound</li>
         <li class="setting" onclick="changeDayNight()">Dark/Daymode</li>
+        <li class="setting" onclick="resetGame()">Reset Game</li>
     </ul>
 </div>
 <div id="aboutPage" class="invisible page">

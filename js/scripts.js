@@ -10,6 +10,7 @@ var coinHealth = 100;
 var colorMode = "day";
 var screenMode = "desktop";
 var volume = true;
+var shopMode = "buy";
 var reset = false;
 
 
@@ -26,12 +27,13 @@ $(document).ready(function () {
     setInterval(clickAutomatic, 1000);
     document.addEventListener('mousemove', getMousePosition);
 });
-window.onbeforeunload = function (e) {
+window.onbeforeunload = function () {
     saveGame();
 };
 
 function loadCache() {
     if (localStorage.length > 0) {
+        screenMode=localStorage.getItem("screenMode");
         if (localStorage.getItem("CssMode") === "night") {
             changeDayNight();
         }
@@ -102,6 +104,8 @@ function buyItem(itemName) {
                         coinsPerSecond = decimalRound(coinsPerSecond, 2);
                         upgrades[i][y].addCoinsPerSecond(upgrades[i][y].getEffectOperand());
                         var item = getItemInShop(upgrades[i][y].getName());
+                        item.classList.add("bought");
+                        item.classList.add("videocard");
                         var textObject = item.children[0].children[1];
                         textObject.textContent = upgrades[i][y].toString();
                         stats["boughtVideocards"]++;
@@ -117,8 +121,7 @@ function buyItem(itemName) {
                                 break;
                         }
                         var item = getItemInShop(upgrades[i][y].getName());
-                        item.parentElement.removeChild(item);
-                        upgrades[i].splice(y, 1);
+                        item.classList.add("bought");
                         stats["boughtUpgrades"]++;
                         break;
                     case "Overclock":
@@ -130,9 +133,69 @@ function buyItem(itemName) {
                             }
                         }
                         var item = getItemInShop(upgrades[i][y].getName());
-                        item.parentElement.removeChild(item);
+                        item.classList.add("bought");
                         stats["overclockVideocards"]++;
-                        upgrades[i].splice(y, 1);
+                        break;
+                }
+                playSound("sounds/buySound.mp3");
+            }
+        }
+    }
+    document.getElementById("amountSecond").innerText = "Coins Per Second: " + coinsPerSecond;
+    document.getElementById("amount").innerText = "ByteCoins: " + amountCoins;
+    document.getElementById("coinsPerClick").innerText = "Coins Per Click: " + coinsPerClick;
+}
+
+function sellItem(itemName) {
+    for (var i = 0; i < upgrades.length; i++) {
+        for (var y = 0; y < upgrades[i].length; y++) {
+            if (upgrades[i][y].getName() === itemName) {
+                switch (upgrades[i][y].constructor.name) {
+                    case "Videocard":
+                        if (upgrades[i][y].getLevel() > 0) {
+                            amountCoins += decimalRound(upgrades[i][y].getPrice() / upgrades[i][y].getPriceRaise(), 0);
+                            upgrades[i][y].reduceLevel();
+                            coinsPerSecond -= upgrades[i][y].getEffectOperand();
+                            coinsPerSecond = decimalRound(coinsPerSecond, 2);
+                            upgrades[i][y].subCoinsPerSecond(upgrades[i][y].getEffectOperand());
+                            var item = getItemInShop(upgrades[i][y].getName());
+                            var textObject = item.children[0].children[1];
+                            textObject.textContent = upgrades[i][y].toString();
+                            stats["soldVideocards"]++;
+                            if (upgrades[i][y].getLevel() === 0) {
+                                item.classList.remove("bought");
+                                item.style.display="none";
+                            }
+                        }
+                        break;
+                    case "Upgrade":
+
+                        switch (upgrades[i][y].getEffectTarget()) {
+                            case "coinsPerClick":
+                                coinsPerClick *= upgrades[i][y].getMultiplier();
+                                break;
+                            case "coinsPerSecond":
+                                coinsPerSecond *= upgrades[i][y].getMultiplier();
+                                coinsPerSecond = decimalRound(coinsPerSecond, 2);
+                                break;
+                        }
+                        var item = getItemInShop(upgrades[i][y].getName());
+                        item.classList.remove("bought");
+                        item.style.display="none";
+                        stats["soldUpgrades"]++;
+                        break;
+                    case "Overclock":
+                        for (var z = 0; z < upgrades[0].length; z++) {
+                            if (upgrades[0][z].getName() === upgrades[i][y].getEffectTarget()) {
+                                coinsPerSecond -= upgrades[0][z].getCoinsPerSecond();
+                                upgrades[0][z].underclock();
+                                coinsPerSecond += upgrades[0][z].getCoinsPerSecond();
+                            }
+                        }
+                        var item = getItemInShop(upgrades[i][y].getName());
+                        item.classList.remove("bought");
+                        item.style.display="none";
+                        stats["underclockVideocards"]++;
                         break;
                 }
                 playSound("sounds/buySound.mp3");
@@ -163,7 +226,7 @@ function clickAutomatic() {
     }
     document.getElementById("amount").innerText = "ByteCoins: " + amountCoins;
     checkItemsAffordable();
-    removeInvisibleObjects();
+    removeUsedObjects();
 }
 
 function checkItemsAffordable() {
@@ -183,7 +246,7 @@ function checkItemsAffordable() {
 }
 
 function changeDayNight() {
-    removeInvisibleObjects();
+    removeUsedObjects();
     if (colorMode === "day") {
         if (screenMode === "desktop") {
             document.getElementById("dayNightSwitch").classList.remove("fa-sun");
@@ -232,20 +295,32 @@ function changeVolume() {
     }
 }
 
-function removeInvisibleObjects() {
+function removeUsedObjects() {
     var items = document.getElementsByClassName("flyingNumber");
     for (var i = 0; i < items.length; i++) {
         if (parseInt(new Date().getTime()) > (parseInt(items[i].name + 2000))) {
             document.body.removeChild(items[i]);
         }
     }
+    items = document.getElementsByClassName("audioSource");
+    for (var i = 0; i < items.length; i++) {
+        if (parseInt(new Date().getTime()) > parseInt(items[i].id) + 7000 && items[i].paused) {
+            document.body.removeChild(items[i]);
+        }
+    }
 }
 
 function playSound(url) {
-    var audio = document.getElementById("audioplayer");
+    var audio = document.createElement("AUDIO");
+    audio.id = new Date().getTime();
+    audio.classList.add("audioSource");
     audio.src = url;
-    audio.autoplay = true;
+    audio.loop = true;
     audio.play();
+    if (volume === false) {
+        audio.muted = true;
+    }
+    document.body.appendChild(audio);
 }
 
 function getMousePosition(event) {
@@ -258,17 +333,16 @@ function loadJsonItemsToShop() {
         async: false
     });
     upgrades[upgrades.length] = [];
-    $.getJSON('https://api.myjson.com/bins/1bgsyl', function (data) { //Austauschen durch ein lokale json datei und anderem Algorithmus wegen Chrome
+    $.getJSON('https://api.myjson.com/bins/z459e', function (data) { //Austauschen durch ein lokale json datei und anderem Algorithmus wegen Chrome
         console.log(data);
-        if(localStorage.length>0) {
+        if (localStorage.length > 0) {
             var videoLevel = localStorage.getItem("VideoCard").split(";");
         }
         for (var i = 0; i < data.length; i++) {
             if (localStorage.length > 0) {
                 var videoTiles = videoLevel[i].split("_");
                 upgrades[0][i] = new Videocard(data[i].name, data[i].price, data[i].costincrease, data[i].targetproperty, data[i].targetincrease, parseFloat(videoTiles[1]));
-                if(videoTiles[2]==="true")
-                {
+                if (videoTiles[2] === "true") {
                     upgrades[0][i].overclock();
                 }
             }
@@ -286,11 +360,11 @@ function loadJsonItemsToShop() {
     var z = 0;
     $.getJSON('https://api.myjson.com/bins/1cptbx', function (data) { //Austauschen durch ein lokale json datei und anderem Algorithmus wegen Chrome
         for (var i = 0; i < data.length; i++) {
-            if(upgradeTiles!=null&&upgradeTiles!=="") {
+            if (upgradeTiles != null && upgradeTiles !== "") {
                 do {
                     if (data[i].name === upgradeTiles[z]) {
                         found = true;
-                        upgradeTiles.splice(z,1);
+                        upgradeTiles.splice(z, 1);
                         z = -1;
                     }
                     z++;
@@ -299,7 +373,7 @@ function loadJsonItemsToShop() {
                     upgrades[1][i] = new Upgrade(data[i].name, data[i].price, data[i].targetproperty, data[i].targetmultiplier);
                 }
             }
-            else{
+            else {
                 upgrades[1][i] = new Upgrade(data[i].name, data[i].price, data[i].targetproperty, data[i].targetmultiplier);
             }
         }
@@ -307,11 +381,11 @@ function loadJsonItemsToShop() {
     upgrades[upgrades.length] = [];
     $.getJSON('https://api.myjson.com/bins/9pawz', function (data) { //Austauschen durch ein lokale json datei und anderem Algorithmus wegen Chrome
         for (var i = 0; i < data.length; i++) {
-            if(!upgrades[0][i].getOverclock()) {
+            if (!upgrades[0][i].getOverclock()) {
                 upgrades[2][i] = new Overclock(data[i].name, data[i].price, data[i].targetCard);
             }
         }
-        upgrades[2]=cleanArray(upgrades[2]);
+        upgrades[2] = cleanArray(upgrades[2]);
     });
     $.ajaxSetup({
         async: true
@@ -342,23 +416,12 @@ function loadJsonItemsToShop() {
         newCard.appendChild(newDiv);
         newCard.classList.add("notAffordable");
         newCard.classList.add("shopItem");
+        newCard.style.display="block";
         newCard.id = upgrades[0][i].getName();
         newCard.onclick = function (e) {
             buyItem(e.currentTarget.id);
         };
-        newCard.onmouseover = function (e) {
-            document.getElementById(e.currentTarget.id + "T").style.position = "absolute";
-            document.getElementById(e.currentTarget.id + "T").classList.remove("invisible");
-            document.getElementById(e.currentTarget.id + "T").style.top = (cordinates[0] - 50) + "px";
-            document.getElementById(e.currentTarget.id + "T").style.left = (cordinates[1]) + "px";
-        };
-        newCard.onmouseout = function (e) {
-            document.getElementById(e.currentTarget.id + "T").classList.add("invisible");
-        };
         targets[0].appendChild(newCard);
-        if(screenMode==="desktop") {
-            createToolTip(upgrades[0][i]);
-        }
     }
 
     for (var i = 0; i < upgrades[1].length; i++) {
@@ -386,6 +449,7 @@ function loadJsonItemsToShop() {
         newUpgrade.appendChild(newDiv);
         newUpgrade.classList.add("notAffordable");
         newUpgrade.classList.add("shopItem");
+        newUpgrade.style.display="block";
         newUpgrade.id = upgrades[1][i].getName();
         newUpgrade.onclick = function (e) {
             buyItem(e.currentTarget.id);
@@ -414,6 +478,7 @@ function loadJsonItemsToShop() {
         newOverclock.appendChild(newDiv);
         newOverclock.classList.add("notAffordable");
         newOverclock.classList.add("shopItem");
+        newOverclock.style.display="block";
         newOverclock.id = upgrades[2][i].getName();
         newOverclock.onclick = function (e) {
             buyItem(e.currentTarget.id);
@@ -478,25 +543,11 @@ function addCoins(number) {
 function togglePage(name) {
     if (document.getElementById(name).classList.contains("invisible")) {
         document.getElementById(name).classList.remove("invisible");
-        if (name === "statsPage") {
-            document.getElementById("shopPage").classList.add("invisible");
-            document.getElementById("settingsPage").classList.add("invisible");
-            document.getElementById("aboutPage").classList.add("invisible");
-        }
-        else if (name === "shopPage") {
-            document.getElementById("statsPage").classList.add("invisible");
-            document.getElementById("settingsPage").classList.add("invisible");
-            document.getElementById("aboutPage").classList.add("invisible");
-        }
-        else if (name === "settingsPage") {
-            document.getElementById("statsPage").classList.add("invisible");
-            document.getElementById("shopPage").classList.add("invisible");
-            document.getElementById("aboutPage").classList.add("invisible");
-        }
-        else {
-            document.getElementById("statsPage").classList.add("invisible");
-            document.getElementById("settingsPage").classList.add("invisible");
-            document.getElementById("shopPage").classList.add("invisible");
+        var pages = document.getElementsByClassName("page");
+        for (var i = 0; i < pages.length; i++) {
+            if (pages[i].id !== name) {
+                pages[i].classList.add("invisible");
+            }
         }
     }
     else {
@@ -515,8 +566,7 @@ function getItemInShop(nameItem) {
 function getItemByName(nameItem) {
     for (var i = 0; i < upgrades.length; i++) {
         for (var z = 0; z < upgrades[i].length; z++) {
-            if(upgrades[i][z].getName()===nameItem)
-            {
+            if (upgrades[i][z].getName() === nameItem) {
                 return upgrades[i][z];
             }
         }
@@ -632,31 +682,6 @@ function showCoinHealth() {
     }
 }
 
-function createToolTip(object) {
-    var toolTip = document.createElement("DIV");
-    toolTip.id = object.getName() + "T";
-    var toolHeader = document.createElement("P");
-    toolHeader.textContent = object.getName();
-    toolHeader.style.left = "30%";
-    toolHeader.style.top = "1%";
-    toolHeader.style.position = "absolute";
-    toolTip.appendChild(toolHeader);
-    var toolText = document.createElement("P");
-    toolText.textContent = "Erhöht die Coins pro Sekunde um " + object.getEffectOperand();
-    toolText.style.left = "2%";
-    toolText.style.top = "40%";
-    toolText.style.position = "absolute";
-    toolTip.appendChild(toolHeader);
-    toolTip.appendChild(toolText);
-    toolTip.style.width = "15%";
-    toolTip.style.height = "10%";
-    toolTip.style.position = "absolute";
-    toolTip.classList.add("tooltip");
-    toolTip.style.border = "2px solid black";
-    toolTip.classList.add("invisible");
-    document.body.appendChild(toolTip);
-}
-
 function mobile() {
     window.location.replace("index_mobile.html");
 }
@@ -683,11 +708,13 @@ function detectBrowser() {
     var browser = userAgent[userAgent.length - 1].split("/");
     if (browser[0] === "Edge" || userAgent[userAgent.length - 1] === "Gecko") {
         document.getElementById("microsoftMessage").classList.remove("invisible");
+        document.getElementById()
     }
 }
 
 function saveGame() {
     localStorage.clear();
+    localStorage.setItem("screenMode",screenMode);
     localStorage.setItem("CssMode", colorMode);
     localStorage.setItem("Volume", volume);
     localStorage.setItem("Coins", amountCoins);
@@ -710,24 +737,68 @@ function saveGame() {
         upgradesString += upgrades[1][i].getName() + ";";
     }
     localStorage.setItem("Upgrades", upgradesString);
-    if(reset)
-    {
+    if (reset) {
         localStorage.clear();
     }
 }
 
 function resetGame() {
-    reset=true;
+    reset = true;
     location.reload();
 }
-function cleanArray(array){
-    var arrayNew=[];
-    for(var i=0;i<array.length;i++)
-    {
-        if(array[i])
-        {
+
+function cleanArray(array) {
+    var arrayNew = [];
+    for (var i = 0; i < array.length; i++) {
+        if (array[i]) {
             arrayNew.push(array[i]);
         }
     }
     return arrayNew;
+}
+
+function changeShopMode(mode) {
+    if (mode !== shopMode) {
+        if (mode === "buy") {
+            shopMode = "buy";
+            document.getElementById("buy").classList.add("buyMode");
+            document.getElementById("sell").classList.remove("buyMode");
+            var items = document.getElementsByClassName("shopItem");
+            for (var i = 0; i < items.length; i++) {
+                if (items[i].classList.contains("bought")) {
+                    if (!items[i].classList.contains("videocard")) {
+                        items[i].style.display="none";
+                    }
+                    else {
+                        items[i].onclick = function (e) {
+                            buyItem(e.currentTarget.id);
+                        }
+                    }
+                }
+                else {
+                    items[i].style.display="block";
+                    items[i].onclick = function (e) {
+                        buyItem(e.currentTarget.id);
+                    }
+                }
+            }
+        }
+        else {
+            shopMode = "sell";
+            document.getElementById("sell").classList.add("buyMode");
+            document.getElementById("buy").classList.remove("buyMode");
+            var items = document.getElementsByClassName("shopItem");
+            for (var i = 0; i < items.length; i++) {
+                if (items[i].classList.contains("bought")) {
+                    items[i].style.display="block";
+                    items[i].onclick = function (e) {
+                        sellItem(e.currentTarget.id);
+                    }
+                }
+                else {
+                    items[i].style.display="none";
+                }
+            }
+        }
+    }
 }

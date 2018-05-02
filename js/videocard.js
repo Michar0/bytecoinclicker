@@ -15,6 +15,9 @@ class Videocard{
     getPrice(){
         return this.price;
     }
+    getPriceRaise(){
+        return this.priceRaise;
+    }
     getLevel()
     {
         return this.level;
@@ -34,16 +37,31 @@ class Videocard{
     addCoinsPerSecond(add){
         this.coinsPerSecond+=add;
     }
+    subCoinsPerSecond(sub){
+        this.coinsPerSecond-=sub;
+    }
     overclock()
     {
         this.overclocked=true;
         this.coinsPerSecond*=2;
         this.effectOperand*=2;
     }
+    underclock()
+    {
+        this.overclocked=false;
+        this.coinsPerSecond/=2;
+        this.effectOperand/=2;
+    }
     raiseLevel()
     {
         this.level+=1;
         this.price*=this.priceRaise;
+        this.price=decimalRound(this.price,0);
+    }
+    reduceLevel()
+    {
+        this.level-=1;
+        this.price/=this.priceRaise;
         this.price=decimalRound(this.price,0);
     }
     toString()

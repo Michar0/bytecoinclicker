@@ -198,7 +198,6 @@ nav {
 .shopItem {
     border-bottom: 1px solid black;
     margin-right: 0.5%;
-    display: block;
     cursor: pointer;
     width: 100%;
 }
@@ -340,4 +339,20 @@ nav {
     color:white;
     cursor: pointer;
     font-size: 105%;
+}
+#buyModes{
+    position: absolute;
+    top:95%;
+    left:2%;
+    list-style-type:none;
+    cursor: pointer;
+}
+.buyMode{
+    font-weight: bold;
+}
+.bought{
+
+}
+.videocard{
+
 }
