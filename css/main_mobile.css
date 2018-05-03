@@ -173,10 +173,10 @@ nav {
 }
 
 .shop {
-    width: 85%;
+    width: 87%;
     height: 80%;
     border: 1px solid black;
-    margin-left: 8%;
+    margin-left: 6%;
     margin-top: 25%;
     overflow: auto;
 }
@@ -317,4 +317,13 @@ nav {
 }
 .videocard{
 
+}
+div,
+img,
+footer,
+textarea,
+button,
+select,
+a {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
 }

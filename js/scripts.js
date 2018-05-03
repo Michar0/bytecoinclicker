@@ -33,7 +33,6 @@ window.onbeforeunload = function () {
 
 function loadCache() {
     if (localStorage.length > 0) {
-        screenMode=localStorage.getItem("screenMode");
         if (localStorage.getItem("CssMode") === "night") {
             changeDayNight();
         }
@@ -164,7 +163,7 @@ function sellItem(itemName) {
                             stats["soldVideocards"]++;
                             if (upgrades[i][y].getLevel() === 0) {
                                 item.classList.remove("bought");
-                                item.style.display="none";
+                                item.style.display = "none";
                             }
                         }
                         break;
@@ -181,7 +180,7 @@ function sellItem(itemName) {
                         }
                         var item = getItemInShop(upgrades[i][y].getName());
                         item.classList.remove("bought");
-                        item.style.display="none";
+                        item.style.display = "none";
                         stats["soldUpgrades"]++;
                         break;
                     case "Overclock":
@@ -194,7 +193,7 @@ function sellItem(itemName) {
                         }
                         var item = getItemInShop(upgrades[i][y].getName());
                         item.classList.remove("bought");
-                        item.style.display="none";
+                        item.style.display = "none";
                         stats["underclockVideocards"]++;
                         break;
                 }
@@ -230,20 +229,23 @@ function clickAutomatic() {
 }
 
 function checkItemsAffordable() {
-    for (var i = 0; i < upgrades.length; i++) {
-        for (var y = 0; y < upgrades[i].length; y++) {
-            var item = getItemInShop(upgrades[i][y].getName());
-            if (amountCoins >= upgrades[i][y].getPrice()) {
-                item.classList.remove("notAffordable");
-                item.classList.add("affordable");
-            }
-            else if (amountCoins < upgrades[i][y].getPrice()) {
-                item.classList.add("notAffordable");
-                item.classList.remove("affordable");
+    if(shopMode==="buy") {
+        for (var i = 0; i < upgrades.length; i++) {
+            for (var y = 0; y < upgrades[i].length; y++) {
+                var item = getItemInShop(upgrades[i][y].getName());
+                if (amountCoins >= upgrades[i][y].getPrice()) {
+                    item.classList.remove("notAffordable");
+                    item.classList.add("affordable");
+                }
+                else if (amountCoins < upgrades[i][y].getPrice()) {
+                    item.classList.add("notAffordable");
+                    item.classList.remove("affordable");
+                }
             }
         }
     }
 }
+
 
 function changeDayNight() {
     removeUsedObjects();
@@ -405,10 +407,18 @@ function loadJsonItemsToShop() {
         z = 0;
         newImage.src = "images/" + text + ".png";
         text = "";
-        newImage.style.width = "10%";
-        newImage.style.height = "10%";
-        newImage.style.float = "left";
-        newImage.style.marginTop = "2%";
+        if (screenMode === "desktop") {
+            newImage.style.width = "10%";
+            newImage.style.height = "10%";
+            newImage.style.float = "left";
+            newImage.style.marginTop = "1%";
+        }
+        else {
+            newImage.style.width = "8%";
+            newImage.style.height = "8%";
+            newImage.style.float = "left";
+            newImage.style.marginTop = "1%";
+        }
         newDiv.appendChild(newImage);
         var newP = document.createElement("P");
         newP.textContent = upgrades[0][i].toString();
@@ -416,7 +426,7 @@ function loadJsonItemsToShop() {
         newCard.appendChild(newDiv);
         newCard.classList.add("notAffordable");
         newCard.classList.add("shopItem");
-        newCard.style.display="block";
+        newCard.style.display = "block";
         newCard.id = upgrades[0][i].getName();
         newCard.onclick = function (e) {
             buyItem(e.currentTarget.id);
@@ -449,7 +459,7 @@ function loadJsonItemsToShop() {
         newUpgrade.appendChild(newDiv);
         newUpgrade.classList.add("notAffordable");
         newUpgrade.classList.add("shopItem");
-        newUpgrade.style.display="block";
+        newUpgrade.style.display = "block";
         newUpgrade.id = upgrades[1][i].getName();
         newUpgrade.onclick = function (e) {
             buyItem(e.currentTarget.id);
@@ -478,7 +488,7 @@ function loadJsonItemsToShop() {
         newOverclock.appendChild(newDiv);
         newOverclock.classList.add("notAffordable");
         newOverclock.classList.add("shopItem");
-        newOverclock.style.display="block";
+        newOverclock.style.display = "block";
         newOverclock.id = upgrades[2][i].getName();
         newOverclock.onclick = function (e) {
             buyItem(e.currentTarget.id);
@@ -619,7 +629,7 @@ function buildItemGetWindow() {
         lootScreen.style.width = "30%";
         lootScreen.style.height = "30%";
         lootScreen.style.top = "35%";
-        lootScreen.style.left = "30%";
+        lootScreen.style.left = "32%";
     }
     else {
         lootScreen.style.width = "80%";
@@ -714,7 +724,7 @@ function detectBrowser() {
 
 function saveGame() {
     localStorage.clear();
-    localStorage.setItem("screenMode",screenMode);
+    localStorage.setItem("screenMode", screenMode);
     localStorage.setItem("CssMode", colorMode);
     localStorage.setItem("Volume", volume);
     localStorage.setItem("Coins", amountCoins);
@@ -767,7 +777,7 @@ function changeShopMode(mode) {
             for (var i = 0; i < items.length; i++) {
                 if (items[i].classList.contains("bought")) {
                     if (!items[i].classList.contains("videocard")) {
-                        items[i].style.display="none";
+                        items[i].style.display = "none";
                     }
                     else {
                         items[i].onclick = function (e) {
@@ -776,7 +786,7 @@ function changeShopMode(mode) {
                     }
                 }
                 else {
-                    items[i].style.display="block";
+                    items[i].style.display = "block";
                     items[i].onclick = function (e) {
                         buyItem(e.currentTarget.id);
                     }
@@ -790,13 +800,15 @@ function changeShopMode(mode) {
             var items = document.getElementsByClassName("shopItem");
             for (var i = 0; i < items.length; i++) {
                 if (items[i].classList.contains("bought")) {
-                    items[i].style.display="block";
+                    items[i].style.display = "block";
                     items[i].onclick = function (e) {
                         sellItem(e.currentTarget.id);
-                    }
+                    };
+                    items[i].classList.remove("notAffordable");
+                    items[i].classList.add("affordable");
                 }
                 else {
-                    items[i].style.display="none";
+                    items[i].style.display = "none";
                 }
             }
         }
