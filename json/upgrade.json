@@ -22,5 +22,12 @@
     "price": 20000,
     "targetproperty": "coinsPerClick",
     "targetmultiplier": 4
+  },
+  {
+    "name": "AutoLoot",
+    "price": 1000,
+    "targetproperty": "autoloot",
+    "targetmultiplier": 1
   }
+
 ]

@@ -40,6 +40,10 @@ body {
 }
 
 #bottomBar {
-    background-color: rgba(227, 226, 226, 1);
+    background-color: rgba(140, 140, 140, 1);
+    color: white;
+}
+header{
+    background-color: rgba(160, 160, 160, 1);
     color: white;
 }

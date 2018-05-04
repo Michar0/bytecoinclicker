@@ -26,13 +26,18 @@
   },
   {
     "name": "Overclock GTX Titan Z",
-    "price": 200000,
+    "price": 55000,
     "targetCard": "GTX Titan Z"
   },
   {
     "name": "Overclock GTX Titan X",
-    "price": 400000,
+    "price": 190000,
     "targetCard": "GTX Titan X"
+  },
+  {
+    "name": "Overclock RX Vega 56",
+    "price": 500000,
+    "targetCard": "RX Vega 56"
   },
   {
     "name": "Overclock GTX Titan V",

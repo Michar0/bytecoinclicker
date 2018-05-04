@@ -49,8 +49,8 @@
     "targetincrease": 250
   },
   {
-    "name": "Radeon RX Vega 56",
-    "price": 1000000,
+    "name": "RX Vega 56",
+    "price": 600000,
     "costincrease": 1.6,
     "targetproperty": "coinsPerSecond",
     "targetincrease": 500
