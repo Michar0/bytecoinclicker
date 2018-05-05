@@ -1,13 +1,21 @@
 class Videocard{
     constructor(name,price,priceRaise,effectTarget,effectOperand,level) {
         this.name = name;
-        this.price = price;
         this.priceRaise = priceRaise;
         this.effectTarget = effectTarget;
         this.effectOperand = effectOperand;
         this.coinsPerSecond = level*effectOperand;
         this.level=level;
         this.overclocked=false;
+        if(this.level>0)
+        {
+            for(var i=0;i<this.level;i++)
+            {
+                price*=priceRaise;
+                price=decimalRound(price,0);
+            }
+        }
+        this.price=price;
     }
     getName(){
         return this.name;
