@@ -19,10 +19,11 @@
 </head>
 <body onload="loadCache()">
 <header id="topbar">
-    <a href="https://bytecoin.org"><img id="logo" src="images/favicon.png"></a>
+    <a href="https://bytecoin.org" ondragstart="return false;"><img id="logo" src="images/favicon.png"></a>
     <div id="dayMusic">
         <p id="volume" title="Stumm/Laut" onclick="changeVolume()"><i id="volumes" class="fas fa-volume-up"></i></p>
-        <p id="dayNight" title="Nachtmodus/Tagmodus" onclick="changeDayNight()"><i id="dayNightSwitch"class="fas fa-sun"></i></p>
+        <p id="dayNight" title="Nachtmodus/Tagmodus" onclick="changeDayNight()"><i id="dayNightSwitch"
+                                                                                   class="fas fa-sun"></i></p>
     </div>
     <nav id="leftNav">
         <ul>
@@ -33,7 +34,8 @@
     </nav>
 </header>
 <div id="clickCenter">
-    <img id="clickPicture" draggable="false" class="noselect" src="images/clickPicture.png" onclick="clickCoin()">
+    <img id="clickPicture" draggable="false" src="images/clickPicture.png" onclick="clickCoin()"
+         ondragstart="return false;">
     <p id="myProgress">100%</p>
 </div>
 <div id="statsPage" class="invisible page">
@@ -59,6 +61,11 @@
         <li id="buy" class="buyMode" onclick="changeShopMode('buy')">Buy</li>
         <li id="sell" onclick="changeShopMode('sell')">Sell</li>
     </ul>
+    <ul id="amountShopModes">
+        <li id="1x" class="buyMode shopAmount" onclick="changeShopAmount(1)">1x</li>
+        <li id="5x" class="shopAmount" onclick="changeShopAmount(5)">5x</li>
+        <li id="10x" class="shopAmount" onclick="changeShopAmount(10)">10x</li>
+    </ul>
     <div class="shop" id="videocardsShop">
         <p class="shopHeaders">GPU</p>
         <ul class="shopContent" id="videocardsShopContent">
@@ -71,7 +78,7 @@
     </div>
     <div class="shop" id="overclockShop">
         <p class="shopHeaders">OC</p>
-        <ul class="shopContent" id=overclockShopContent">
+        <ul class="shopContent" id="overclockShopContent">
         </ul>
     </div>
 </div>
@@ -89,7 +96,10 @@
     <table id="helpTable">
         <tr>
             <td><img id="showPic" src="images/clickPicture.png"></td>
-            <td>Das grundlegende Element des Bytecoinclickers ist der Clickcoin. <br> Wenn man auf diesen klickt bekommt man anfangs einen Bytecoin <br> Mit den erclickten Coins kann man schlussendlich Unterstützungen <br> kaufen die z.B automatisch für einen klicken etc.</td>
+            <td>Das grundlegende Element des Bytecoinclickers ist der Clickcoin. <br> Wenn man auf diesen klickt bekommt
+                man anfangs einen Bytecoin <br> Mit den erclickten Coins kann man schlussendlich Unterstützungen <br>
+                kaufen die z.B automatisch für einen klicken etc.
+            </td>
         </tr>
         <tr>
             <td>Centro comercial Moctezuma</td>
@@ -115,12 +125,14 @@
 </div>
 <div id="mobileMessage" class="invisible">
     <p id="closeMobileMessage" onclick="closeMobileMessage()">X</p>
-    <p id="mobilMessageText">Es wurde erkannt dass du mit einem mobilen Endgerät unterwegs bist! <br> Wechseln auf die mobile Ansicht ?</p>
+    <p id="mobilMessageText">Es wurde erkannt dass du mit einem mobilen Endgerät unterwegs bist! <br> Wechseln auf die
+        mobile Ansicht ?</p>
     <button id="mobileSwitch" onclick="mobile()">Wechseln</button>
 </div>
 <div id="microsoftMessage" class="invisible">
     <p id="closeMicrosoftMessage" onclick="closeMicrosoftMessage()">X</p>
-    <p id="microsoftMessageText">Es wurde erkannt dass du mit dem Internet Explorer/Microsoft Edge unterwegs bist!<br> Aus einem unbekannten Grund funktioniert auf diesen Browsern diese Website nicht richtig.</p>
+    <p id="microsoftMessageText">Es wurde erkannt dass du mit dem Internet Explorer/Microsoft Edge unterwegs bist!<br>
+        Aus einem unbekannten Grund funktioniert auf diesen Browsern diese Website nicht richtig.</p>
 </div>
 <audio class="audioSource" id="audioplayer"></audio>
 <footer id="bottomBar">
