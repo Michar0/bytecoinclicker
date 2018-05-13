@@ -245,12 +245,6 @@ nav {
     cursor: pointer;
 }
 
-.toolTipHeader {
-    top: 1%;
-    left: 40%;
-    position: absolute;
-}
-
 #slideAnnounce {
     animation: slideAnnounceEvent ease-in 10s;
     animation-iteration-count: 1;
@@ -258,11 +252,18 @@ nav {
 
 @keyframes slideAnnounceEvent {
     0% {
-        left: 5%;
+        left: 1%;
+        opacity: 1;
+    }
+    99% {
+        opacity: 1;
     }
     100% {
-        left: 95%;
+        left: 92%;
+        overflow: hidden;
         opacity: 0;
+        display: none;
+        visibility: hidden;
     }
 }
 
@@ -381,3 +382,6 @@ nav {
 .videocard {
 
 }
+
+
+

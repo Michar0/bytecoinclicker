@@ -309,7 +309,7 @@ nav {
 
 #buyModes{
     position: absolute;
-    top:5%;
+    top:3%;
     left:2%;
     list-style-type:none;
 }
@@ -331,4 +331,12 @@ button,
 select,
 a {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+#amountShopModes {
+    position: absolute;
+    top: 6%;
+    left: 2%;
+    list-style-type: none;
+    cursor: pointer;
 }

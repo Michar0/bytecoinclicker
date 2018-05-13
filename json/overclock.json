@@ -1,8 +1,13 @@
 [
   {
     "name": "Overclock Geforce 8800 GTX",
-    "price": 200,
+    "price": 150,
     "targetCard": "Geforce 8800 GTX"
+  },
+  {
+    "name": "Overclock Radeon HD 4870",
+    "price": 200,
+    "targetCard": "Radeon HD 4870"
   },
   {
     "name": "Overclock GTX 295",

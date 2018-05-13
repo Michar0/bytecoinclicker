@@ -1,8 +1,9 @@
 [
   {
-    "name": "Umrechnungsfehler",
+    "name": "ByteCoin Rush",
     "target": "all",
     "operand": 8,
+    "duration": 60,
     "image": "bitcoin.png"
   }
 ]

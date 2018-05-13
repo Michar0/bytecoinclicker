@@ -7,6 +7,13 @@
     "targetincrease": 0.1
   },
   {
+    "name": "Radeon HD 4870",
+    "price": 50,
+    "costincrease": 1.4,
+    "targetproperty": "coinsPerSecond",
+    "targetincrease": 0.4
+  },
+  {
     "name": "GTX 295",
     "price": 250,
     "costincrease": 1.5,

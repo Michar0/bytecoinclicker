@@ -9,11 +9,16 @@ var startTime = new Date().getTime();
 var coinHealth = 100;
 var colorMode = "day";
 var screenMode = "desktop";
-var volume = true;
 var shopMode = "buy";
+var volume = true;
 var shopAmount = 1;
 var reset = false;
 var autoloot = false;
+var events = [];
+var eventStarted = new Date().getTime();
+var eventDuration = 0;
+var actualEvent;
+var timeToEvent = eventStarted + Math.floor(Math.random() * (1200000 - 120000 + 1)) + 120000;
 
 
 $(document).ready(function () {
@@ -24,14 +29,22 @@ $(document).ready(function () {
         detectMobile();
     }
     loadJsonItemsToShop();
+    loadEvents();
     detectBrowser();
     createStats();
     setInterval(clickAutomatic, 1000);
     document.addEventListener('mousemove', getMousePosition);
+    document.addEventListener('keydown', function (event) {
+        if (event.keyCode == 83) {
+            togglePage("shopPage");
+        }
+    });
+
 });
 window.onbeforeunload = function () {
     saveGame();
 };
+
 
 function loadCache() {
     if (localStorage.length > 0) {
@@ -107,7 +120,7 @@ function buyItem(itemName) {
                     case "Videocard":
                         for (var z = 0; z < shopAmount; z++) {
                             upgrades[i][y].raiseLevel();
-                            coinsPerSecond += upgrades[i][y].getEffectOperand();
+                            coinsPerSecond += (upgrades[i][y].getEffectOperand() * getSpecialMultiplier());
                             coinsPerSecond = decimalRound(coinsPerSecond, 2);
                             upgrades[i][y].addCoinsPerSecond(upgrades[i][y].getEffectOperand());
                             var item = getItemInShop(upgrades[i][y].getName());
@@ -122,10 +135,10 @@ function buyItem(itemName) {
                     case "Upgrade":
                         switch (upgrades[i][y].getEffectTarget()) {
                             case "coinsPerClick":
-                                coinsPerClick *= upgrades[i][y].getMultiplier();
+                                coinsPerClick *= (upgrades[i][y].getMultiplier());
                                 break;
                             case "coinsPerSecond":
-                                coinsPerSecond *= upgrades[i][y].getMultiplier();
+                                coinsPerSecond *= (upgrades[i][y].getMultiplier());
                                 coinsPerSecond = decimalRound(coinsPerSecond, 2);
                                 break;
                             case "autoloot":
@@ -149,9 +162,9 @@ function buyItem(itemName) {
                     case "Overclock":
                         for (var z = 0; z < upgrades[0].length; z++) {
                             if (upgrades[0][z].getName() === upgrades[i][y].getEffectTarget()) {
-                                coinsPerSecond -= upgrades[0][z].getCoinsPerSecond();
+                                coinsPerSecond -= (upgrades[0][z].getCoinsPerSecond() * getSpecialMultiplier());
                                 upgrades[0][z].overclock();
-                                coinsPerSecond += upgrades[0][z].getCoinsPerSecond();
+                                coinsPerSecond += (upgrades[0][z].getCoinsPerSecond() * getSpecialMultiplier());
                             }
                         }
                         if (shopAmount > 1) {
@@ -183,7 +196,7 @@ function sellItem(itemName) {
                             if (upgrades[i][y].getLevel() > 0) {
                                 amountCoins += decimalRound(upgrades[i][y].getPrice() / upgrades[i][y].getPriceRaise(), 0);
                                 upgrades[i][y].reduceLevel();
-                                coinsPerSecond -= upgrades[i][y].getEffectOperand();
+                                coinsPerSecond -= (upgrades[i][y].getEffectOperand() * getSpecialMultiplier());
                                 coinsPerSecond = decimalRound(coinsPerSecond, 1);
                                 upgrades[i][y].subCoinsPerSecond(upgrades[i][y].getEffectOperand());
                                 var item = getItemInShop(upgrades[i][y].getName());
@@ -201,10 +214,10 @@ function sellItem(itemName) {
                         amountCoins += (upgrades[i][y].getPrice());
                         switch (upgrades[i][y].getEffectTarget()) {
                             case "coinsPerClick":
-                                coinsPerClick /= upgrades[i][y].getMultiplier();
+                                coinsPerClick /= (upgrades[i][y].getMultiplier());
                                 break;
                             case "coinsPerSecond":
-                                coinsPerSecond /= upgrades[i][y].getMultiplier();
+                                coinsPerSecond /= (upgrades[i][y].getMultiplier());
                                 coinsPerSecond = decimalRound(coinsPerSecond, 1);
                                 break;
                             case "autoloot":
@@ -221,9 +234,9 @@ function sellItem(itemName) {
                         amountCoins += upgrades[i][y].getPrice();
                         for (var z = 0; z < upgrades[0].length; z++) {
                             if (upgrades[0][z].getName() === upgrades[i][y].getEffectTarget()) {
-                                coinsPerSecond -= upgrades[0][z].getCoinsPerSecond();
+                                coinsPerSecond -= upgrades[0][z].getCoinsPerSecond() * getSpecialMultiplier();
                                 upgrades[0][z].underclock();
-                                coinsPerSecond += upgrades[0][z].getCoinsPerSecond();
+                                coinsPerSecond += upgrades[0][z].getCoinsPerSecond() * getSpecialMultiplier();
                                 decimalRound(coinsPerSecond, 1);
                             }
                         }
@@ -259,6 +272,13 @@ function clickAutomatic() {
     else if (coinHealth === 0) {
         setupNewClickCoin();
     }
+    if (new Date().getTime() > (eventStarted + eventDuration) && actualEvent != null) {
+        eventEnd();
+    }
+    if (new Date().getTime() > timeToEvent && actualEvent == null) {
+        eventStart();
+    }
+
     document.getElementById("amount").innerText = "ByteCoins: " + amountCoins;
     checkItemsAffordable();
     removeUsedObjects();
@@ -281,7 +301,6 @@ function checkItemsAffordable() {
         }
     }
 }
-
 
 function changeDayNight() {
     removeUsedObjects();
@@ -322,7 +341,7 @@ function changeVolume() {
         volume = false;
     }
     else {
-        for (var i = 0; i < audioPlayers.length; i++) {
+        for (i = 0; i < audioPlayers.length; i++) {
             audioPlayers[i].muted = false;
         }
         if (screenMode === "desktop") {
@@ -341,13 +360,13 @@ function removeUsedObjects() {
         }
     }
     items = document.getElementsByClassName("audioSource");
-    for (var i = 0; i < items.length; i++) {
+    for (i = 0; i < items.length; i++) {
         if (parseInt(new Date().getTime()) > parseInt(items[i].id) + 7000 && items[i].paused) {
             document.body.removeChild(items[i]);
         }
     }
     items = document.getElementsByClassName("lootScreen");
-    for (var i = 0; i < items.length; i++) {
+    for (i = 0; i < items.length; i++) {
         if (parseInt(new Date().getTime()) > parseInt(items[i].id) + 10000) {
             document.body.removeChild(items[i]);
         }
@@ -377,7 +396,7 @@ function loadJsonItemsToShop() {
         async: false
     });
     upgrades[upgrades.length] = [];
-    $.getJSON('https://api.myjson.com/bins/px2a2', function (data) { //Austauschen durch ein lokale json datei und anderem Algorithmus wegen Chrome
+    $.getJSON('https://api.myjson.com/bins/12f6ty', function (data) { //Austauschen durch ein lokale json datei und anderem Algorithmus wegen Chrome
         console.log(data);
         if (localStorage.length > 0) {
             var videoLevel = localStorage.getItem("VideoCard").split(";");
@@ -415,8 +434,8 @@ function loadJsonItemsToShop() {
                     z++;
                 } while (!found && z < upgradeTiles.length);
                 if (found) {
-                    var isbought = (upgradeSlotTiles[1] === 'true');
-                    upgrades[1][i] = new Upgrade(data[i].name, data[i].price, data[i].targetproperty, data[i].targetmultiplier, isbought);
+                    var isBought = (upgradeSlotTiles[1] === 'true');
+                    upgrades[1][i] = new Upgrade(data[i].name, data[i].price, data[i].targetproperty, data[i].targetmultiplier, isBought);
                 }
             }
             else {
@@ -425,7 +444,7 @@ function loadJsonItemsToShop() {
         }
     });
     upgrades[upgrades.length] = [];
-    $.getJSON('https://api.myjson.com/bins/176mtm', function (data) { //Austauschen durch ein lokale json datei und anderem Algorithmus wegen Chrome
+    $.getJSON('https://api.myjson.com/bins/98y6u', function (data) { //Austauschen durch ein lokale json datei und anderem Algorithmus wegen Chrome
         for (var i = 0; i < data.length; i++) {
             upgrades[2][i] = new Overclock(data[i].name, data[i].price, data[i].targetCard);
         }
@@ -439,7 +458,7 @@ function loadJsonItemsToShop() {
         var newDiv = document.createElement("div");
         var newImage = document.createElement("IMG");
         var name = upgrades[0][i].getName().split(" ");
-        var z = 0;
+        z = 0;
         var text = "";
         do {
             text += name[z];
@@ -452,7 +471,6 @@ function loadJsonItemsToShop() {
             newImage.style.width = "10%";
             newImage.style.height = "10%";
             newImage.style.float = "left";
-            newImage.style.marginTop = "0.2%";
         }
         else {
             newImage.style.width = "8%";
@@ -478,13 +496,13 @@ function loadJsonItemsToShop() {
         targets[0].appendChild(newCard);
     }
 
-    for (var i = 0; i < upgrades[1].length; i++) {
+    for (i = 0; i < upgrades[1].length; i++) {
         var newUpgrade = document.createElement("LI");
-        var newDiv = document.createElement("div");
-        var newImage = document.createElement("IMG");
-        var name = upgrades[1][i].getName().split(" ");
-        var z = 0;
-        var text = "";
+        newDiv = document.createElement("div");
+        newImage = document.createElement("IMG");
+        name = upgrades[1][i].getName().split(" ");
+        z = 0;
+        text = "";
         do {
             text += name[z];
             z++;
@@ -497,7 +515,7 @@ function loadJsonItemsToShop() {
         newImage.style.float = "left";
         newImage.style.marginTop = "1%";
         newDiv.appendChild(newImage);
-        var newP = document.createElement("P");
+        newP = document.createElement("P");
         newP.textContent = upgrades[1][i].toString();
         newDiv.appendChild(newP);
         newUpgrade.appendChild(newDiv);
@@ -519,18 +537,17 @@ function loadJsonItemsToShop() {
             targets[0].appendChild(newUpgrade);
         }
     }
-    target = document.getElementById("overclockShopContent");
-    for (var i = 0; i < upgrades[2].length; i++) {
+    for (i = 0; i < upgrades[2].length; i++) {
         var newOverclock = document.createElement("LI");
-        var newDiv = document.createElement("div");
-        var newImage = document.createElement("IMG");
+        newDiv = document.createElement("div");
+        newImage = document.createElement("IMG");
         newImage.src = "images/overclock.png";
         newImage.style.width = "10%";
         newImage.style.height = "10%";
         newImage.style.float = "left";
         newImage.style.marginTop = "2%";
         newDiv.appendChild(newImage);
-        var newP = document.createElement("P");
+        newP = document.createElement("P");
         newP.textContent = upgrades[2][i].toString();
         newDiv.appendChild(newP);
         newOverclock.appendChild(newDiv);
@@ -764,7 +781,7 @@ function detectBrowser() {
     var userAgent = navigator.userAgent.split(" ");
     var browser = userAgent[userAgent.length - 1].split("/");
     if (browser[0] === "Edge" || userAgent[userAgent.length - 1] === "Gecko") {
-       document.getElementById("microsoftMessage").classList.remove("invisible");
+        document.getElementById("microsoftMessage").classList.remove("invisible");
     }
 }
 
@@ -785,12 +802,12 @@ function saveGame() {
     }
     localStorage.setItem("Statistics", statisticsString);
     var videoLevels = "";
-    for (var i = 0; i < upgrades[0].length; i++) {
+    for (i = 0; i < upgrades[0].length; i++) {
         videoLevels += upgrades[0][i].getName() + "_" + upgrades[0][i].getLevel() + "_" + upgrades[0][i].getOverclock() + ";";
     }
     localStorage.setItem("VideoCard", videoLevels);
     var upgradesString = "";
-    for (var i = 0; i < upgrades[1].length; i++) {
+    for (i = 0; i < upgrades[1].length; i++) {
         upgradesString += upgrades[1][i].getName() + "_" + upgrades[1][i].getBought() + ";";
     }
     localStorage.setItem("Upgrades", upgradesString);
@@ -868,5 +885,83 @@ function changeShopAmount(amount) {
 function closeMicrosoftMessage() {
     document.getElementById("microsoftMessage").classList.add("invisible");
 }
+
+function eventStart() {
+    eventStarted = new Date().getTime();
+    actualEvent = events[Math.floor(Math.random() * events.length)];
+    if (actualEvent.image !== "") {
+        document.getElementById("clickPicture").src = "images/" + actualEvent.image;
+    }
+    switch (actualEvent.getTarget()) {
+        case "all":
+            coinsPerSecond *= actualEvent.getOperand();
+            coinsPerClick *= actualEvent.getOperand();
+            break;
+    }
+    eventDuration = actualEvent.getDuration() * 1000;
+    document.getElementById("amountSecond").innerText = "Coins Per Second: " + coinsPerSecond;
+    document.getElementById("coinsPerClick").innerText = "Coins Per Click: " + coinsPerClick;
+    var myDiv = document.createElement("DIV");
+    myDiv.style.width = "99.85%";
+    myDiv.style.height = "5%";
+    myDiv.style.backgroundColor = "orange";
+    myDiv.style.color = "white";
+    myDiv.style.top = "10%";
+    myDiv.style.position = "absolute";
+    myDiv.style.border = "1px solid black";
+    myDiv.id = actualEvent.name;
+    myText = document.createElement("P");
+    myText.textContent = actualEvent.name;
+    myText.id = "slideAnnounce";
+    myText.style.top = "28%";
+    myText.style.position = "absolute";
+    myText.style.fontWeight = "bold";
+    myDiv.appendChild(myText);
+    document.body.appendChild(myDiv);
+    $('#slideAnnounce').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+        $(this.parentElement).remove();
+    });
+}
+
+function eventEnd() {
+    document.getElementById("clickPicture").src = "images/clickPicture.png";
+    switch (actualEvent.getTarget()) {
+        case "all":
+            coinsPerSecond /= actualEvent.getOperand();
+            coinsPerClick /= actualEvent.getOperand();
+            break;
+    }
+    actualEvent = null;
+    document.getElementById("amountSecond").innerText = "Coins Per Second: " + coinsPerSecond;
+    document.getElementById("coinsPerClick").innerText = "Coins Per Click: " + coinsPerClick;
+    timeToEvent = new Date().getTime() + Math.floor(Math.random() * (1200000 - 120000 + 1)) + 120000;
+}
+
+function loadEvents() {
+    $.ajaxSetup({
+        async: false
+    });
+    $.getJSON('https://api.myjson.com/bins/houry', function (data) {
+        for (var i = 0; i < data.length; i++) {
+            events[i] = new SpecialEvent(data[i].name, data[i].target, data[i].operand, data[i].image, data[i].duration);
+        }
+    });
+}
+
+function getSpecialMultiplier() {
+    if (actualEvent != null) {
+        if (actualEvent.getOperand() > 1) {
+            return actualEvent.getOperand();
+        }
+    }
+    else {
+        return 1;
+    }
+}
+
+
+
+
+
 
 
