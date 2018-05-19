@@ -19,6 +19,7 @@ var eventStarted = new Date().getTime();
 var eventDuration = 0;
 var actualEvent;
 var timeToEvent = eventStarted + Math.floor(Math.random() * (1200000 - 120000 + 1)) + 120000;
+const version = 0.5;
 
 
 $(document).ready(function () {
@@ -39,7 +40,6 @@ $(document).ready(function () {
             togglePage("shopPage");
         }
     });
-
 });
 window.onbeforeunload = function () {
     saveGame();
@@ -71,7 +71,6 @@ function loadCache() {
         coinsPerSecond = parseFloat(localStorage.getItem("CPS"));
         coinsPerClick = parseFloat(localStorage.getItem("CPC"));
         autoloot = (localStorage.getItem("autoloot") === 'true');
-
         document.getElementById("amountSecond").innerText = "Coins Per Second: " + coinsPerSecond;
         document.getElementById("amount").innerText = "ByteCoins: " + amountCoins;
         document.getElementById("coinsPerClick").innerText = "Coins Per Click: " + coinsPerClick;
@@ -396,7 +395,7 @@ function loadJsonItemsToShop() {
         async: false
     });
     upgrades[upgrades.length] = [];
-    $.getJSON('https://api.myjson.com/bins/12f6ty', function (data) { //Austauschen durch ein lokale json datei und anderem Algorithmus wegen Chrome
+    $.getJSON('https://api.myjson.com/bins/rxigi', function (data) { //Austauschen durch ein lokale json datei und anderem Algorithmus wegen Chrome
         console.log(data);
         if (localStorage.length > 0) {
             var videoLevel = localStorage.getItem("VideoCard").split(";");
@@ -421,7 +420,7 @@ function loadJsonItemsToShop() {
     }
     var found = false;
     var z = 0;
-    $.getJSON('https://api.myjson.com/bins/fb4a2', function (data) { //Austauschen durch ein lokale json datei und anderem Algorithmus wegen Chrome
+    $.getJSON('https://api.myjson.com/bins/1h8ssa', function (data) { //Austauschen durch ein lokale json datei und anderem Algorithmus wegen Chrome
         for (var i = 0; i < data.length; i++) {
             if (upgradeTiles != null && upgradeTiles !== "") {
                 do {
@@ -435,11 +434,11 @@ function loadJsonItemsToShop() {
                 } while (!found && z < upgradeTiles.length);
                 if (found) {
                     var isBought = (upgradeSlotTiles[1] === 'true');
-                    upgrades[1][i] = new Upgrade(data[i].name, data[i].price, data[i].targetproperty, data[i].targetmultiplier, isBought);
+                    upgrades[1][i] = new Upgrade(data[i].name, data[i].price, data[i].targetproperty, data[i].targetmultiplier, isBought,data[i].description);
                 }
             }
             else {
-                upgrades[1][i] = new Upgrade(data[i].name, data[i].price, data[i].targetproperty, data[i].targetmultiplier, false);
+                upgrades[1][i] = new Upgrade(data[i].name, data[i].price, data[i].targetproperty, data[i].targetmultiplier, false,data[i].description);
             }
         }
     });
@@ -471,6 +470,7 @@ function loadJsonItemsToShop() {
             newImage.style.width = "10%";
             newImage.style.height = "10%";
             newImage.style.float = "left";
+            newImage.style.marginTop = "2%";
         }
         else {
             newImage.style.width = "8%";
@@ -478,6 +478,7 @@ function loadJsonItemsToShop() {
             newImage.style.float = "left";
             newImage.style.marginTop = "1%";
         }
+        newCard.style.lineHeight = getLineHeightPerScreenSize();
         newDiv.appendChild(newImage);
         var newP = document.createElement("P");
         newP.textContent = upgrades[0][i].toString();
@@ -487,8 +488,16 @@ function loadJsonItemsToShop() {
         newCard.classList.add("shopItem");
         newCard.style.display = "block";
         newCard.id = upgrades[0][i].getName();
-        newCard.onclick = function (e) {
-            buyItem(e.currentTarget.id);
+        newCard.onmousedown = function (e) {
+            e.returnValue = true;
+            switch (e.button) {
+                case 0:
+                    buyItem(e.currentTarget.id);
+                    break;
+                case 1:
+                    itemDescription(e.currentTarget.id);
+                    break;
+            }
         };
         if (upgrades[0][i].getLevel() > 0) {
             newCard.classList.add("bought");
@@ -514,6 +523,7 @@ function loadJsonItemsToShop() {
         newImage.style.height = "5%";
         newImage.style.float = "left";
         newImage.style.marginTop = "1%";
+        newUpgrade.style.lineHeight = getLineHeightPerScreenSize();
         newDiv.appendChild(newImage);
         newP = document.createElement("P");
         newP.textContent = upgrades[1][i].toString();
@@ -523,8 +533,16 @@ function loadJsonItemsToShop() {
         newUpgrade.classList.add("shopItem");
         newUpgrade.style.display = "block";
         newUpgrade.id = upgrades[1][i].getName();
-        newUpgrade.onclick = function (e) {
-            buyItem(e.currentTarget.id);
+        newUpgrade.onmousedown = function (e) {
+            e.returnValue = true;
+            switch (e.button) {
+                case 0:
+                    buyItem(e.currentTarget.id);
+                    break;
+                case 1:
+                    itemDescription(e.currentTarget.id);
+                    break;
+            }
         };
         if (upgrades[1][i].getBought()) {
             newUpgrade.classList.add("bought");
@@ -546,6 +564,7 @@ function loadJsonItemsToShop() {
         newImage.style.height = "10%";
         newImage.style.float = "left";
         newImage.style.marginTop = "2%";
+        newUpgrade.style.lineHeight = getLineHeightPerScreenSize();
         newDiv.appendChild(newImage);
         newP = document.createElement("P");
         newP.textContent = upgrades[2][i].toString();
@@ -555,8 +574,16 @@ function loadJsonItemsToShop() {
         newOverclock.classList.add("shopItem");
         newOverclock.style.display = "block";
         newOverclock.id = upgrades[2][i].getName();
-        newOverclock.onclick = function (e) {
-            buyItem(e.currentTarget.id);
+        newOverclock.onmousedown = function (e) {
+            e.returnValue = true;
+            switch (e.button) {
+                case 0:
+                    buyItem(e.currentTarget.id);
+                    break;
+                case 1:
+                    itemDescription(e.currentTarget.id);
+                    break;
+            }
         };
         if (getItemByName(upgrades[2][i].getEffectTarget()).getOverclock()) {
             newOverclock.classList.add("bought");
@@ -631,6 +658,10 @@ function togglePage(name) {
     }
     else {
         document.getElementById(name).classList.add("invisible");
+        if(name==="shopPage")
+        {
+            document.getElementById("itemShowCase").classList.add("invisible");
+        }
     }
 }
 
@@ -811,6 +842,7 @@ function saveGame() {
         upgradesString += upgrades[1][i].getName() + "_" + upgrades[1][i].getBought() + ";";
     }
     localStorage.setItem("Upgrades", upgradesString);
+    localStorage.setItem("version",version);
     if (reset) {
         localStorage.clear();
     }
@@ -959,9 +991,52 @@ function getSpecialMultiplier() {
     }
 }
 
+function getLineHeightPerScreenSize() {
+    if (screen.width < 1920) {
+        return "175%";
+    }
+    else if (screen.width >= 1920 && screen.width < 2048) {
+        return "200%";
+    }
+    else if (screen.width >= 2048 && screen.width < 3400) {
+        return "250%";
+    }
+    else if (screen.width >= 3400 && screen.width < 5000) {
+        return "400%";
+    }
+    else if (screen.width >= 5000) {
+        return "500%";
+    }
+}
 
-
-
-
-
-
+function itemDescription(itemName) {
+    var itemTiles=itemName.split(" ");
+    var itemImageName="";
+    for(var i=0;i<itemTiles.length;i++)
+    {
+        itemImageName+=itemTiles[i];
+    }
+    itemImageName+=".png";
+    var item = getItemByName(itemName);
+    document.getElementById("itemName").textContent = itemName;
+    if(item.constructor.name!="Overclock") {
+        document.getElementById("itemImage").src = "images/" + itemImageName;
+    }
+    else {
+        document.getElementById("itemImage").src = "images/overclock.png";
+    }
+    switch(item.constructor.name)
+    {
+        case "Videocard":
+            document.getElementById("itemText").textContent = "Erhöht die Coins Per Second um "+item.getEffectOperand()+"!";
+            break;
+        case "Upgrade":
+            document.getElementById("itemText").textContent = item.getDescription();
+            break;
+        case "Overclock":
+            var videocard = getItemByName(item.getEffectTarget());
+            document.getElementById("itemText").textContent = "Übertaktet die Grafikkarte "+videocard.getName()+". \n Verdoppelt die Coins Per Second pro Grafikkarte";
+            break;
+    }
+    document.getElementById("itemShowCase").classList.remove("invisible");
+}

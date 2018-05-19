@@ -3,31 +3,36 @@
     "name": "Eisenspitzhacke",
     "price": 2000,
     "targetproperty": "coinsPerClick",
-    "targetmultiplier": 2
+    "targetmultiplier": 2,
+    "description": "Eine abgenutzte Eisenhacke aus einer alten Mine. \n Verdoppelt die Anzahl der Coins pro Click."
   },
   {
     "name": "Beidseitige Eisenspitzhacke",
     "price": 5000,
     "targetproperty": "coinsPerClick",
-    "targetmultiplier": 2
+    "targetmultiplier": 2,
+    "description": "Noch eine abgenutzte Eisenhacke aus einer alten Mine. \n Verdoppelt die Anzahl der Coins pro Click."
   },
   {
     "name": "Goldspitzhacke",
     "price": 10000,
     "targetproperty": "coinsPerClick",
-    "targetmultiplier": 4
+    "targetmultiplier": 4,
+    "description": "So ein Blödsinn eine Spitzhacke aus Gold zu bauen \n Vervierfacht die Anzahl der Coins pro Click."
+
   },
   {
     "name": "Beidseitige Goldspitzhacke",
     "price": 20000,
     "targetproperty": "coinsPerClick",
-    "targetmultiplier": 4
+    "targetmultiplier": 4,
+    "description": "WTF Noch eine Spitzhacke aus Gold .... \n Vervierfacht die Anzahl der Coins pro Click."
   },
   {
     "name": "AutoLoot",
     "price": 1000,
     "targetproperty": "autoloot",
-    "targetmultiplier": 1
+    "targetmultiplier": 1,
+    "description": "Für bequeme Menschen oder für Speedrunner oder so ähnlich."
   }
-
 ]

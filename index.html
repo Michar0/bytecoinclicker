@@ -26,7 +26,7 @@
     </div>
     <nav id="leftNav">
         <ul>
-            <li id="amount"">ByteCoins: 0</li>
+            <li id="amount">ByteCoins: 0</li>
             <li id="amountSecond">Coins Per Second: 0</li>
             <li id="coinsPerClick">Coins Per Click: 1</li>
         </ul>
@@ -91,36 +91,21 @@
     </ul>
 </div>
 <div id="aboutPage" class="invisible page">
-    <h1 class="pageHeader">How To Play</h1>
-    <table id="helpTable">
-        <tr>
-            <td><img id="showPic" src="images/clickPicture.png"></td>
-            <td>Das grundlegende Element des Bytecoinclickers ist der Clickcoin. <br> Wenn man auf diesen klickt bekommt
-                man anfangs einen Bytecoin <br> Mit den erclickten Coins kann man schlussendlich Unterstützungen <br>
-                kaufen die z.B automatisch für einen klicken etc.
-            </td>
-        </tr>
-        <tr>
-            <td>Centro comercial Moctezuma</td>
-            <td>Francisco Chang</td>
-        </tr>
-        <tr>
-            <td>Ernst Handel</td>
-            <td>Roland Mendel</td>
-        </tr>
-        <tr>
-            <td>Island Trading</td>
-            <td>Helen Bennett</td>
-        </tr>
-        <tr>
-            <td>Laughing Bacchus Winecellars</td>
-            <td>Yoshi Tannamuri</td>
-        </tr>
-        <tr>
-            <td>Magazzini Alimentari Riuniti</td>
-            <td>Giovanni Rovelli</td>
-        </tr>
-    </table>
+    <h1 class="pageHeader">Changelog</h1>
+    <ul id="changeList">
+        <li id="0.5">
+        <div>
+            <h3>Version 0.5</h3>
+            <ul class="changeInfos">
+                <li> - Durch Mittelklick im Shop werden nun Informationen zu den einzelnen Items angezeigt</li>
+                <br> <!-- stupid solution --->
+                <li> - Neue Grafikkarte Radeon R9 295X2</li>
+                <br> <!-- stupid solution --->
+                <li> - Bugfixes </li>
+            </ul>
+        </div>
+        </li>
+    </ul>
 </div>
 <div id="mobileMessage" class="invisible">
     <p id="closeMobileMessage" onclick="closeMobileMessage()">X</p>
@@ -132,6 +117,17 @@
     <p id="closeMicrosoftMessage" onclick="closeMicrosoftMessage()">X</p>
     <p id="microsoftMessageText">Es wurde erkannt dass du mit dem Internet Explorer/Microsoft Edge unterwegs bist!<br>
         Aus einem unbekannten Grund funktioniert auf diesen Browsern diese Website nicht richtig.</p>
+</div>
+<div id="itemShowCase" class="invisible">
+    <img id="itemImage">
+    <p id="itemText"></p>
+    <h3 id="itemName"></h3>
+    <p id="closeP" onclick="document.getElementById('itemShowCase').classList.add('invisible')">X</p>
+</div>
+<div id="changelogScreen" class="invisible">
+    <h3 id="changeVersion"></h3>
+    <p id="changeText"></p>
+    <p id="closeChamgeLog" onclick="document.getElementById('changelogScreen').classList.add('invisible')">X</p>
 </div>
 <audio class="audioSource" id="audioplayer"></audio>
 <footer id="bottomBar">

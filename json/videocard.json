@@ -42,6 +42,13 @@
     "targetincrease": 25
   },
   {
+    "name": "Radeon R9 295X2",
+    "price": 30000,
+    "costincrease": 1.6,
+    "targetproperty": "coinsPerSecond",
+    "targetincrease": 50
+  },
+  {
     "name": "GTX Titan Z",
     "price": 75000,
     "costincrease": 1.6,

@@ -1,10 +1,11 @@
 class Upgrade{
-    constructor(name,price,effectTarget,effectOperand,bought){
+    constructor(name,price,effectTarget,effectOperand,bought,description){
         this.name=name;
         this.price=price;
         this.effectTarget=effectTarget;
         this.multiplier=effectOperand;
         this.bought=bought;
+        this.description=description;
     }
 
     getName(){
@@ -31,5 +32,8 @@ class Upgrade{
     }
     getBought(){
         return this.bought;
+    }
+    getDescription(){
+        return this.description;
     }
 }
