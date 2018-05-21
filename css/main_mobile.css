@@ -340,3 +340,50 @@ a {
     list-style-type: none;
     cursor: pointer;
 }
+#closeChangelog{
+    left:90%;
+    top:2%;
+    position: absolute;
+    font-weight: bold;
+    font-size: 150%;
+    cursor: pointer;
+}
+#itemShowCase{
+    height: 30%;
+    width: 90%;
+    left:5%;
+    top:25%;
+    position: absolute;
+    border: 1.5px solid black;
+}
+#itemImage{
+    left:10%;
+    top:20%;
+    position: absolute;
+    height: 30%;
+    width: 80%;
+}
+#itemText{
+    left:10%;
+    top: 60%;
+    position: absolute;
+}
+#closeP{
+    left:95%;
+    top: 3%;
+    position: absolute;
+}
+#itemName{
+    left:20%;
+    top: 5%;
+    position: absolute;
+}
+#changeList{
+    left:5%;
+    top:15%;
+    position: absolute;
+    height: 80%;
+    width: 90%;
+    list-style-type: none;
+    overflow: hidden;
+}

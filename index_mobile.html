@@ -55,6 +55,7 @@
     <ul id="buyModes">
         <li id="buy" class="buyMode" onclick="changeShopMode('buy')">Buy</li>
         <li id="sell" onclick="changeShopMode('sell')">Sell</li>
+        <li id="info" onclick="changeShopMode('info')">Info</li>
     </ul>
     <ul id="amountShopModes">
         <li id="1x" class="buyMode shopAmount" onclick="changeShopAmount(1)">1x</li>
@@ -69,26 +70,58 @@
 <div id="settingsPage" class="invisible page">
     <h1 class="pageHeader">Settings</h1>
     <ul id="settingsList">
-        <li class="setting" onclick="showCoinHealth()">Show Coinhealth</li>
-        <li class="setting" onclick="changeVolume()">Mute Sound</li>
-        <li class="setting" onclick="changeDayNight()">Dark/Daymode</li>
+        <li class="setting" id="coinSetting" onclick="showCoinHealth()">Hide Coinhealth</li>
+        <li class="setting" id="volumeSetting" onclick="changeVolume()">Mute Sound</li>
+        <li class="setting" id="modeSetting" onclick="changeDayNight()">Darkmode</li>
         <li class="setting" onclick="resetGame()">Reset Game</li>
     </ul>
 </div>
 <div id="aboutPage" class="invisible page">
-    <h1 class="pageHeader">How To Play</h1>
-    <table id="helpTable">
-    </table>
+    <h1 class="pageHeader">About</h1>
+    <p id="closeChangelog" class="invisible">X</p>
+    <ul id="changeList">
+        <li id="0.5.0.1">
+            <div>
+                <h3>Version 0.5.0.1</h3>
+                <ul class="changeInfos">
+                    <li> - Infomode im Shop hinzugefügt</li>
+                    <br> <!-- stupid solution --->
+                    <li> - Kleine visuelle Verbesserungen im Einstellungsfenster</li>
+                    <br> <!-- stupid solution --->
+                    <li> - Overclockingitem für die Radeon R9 295X2</li>
+                    <br> <!-- stupid solution --->
+                    <li> - Bugfixes</li>
+
+                </ul>
+            </div>
+        </li>
+        <li id="0.5">
+            <div>
+                <h3>Version 0.5</h3>
+                <ul class="changeInfos">
+                    <li> - Neue Grafikkarte Radeon R9 295X2</li>
+                    <br> <!-- stupid solution --->
+                    <li> - Bugfixes </li>
+                </ul>
+            </div>
+        </li>
+    </ul>
 </div>
 <div id="mobileMessage" class="invisible">
     <p id="mobilMessageText">Es wurde erkannt dass du mit einem mobilen Endgerät unterwegs bist! <br> Wechseln auf die mobile Ansicht ?</p>
     <button id="mobileSwitch" onclick="mobile()">Wechseln</button>
 </div>
+<div id="itemShowCase" class="invisible">
+    <img id="itemImage">
+    <p id="itemText"></p>
+    <h3 id="itemName"></h3>
+    <p id="closeP" onclick="document.getElementById('itemShowCase').classList.add('invisible')">X</p>
+</div>
 <audio class="audioSource" id="audioplayer"></audio>
 <footer id="bottomBar">
     <ul id="pagesList">
-        <li class="Show" onclick="togglePage('statsPage')"><img src="images/stats_mobile.png"></li>
         <li class="Show" onclick="togglePage('shopPage')"><img src="images/shop_mobile.png"></li>
+        <li class="Show" onclick="togglePage('statsPage')"><img src="images/stats_mobile.png"></li>
         <li class="Show" onclick="togglePage('settingsPage')"><img src="images/settings_mobile.png"></li>
         <li class="Show" onclick="togglePage('aboutPage')"><img src="images/about_mobile.png"></li>
     </ul>

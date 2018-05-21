@@ -30,6 +30,11 @@
     "targetCard": "GTX 690"
   },
   {
+    "name": "Overclock Radeon R9 295X2",
+    "price": 39000,
+    "targetCard": "Radeon R9 295X2"
+  },
+  {
     "name": "Overclock GTX Titan Z",
     "price": 55000,
     "targetCard": "GTX Titan Z"

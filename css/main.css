@@ -77,6 +77,7 @@ nav {
     width: 140%;
     height: 140%;
     cursor: pointer;
+
 }
 
 #clickPicture:hover {
@@ -226,6 +227,7 @@ nav {
     height: 80%;
     width: 80%;
     border: 2px solid black;
+    z-index: 1;
 }
 
 .pageHeader {
@@ -390,6 +392,7 @@ nav {
     position: absolute;
     border: 1.5px solid black;
     box-shadow: 10px 10px 10px black;
+    z-index: 2;
 }
 #itemImage{
     left:5%;
@@ -423,6 +426,14 @@ nav {
     list-style-type: none;
     overflow: hidden;
 }
+#closeChangelog{
+    left:98%;
+    top:2%;
+    position: absolute;
+    font-weight: bold;
+    cursor: pointer;
+}
+
 
 
 

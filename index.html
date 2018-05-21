@@ -52,6 +52,7 @@
         <li class="stat" title="overclockVideocards">Overclocked Videocards: 0</li>
         <li class="stat" title="underclockVideocards">Underclocked Videocards: 0</li>
         <li class="stat" title="lootedDrops">Looted Drops: 0</li>
+        <li class="stat" title="caughtThiefs">Caught Thiefs: 0</li>
     </ul>
 </div>
 <div id="shopPage" class="invisible page">
@@ -84,15 +85,28 @@
 <div id="settingsPage" class="invisible page">
     <h1 class="pageHeader">Settings</h1>
     <ul id="settingsList">
-        <li class="setting" onclick="showCoinHealth()">Show Coinhealth</li>
-        <li class="setting" onclick="changeVolume()">Mute Sound</li>
-        <li class="setting" onclick="changeDayNight()">Dark/Daymode</li>
+        <li class="setting" id="coinSetting" onclick="showCoinHealth()">Hide Coinhealth</li>
+        <li class="setting" id="volumeSetting" onclick="changeVolume()">Mute Sound</li>
+        <li class="setting" id="modeSetting" onclick="changeDayNight()">Darkmode</li>
         <li class="setting" onclick="resetGame()">Reset Game</li>
     </ul>
 </div>
 <div id="aboutPage" class="invisible page">
-    <h1 class="pageHeader">Changelog</h1>
+    <h1 class="pageHeader">About</h1>
+    <p id="closeChangelog" class="invisible">X</p>
     <ul id="changeList">
+        <li id="0.5.0.1">
+            <div>
+                <h3>Version 0.5.0.1</h3>
+                <ul class="changeInfos">
+                    <li> - Thiefs die deine Bytecoins klauen wenn sie den mittleren Coin erreichen. Durch Klicken eleminierst du sie</li>
+                    <br> <!-- stupid solution --->
+                    <li> - Kleine visuelle Verbesserungen im Einstellungsfenster</li>
+                    <br> <!-- stupid solution --->
+                    <li> - Overclockingitem für die Radeon R9 295X2</li>
+                </ul>
+            </div>
+        </li>
         <li id="0.5">
         <div>
             <h3>Version 0.5</h3>
@@ -133,7 +147,7 @@
 <footer id="bottomBar">
     <ul id="pagesList">
         <li onclick="togglePage('shopPage')">Shop</li>
-        <li id="statsShow" onclick="togglePage('statsPage')">Statistics</li>
+        <li onclick="togglePage('statsPage')">Statistics</li>
         <li onclick="togglePage('settingsPage')">Settings</li>
         <li onclick="togglePage('aboutPage')">About</li>
     </ul>
