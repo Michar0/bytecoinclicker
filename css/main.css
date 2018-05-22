@@ -294,6 +294,7 @@ nav {
     background-color: red;
     color: white;
     font-size: 200%;
+    z-index:3;
 }
 
 #mobilMessageText {
