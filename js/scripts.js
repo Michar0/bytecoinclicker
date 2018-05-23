@@ -21,7 +21,7 @@ var actualEvent;
 var timeToEvent = eventStarted + Math.floor(Math.random() * (1200000 - 120000 + 1)) + 120000;
 const version = 0.501;
 var previousPlaytime = 0;
-var timer = setInterval(thiefSpawning, 60000);
+
 
 
 
@@ -41,9 +41,6 @@ $(document).ready(function () {
     document.addEventListener('keydown', function (event) {
         if (event.keyCode == 83) {
             togglePage("shopPage");
-        }
-        if (event.keyCode == 84) {
-            spawnThief();
         }
     });
     if (version > parseFloat(localStorage.getItem("version")) || localStorage.getItem("version") == null) {
@@ -291,7 +288,6 @@ function clickAutomatic() {
     checkItemsAffordable();
     removeUsedObjects();
     repairShop();
-    updateThiefPosition();
 }
 
 function checkItemsAffordable() {
@@ -1073,92 +1069,5 @@ function repairShop() {
             }
         }
     }
-}
-
-function spawnThief() {
-    var newThief = document.createElement("IMG");
-    newThief.src = "images/thief_02.png";
-    newThief.style.position = "absolute";
-    newThief.style.top = Math.floor(Math.random() * (60 - 30 + 1)) + 30 + "%";
-    if(Math.round(Math.random())===1)
-    {
-        newThief.style.left="0";
-    }
-    else
-    {
-        newThief.style.left="95%";
-        newThief.classList.add("reverseThief");
-        newThief.src="images/thief_02_reverse.png";
-    }
-    newThief.style.width = "5%";
-    newThief.style.height = "17%";
-    newThief.style.cursor="crosshair";
-    newThief.classList.add("thief");
-    newThief.style.zIndex="-1";
-    newThief.onclick=function (e) {
-        if(e.currentTarget.id!=="")
-        {
-            amountCoins+=(parseInt(e.currentTarget.id)*0.95);
-        }
-        document.body.removeChild(e.currentTarget);
-        stats["caughtThiefs"]+=1;
-    };
-    document.body.appendChild(newThief);
-}
-function updateThiefPosition(){
-    var thiefs = document.getElementsByClassName("thief");
-    for(var i=0;i<thiefs.length;i++){
-        var tiles = thiefs[i].style.left;
-        tiles = tiles.replace('%','');
-        tiles = tiles.replace('px','');
-        if(parseInt(tiles)<95&&!thiefs[i].classList.contains("reverseThief"))
-        {
-            thiefs[i].style.left=(parseInt(tiles)+2)+"%";
-        }
-        else if(!thiefs[i].classList.contains("reverseThief"))
-        {
-            document.body.removeChild(thiefs[i]);
-        }
-        else if(parseInt(tiles)>1&&thiefs[i].classList.contains("reverseThief"))
-        {
-            thiefs[i].style.left=(parseInt(tiles)-2)+"%";
-        }
-        else
-        {
-            document.body.removeChild(thiefs[i]);
-        }
-        if(elementsColliding(thiefs[i],document.getElementById("clickPicture"))&&thiefs[i].id==="")
-        {
-          var thiefLoot= Math.floor(Math.random() * (amountCoins + 1));
-          amountCoins-=thiefLoot;
-          thiefs[i].id=thiefLoot;
-          if(amountCoins<0)
-          {
-              amountCoins=0;
-          }
-        }
-    }
-}
-function elementsColliding(a,b){
-    var aRect = a.getBoundingClientRect();
-    var bRect = b.getBoundingClientRect();
-
-    return !(
-        ((aRect.top + aRect.height) < (bRect.top)) ||
-        (aRect.top > (bRect.top + bRect.height)) ||
-        ((aRect.left + aRect.width) < bRect.left) ||
-        (aRect.left > (bRect.left + bRect.width))
-    );
-}
-function randRange(data) {
-    var newTime = data[Math.floor(data.length * Math.random())];
-    return newTime;
-}
-
-function thiefSpawning() {
-    var timeArray  = [60000,300000,600000];
-    spawnThief();
-    clearInterval(timer);
-    timer = setInterval(thiefSpawning, randRange(timeArray));
 }
 
