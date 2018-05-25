@@ -8,72 +8,72 @@
   },
   {
     "name": "Radeon HD 4870",
-    "price": 50,
+    "price": 70,
     "costincrease": 1.4,
     "targetproperty": "coinsPerSecond",
-    "targetincrease": 0.4
+    "targetincrease": 0.5
   },
   {
     "name": "GTX 295",
-    "price": 250,
+    "price": 300,
     "costincrease": 1.5,
     "targetproperty": "coinsPerSecond",
-    "targetincrease": 1
+    "targetincrease": 1.5
   },
   {
     "name": "GTX 480",
-    "price": 650,
+    "price": 750,
     "costincrease": 1.5,
     "targetproperty": "coinsPerSecond",
-    "targetincrease": 2.5
+    "targetincrease": 3
   },
   {
     "name": "GTX 580",
     "price": 3500,
-    "costincrease": 1.6,
+    "costincrease": 1.5,
     "targetproperty": "coinsPerSecond",
     "targetincrease": 10
   },
   {
     "name": "GTX 690",
-    "price": 12000,
-    "costincrease": 1.6,
+    "price": 12500,
+    "costincrease": 1.5,
     "targetproperty": "coinsPerSecond",
-    "targetincrease": 25
+    "targetincrease": 30
   },
   {
     "name": "Radeon R9 295X2",
     "price": 30000,
-    "costincrease": 1.6,
+    "costincrease": 1.5,
     "targetproperty": "coinsPerSecond",
     "targetincrease": 50
   },
   {
     "name": "GTX Titan Z",
-    "price": 75000,
-    "costincrease": 1.6,
+    "price": 70000,
+    "costincrease": 1.5,
     "targetproperty": "coinsPerSecond",
     "targetincrease": 100
   },
   {
     "name": "GTX Titan X",
-    "price": 250000,
-    "costincrease": 1.6,
+    "price": 245000,
+    "costincrease": 1.5,
     "targetproperty": "coinsPerSecond",
     "targetincrease": 250
   },
   {
     "name": "RX Vega 56",
     "price": 600000,
-    "costincrease": 1.6,
+    "costincrease": 1.5,
     "targetproperty": "coinsPerSecond",
-    "targetincrease": 500
+    "targetincrease": 550
   },
   {
     "name": "GTX Titan V",
     "price": 1500000,
-    "costincrease": 1.6,
+    "costincrease": 1.5,
     "targetproperty": "coinsPerSecond",
-    "targetincrease": 1000
+    "targetincrease": 1500
   }
 ]

@@ -19,7 +19,7 @@ var eventStarted = new Date().getTime();
 var eventDuration = 0;
 var actualEvent;
 var timeToEvent = eventStarted + Math.floor(Math.random() * (1200000 - 120000 + 1)) + 120000;
-const version = 0.501;
+const version = 0.502;
 var previousPlaytime = 0;
 
 
@@ -395,7 +395,7 @@ function loadJsonItemsToShop() {
         async: false
     });
     upgrades[upgrades.length] = [];
-    $.getJSON('https://api.myjson.com/bins/rxigi', function (data) { //Austauschen durch ein lokale json datei und anderem Algorithmus wegen Chrome
+    $.getJSON('https://api.myjson.com/bins/po0w6', function (data) { //Austauschen durch ein lokale json datei und anderem Algorithmus wegen Chrome
         console.log(data);
         if (localStorage.length > 0) {
             var videoLevel = localStorage.getItem("VideoCard").split(";");
@@ -443,7 +443,7 @@ function loadJsonItemsToShop() {
         }
     });
     upgrades[upgrades.length] = [];
-    $.getJSON('https://api.myjson.com/bins/ccmbu', function (data) { //Austauschen durch ein lokale json datei und anderem Algorithmus wegen Chrome
+    $.getJSON('https://api.myjson.com/bins/bdmdi', function (data) { //Austauschen durch ein lokale json datei und anderem Algorithmus wegen Chrome
         for (var i = 0; i < data.length; i++) {
             upgrades[2][i] = new Overclock(data[i].name, data[i].price, data[i].targetCard);
         }
@@ -761,10 +761,20 @@ function buildItemGetWindow() {
     lootScreen.style.border = "1px solid black";
     lootScreen.style.borderRadius = "5%";
     lootScreen.classList.add("lootScreen");
-    var loot = Math.floor((Math.random() * 100) + 1);
-    addCoins(loot * getSpecialMultiplier());
+    var maxLoot = coinsPerSecond*100;
+    if(maxLoot===0)
+    {
+        maxLoot=100;
+    }
+    var minLoot = coinsPerSecond*10;
+    if(minLoot===0)
+    {
+        minLoot=1;
+    }
+    var loot = (Math.floor((Math.random() * maxLoot - minLoot) + minLoot));
+    addCoins(loot);
     var lootText = document.createElement("P");
-    lootText.textContent = "ByteCoins x" + loot;
+    lootText.textContent = loot+" ByteCoins";
     if (screenMode === "desktop") {
         lootText.style.top = "45%";
         lootText.style.left = "30%";

@@ -1,37 +1,37 @@
 [
   {
     "name": "Overclock Geforce 8800 GTX",
-    "price": 150,
+    "price": 30,
     "targetCard": "Geforce 8800 GTX"
   },
   {
     "name": "Overclock Radeon HD 4870",
-    "price": 200,
+    "price": 180,
     "targetCard": "Radeon HD 4870"
   },
   {
     "name": "Overclock GTX 295",
-    "price": 750,
+    "price": 500,
     "targetCard": "GTX 295"
   },
   {
     "name": "Overclock GTX 480",
-    "price": 2000,
+    "price": 1750,
     "targetCard": "GTX 480"
   },
   {
     "name": "Overclock GTX 580",
-    "price": 7000,
+    "price": 6550,
     "targetCard": "GTX 580"
   },
   {
     "name": "Overclock GTX 690",
-    "price": 20000,
+    "price": 19500,
     "targetCard": "GTX 690"
   },
   {
     "name": "Overclock Radeon R9 295X2",
-    "price": 39000,
+    "price": 35000,
     "targetCard": "Radeon R9 295X2"
   },
   {
@@ -41,7 +41,7 @@
   },
   {
     "name": "Overclock GTX Titan X",
-    "price": 190000,
+    "price": 200000,
     "targetCard": "GTX Titan X"
   },
   {
@@ -51,7 +51,7 @@
   },
   {
     "name": "Overclock GTX Titan V",
-    "price": 2500000,
+    "price": 1500000,
     "targetCard": "GTX Titan V"
   }
 ]
