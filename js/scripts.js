@@ -726,7 +726,7 @@ function getItemByName(nameItem) {
 
 function setupNewClickCoin() {
     coinHealth = 100;
-    if (screenMode === "desktop") {
+    if (document.getElementById("myProgress").tagName==="P") {
         var elm = document.getElementById("myProgress");
         elm.textContent = "100%";
     }
@@ -734,7 +734,7 @@ function setupNewClickCoin() {
         document.getElementById("myBar").style.width = "100%";
     }
     var drop = document.createElement("IMG");
-    drop.src = "images/dropUSB.png";
+    drop.src = "images/drop"+Math.floor((Math.random() * 3) + 1)+".png";
     drop.classList.add("drop");
     drop.onclick = function () {
         buildItemGetWindow();
@@ -1120,6 +1120,7 @@ function changeCoinhealthLook()
         newDiv.id="myProgress";
         newDiv.style.backgroundColor="grey";
         newDiv.style.width="100%";
+        newDiv.classList=elem.classList;
         var newBar = document.createElement("DIV");
         newBar.id = "myBar";
         newBar.style.width=coinHealth+"%";
@@ -1133,6 +1134,7 @@ function changeCoinhealthLook()
         var newP = document.createElement("P");
         newP.id="myProgress";
         newP.textContent=coinHealth+"%";
+        newP.classList=elem.classList;
         document.getElementById("clickCenter").removeChild(elem);
         document.getElementById("clickCenter").appendChild(newP);
         document.getElementById("healthSetting").textContent="Coinhealth: Progressbar"
