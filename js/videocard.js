@@ -72,8 +72,14 @@ class Videocard{
         this.price/=this.priceRaise;
         this.price=decimalRound(this.price,0);
     }
-    toString()
+    toString(price)
     {
-        return this.name+" x"+this.level+" \n "+this.price+" \u0E3F";
+        if(price!==0)
+        {
+            return this.name + " x" + this.level + " \n " + price + " \u0E3F";
+        }
+        else {
+            return this.name + " x" + this.level + " \n " + this.price + " \u0E3F";
+        }
     }
 }

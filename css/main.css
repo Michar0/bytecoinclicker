@@ -77,8 +77,6 @@ nav {
 
 #clickPicture {
     transition: transform 0.1s;
-    width: 140%;
-    height: 140%;
     cursor: pointer;
 }
 
@@ -441,6 +439,11 @@ nav {
     position: absolute;
     font-weight: bold;
     cursor: pointer;
+}
+#myBar {
+    width: 100%;
+    height: 30px;
+    background-color: green;
 }
 
 

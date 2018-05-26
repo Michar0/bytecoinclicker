@@ -42,6 +42,10 @@ $(document).ready(function () {
         if (event.keyCode == 83) {
             togglePage("shopPage");
         }
+        if(event.keyCode === 27)
+        {
+            togglePage("close");
+        }
     });
     if (version > parseFloat(localStorage.getItem("version")) || localStorage.getItem("version") == null) {
         document.getElementById("aboutPage").classList.remove("invisible");
@@ -69,7 +73,11 @@ function loadCache() {
         if (localStorage.getItem("Volume") === "false") {
             changeVolume();
         }
-        if (screenMode === "desktop") {
+        if(localStorage.getItem("progressStyle")==="DIV")
+        {
+            changeCoinhealthLook();
+        }
+        if (document.getElementById("myProgress").tagName==="P") {
             var text = document.getElementById("myProgress");
             text.textContent = localStorage.getItem("CoinHealth") + "%";
         }
@@ -101,7 +109,7 @@ function clickCoin() {
         setupNewClickCoin();
     }
     coinHealth--;
-    if (screenMode === "desktop") {
+    if (document.getElementById("myProgress").tagName==="P") {
         var text = document.getElementById("myProgress");
         text.textContent = coinHealth + "%";
     }
@@ -139,7 +147,7 @@ function buySellItem(itemName) {
                                 item.classList.add("bought");
                                 item.classList.add("videocard");
                                 var textObject = item.children[0].children[1];
-                                textObject.textContent = upgrades[i][y].toString();
+                                textObject.textContent = upgrades[i][y].toString(0);
                                 stats["boughtVideocards"]++;
                             }
                             break;
@@ -206,7 +214,7 @@ function buySellItem(itemName) {
                                     upgrades[i][y].subCoinsPerSecond(upgrades[i][y].getEffectOperand());
                                     var item = getItemInShop(upgrades[i][y].getName());
                                     var textObject = item.children[0].children[1];
-                                    textObject.textContent = upgrades[i][y].toString();
+                                    textObject.textContent = upgrades[i][y].toString(0);
                                     stats["soldVideocards"]++;
                                     if (upgrades[i][y].getLevel() === 0) {
                                         item.classList.remove("bought");
@@ -268,7 +276,7 @@ function clickAutomatic() {
     stats["coinsEver"] = decimalRound(stats["coinsEver"], 1);
     if (coinsPerSecond > 0 && coinHealth > 0) {
         coinHealth--;
-        if (screenMode === "desktop") {
+        if (document.getElementById("myProgress").tagName==="P") {
             document.getElementById("myProgress").textContent = coinHealth + "%";
         }
         else {
@@ -295,11 +303,23 @@ function checkItemsAffordable() {
         for (var i = 0; i < upgrades.length; i++) {
             for (var y = 0; y < upgrades[i].length; y++) {
                 var item = getItemInShop(upgrades[i][y].getName());
-                if (amountCoins >= upgrades[i][y].getPrice()) {
+                var price = upgrades[i][y].getPrice();
+                var addPrice = upgrades[i][y].getPrice();
+                if(upgrades[i][y].constructor.name==="Videocard") {
+                    for (var z = 1; z < shopAmount; z++) {
+                        addPrice *= upgrades[i][y].getPriceRaise();
+                        addPrice = decimalRound(addPrice,0);
+                        price += addPrice;
+                    }
+                    price=decimalRound(price,0);
+                    var textObject = item.children[0].children[1];
+                    textObject.textContent = upgrades[i][y].toString(price);
+                }
+                if (amountCoins >= price) {
                     item.classList.remove("notAffordable");
                     item.classList.add("affordable");
                 }
-                else if (amountCoins < upgrades[i][y].getPrice()) {
+                else if (amountCoins < price) {
                     item.classList.add("notAffordable");
                     item.classList.remove("affordable");
                 }
@@ -481,7 +501,7 @@ function loadJsonItemsToShop() {
         newCard.style.lineHeight = getLineHeightPerScreenSize();
         newDiv.appendChild(newImage);
         var newP = document.createElement("P");
-        newP.textContent = upgrades[0][i].toString();
+        newP.textContent = upgrades[0][i].toString(0);
         newDiv.appendChild(newP);
         newCard.appendChild(newDiv);
         newCard.classList.add("notAffordable");
@@ -660,6 +680,12 @@ function addCoins(number) {
 }
 
 function togglePage(name) {
+    if(name==="close"){
+        var pages = document.getElementsByClassName("page");
+        for (var i = 0; i < pages.length; i++) {
+                pages[i].classList.add("invisible");
+        }
+    }
     if (document.getElementById(name).classList.contains("invisible")) {
         document.getElementById(name).classList.remove("invisible");
         var pages = document.getElementsByClassName("page");
@@ -871,6 +897,7 @@ function saveGame() {
     localStorage.setItem("Upgrades", upgradesString);
     localStorage.setItem("version", version);
     localStorage.setItem("previousTime", previousPlaytime + ((new Date().getTime() - startTime) / 1000));
+    localStorage.setItem("progressStyle",document.getElementById("myProgress").tagName);
     if (reset) {
         localStorage.clear();
     }
@@ -915,6 +942,10 @@ function changeShopMode(mode) {
                     items[i].style.display = "block";
                     items[i].classList.remove("notAffordable");
                     items[i].classList.add("affordable");
+                    var item = getItemByName(items[i].id);
+                    var textObject = items[i].children[0].children[1];
+                    textObject.textContent = item.toString(0);
+
                 }
                 else {
                     items[i].style.display = "none";
@@ -1075,9 +1106,36 @@ function repairShop() {
                 upgrades[0][i].level = 0;
                 var shopItem = getItemInShop(upgrades[0][i].getName());
                 var textObject = shopItem.children[0].children[1];
-                textObject.textContent = upgrades[0][i].toString();
+                textObject.textContent = upgrades[0][i].toString(0);
             }
         }
+    }
+}
+function changeCoinhealthLook()
+{
+    var elem = document.getElementById("myProgress");
+    if(elem.tagName==="P")
+    {
+        var newDiv = document.createElement("DIV");
+        newDiv.id="myProgress";
+        newDiv.style.backgroundColor="grey";
+        newDiv.style.width="100%";
+        var newBar = document.createElement("DIV");
+        newBar.id = "myBar";
+        newBar.style.width=coinHealth+"%";
+        newDiv.appendChild(newBar);
+        document.getElementById("clickCenter").removeChild(elem);
+        document.getElementById("clickCenter").appendChild(newDiv);
+        document.getElementById("healthSetting").textContent="Coinhealth: Percentage"
+    }
+    else
+    {
+        var newP = document.createElement("P");
+        newP.id="myProgress";
+        newP.textContent=coinHealth+"%";
+        document.getElementById("clickCenter").removeChild(elem);
+        document.getElementById("clickCenter").appendChild(newP);
+        document.getElementById("healthSetting").textContent="Coinhealth: Progressbar"
     }
 }
 
