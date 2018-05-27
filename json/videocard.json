@@ -14,6 +14,13 @@
     "targetincrease": 0.5
   },
   {
+    "name": "GTX 280",
+    "price": 175,
+    "costincrease": 1.4,
+    "targetproperty": "coinsPerSecond",
+    "targetincrease": 1
+  },
+  {
     "name": "GTX 295",
     "price": 300,
     "costincrease": 1.5,
@@ -26,6 +33,13 @@
     "costincrease": 1.5,
     "targetproperty": "coinsPerSecond",
     "targetincrease": 3
+  },
+  {
+    "name": "GTX 570",
+    "price": 1500,
+    "costincrease": 1.5,
+    "targetproperty": "coinsPerSecond",
+    "targetincrease": 5
   },
   {
     "name": "GTX 580",
@@ -68,6 +82,20 @@
     "costincrease": 1.5,
     "targetproperty": "coinsPerSecond",
     "targetincrease": 550
+  },
+  {
+    "name": "RX Vega 64",
+    "price": 800000,
+    "costincrease": 1.5,
+    "targetproperty": "coinsPerSecond",
+    "targetincrease": 850
+  },
+  {
+    "name": "GTX 1080 Ti",
+    "price": 1000000,
+    "costincrease": 1.5,
+    "targetproperty": "coinsPerSecond",
+    "targetincrease": 1000
   },
   {
     "name": "GTX Titan V",

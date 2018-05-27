@@ -50,6 +50,11 @@
     "targetCard": "RX Vega 56"
   },
   {
+    "name": "Overclock GTX 1080 Ti",
+    "price": 500000,
+    "targetCard": "GTX 1080 Ti"
+  },
+  {
     "name": "Overclock GTX Titan V",
     "price": 1500000,
     "targetCard": "GTX Titan V"

@@ -19,7 +19,7 @@ var eventStarted = new Date().getTime();
 var eventDuration = 0;
 var actualEvent;
 var timeToEvent = eventStarted + Math.floor(Math.random() * (1200000 - 120000 + 1)) + 120000;
-const version = 0.502;
+const version = 0.503;
 var previousPlaytime = 0;
 
 
@@ -38,6 +38,23 @@ $(document).ready(function () {
     createStats();
     setInterval(clickAutomatic, 1000);
     document.addEventListener('mousemove', getMousePosition);
+    if(screenMode==="mobile")
+    {
+        document.getElementById("clickPicture").ontouchstart=function (e) {
+            for(var i =0;i<e.targetTouches.length;i++)
+            {
+                cordinates[0]=e.targetTouches[i].pageX;
+                cordinates[1]=e.targetTouches[i].pageY;
+                clickCoin();
+            }
+        }
+    }
+    else
+    {
+        document.getElementById("clickPicture").onclick=function () {
+            clickCoin();
+        }
+    }
     document.addEventListener('keydown', function (event) {
         if (event.keyCode == 83) {
             togglePage("shopPage");
@@ -415,7 +432,7 @@ function loadJsonItemsToShop() {
         async: false
     });
     upgrades[upgrades.length] = [];
-    $.getJSON('https://api.myjson.com/bins/po0w6', function (data) { //Austauschen durch ein lokale json datei und anderem Algorithmus wegen Chrome
+    $.getJSON('https://api.myjson.com/bins/u6q5a', function (data) { //Austauschen durch ein lokale json datei und anderem Algorithmus wegen Chrome
         console.log(data);
         if (localStorage.length > 0) {
             var videoLevel = localStorage.getItem("VideoCard").split(";");
