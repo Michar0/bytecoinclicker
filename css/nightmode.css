@@ -4,7 +4,6 @@ body {
     background-color: #263947;
     color: #C6CCC2;
 }
-
 #topbar {
     background-color: #68868E;
 }
@@ -50,3 +49,10 @@ body {
 #itemShowCase{
     background-color: #68868E;
 }
+#xoverclockInfo{
+    background-color: #68868E;
+}
+.menuToggler{
+    background-color: #41575d;
+}
+

@@ -21,10 +21,12 @@ var actualEvent;
 var timeToEvent = eventStarted + Math.floor(Math.random() * (1200000 - 120000 + 1)) + 120000;
 const version = 0.503;
 var previousPlaytime = 0;
+var extremeOverclockCard;
+var videoShopScroll;
+var upgradeShopScroll;
+var overclockShopScroll;
 
-
-
-
+window.onbeforeunload = function(){saveGame()};
 $(document).ready(function () {
     if (document.getElementsByClassName("Show").length > 0) {
         screenMode = "mobile";
@@ -32,8 +34,12 @@ $(document).ready(function () {
     if (screenMode !== "mobile") {
         detectMobile();
     }
+    if(screenMode==="desktop") {
+        videoShopScroll = new PerfectScrollbar('#videocardsShopContent');
+        upgradeShopScroll = new PerfectScrollbar('#upgradesShopContent');
+        overclockShopScroll = new PerfectScrollbar('#overclockShopContent');
+    }
     loadJsonItemsToShop();
-    loadEvents();
     detectBrowser();
     createStats();
     setInterval(clickAutomatic, 1000);
@@ -64,19 +70,8 @@ $(document).ready(function () {
             togglePage("close");
         }
     });
-    if (version > parseFloat(localStorage.getItem("version")) || localStorage.getItem("version") == null) {
-        document.getElementById("aboutPage").classList.remove("invisible");
-        document.getElementById("closeChangelog").classList.remove("invisible");
-        document.getElementById("closeChangelog").onclick = function () {
-            document.getElementById("closeChangelog").classList.add("invisible");
-            document.getElementById("aboutPage").classList.add("invisible");
-        }
-
-    }
 });
-window.onbeforeunload = function () {
-    saveGame();
-};
+
 
 
 function loadCache() {
@@ -164,7 +159,7 @@ function buySellItem(itemName) {
                                 item.classList.add("bought");
                                 item.classList.add("videocard");
                                 var textObject = item.children[0].children[1];
-                                textObject.textContent = upgrades[i][y].toString(0);
+                                textObject.textContent = upgrades[i][y].toString(0,shopAmount);
                                 stats["boughtVideocards"]++;
                             }
                             break;
@@ -212,7 +207,38 @@ function buySellItem(itemName) {
                             item.classList.add("bought");
                             item.style.display = "none";
                             stats["overclockVideocards"]++;
-                            break;
+                            break;SS
+
+                        case "XOverclock":
+                            if(extremeOverclockCard==null) {
+                                for (var z = 0; z < upgrades[0].length; z++) {
+                                    if (upgrades[0][z].getName() === upgrades[i][y].getEffectTarget()) {
+                                        coinsPerSecond -= (upgrades[0][z].getCoinsPerSecond() * getSpecialMultiplier());
+                                        upgrades[0][z].extremeOverclock();
+                                        coinsPerSecond += (upgrades[0][z].getCoinsPerSecond() * getSpecialMultiplier());
+                                        extremeOverclockCard = upgrades[0][z];
+                                        break;
+                                    }
+                                }
+                                if (shopAmount > 1) {
+                                    var wastedMoney = upgrades[i][y].getPrice() * (shopAmount - 1);
+                                    amountCoins += wastedMoney;
+                                }
+                                var item = getItemInShop(upgrades[i][y].getName());
+                                text = createStringForImgSource(upgrades[0][z].getName());
+                                document.getElementById("xoverclockImage").src = "images/" + text + ".png";
+                                text = "";
+                                document.getElementById("healthBar").style.width = 100 + "%";
+                                document.getElementById("xoverclockInfo").classList.remove("invisible");
+                                upgrades[i].splice(y, 1);
+                                item.parentElement.removeChild(item);
+                                stats["extremOverclockedVideocards"]++;
+                                break;
+                            }
+                            else
+                            {
+                                amountCoins+= (upgrades[i][y].getPrice() * shopAmount);
+                            }
                     }
                     playSound("sounds/buySound.mp3");
                 }
@@ -231,7 +257,7 @@ function buySellItem(itemName) {
                                     upgrades[i][y].subCoinsPerSecond(upgrades[i][y].getEffectOperand());
                                     var item = getItemInShop(upgrades[i][y].getName());
                                     var textObject = item.children[0].children[1];
-                                    textObject.textContent = upgrades[i][y].toString(0);
+                                    textObject.textContent = upgrades[i][y].toString(0,shopAmount);
                                     stats["soldVideocards"]++;
                                     if (upgrades[i][y].getLevel() === 0) {
                                         item.classList.remove("bought");
@@ -312,7 +338,36 @@ function clickAutomatic() {
     document.getElementById("amount").innerText = "ByteCoins: " + amountCoins;
     checkItemsAffordable();
     removeUsedObjects();
-    repairShop();
+    if(extremeOverclockCard!=null)
+    {
+        extremeOverclockCard.reduceHealth();
+        document.getElementById("healthBar").style.width=extremeOverclockCard.getHealth()+"%";
+        if(extremeOverclockCard.getHealth()===0)
+        {
+            coinsPerSecond -= extremeOverclockCard.getCoinsPerSecond() * getSpecialMultiplier();
+            extremeOverclockCard.extremeUnderclock();
+            coinsPerSecond += extremeOverclockCard.getCoinsPerSecond() * getSpecialMultiplier();
+            decimalRound(coinsPerSecond, 1);
+            for(var i=extremeOverclockCard.getLevel();i>0;i--)
+            {
+                var random = (Math.random()*10);
+                if(random<7.5)
+                {
+                    extremeOverclockCard.reduceLevel();
+                    coinsPerSecond -= (extremeOverclockCard.getEffectOperand() * getSpecialMultiplier());
+                    coinsPerSecond = decimalRound(coinsPerSecond, 1);
+                    extremeOverclockCard.subCoinsPerSecond(extremeOverclockCard.getEffectOperand());
+                    var item = getItemInShop(extremeOverclockCard.getName());
+                    var textObject = item.children[0].children[1];
+                    textObject.textContent = extremeOverclockCard.toString(0,shopAmount);
+                    if (extremeOverclockCard.getLevel() === 0) {
+                        item.classList.remove("bought");
+                    }
+                    document.getElementById("xoverclockInfo").classList.add("invisible");
+                }
+            }
+        }
+    }
 }
 
 function checkItemsAffordable() {
@@ -330,7 +385,7 @@ function checkItemsAffordable() {
                     }
                     price=decimalRound(price,0);
                     var textObject = item.children[0].children[1];
-                    textObject.textContent = upgrades[i][y].toString(price);
+                    textObject.textContent = upgrades[i][y].toString(price,shopAmount);
                 }
                 if (amountCoins >= price) {
                     item.classList.remove("notAffordable");
@@ -415,10 +470,12 @@ function removeUsedObjects() {
 
 function playSound(url) {
     var audio = document.getElementById("audioplayer");
-    audio.src = url;
-    audio.play();
-    if (volume === false) {
-        audio.muted = true;
+    if(audio.paused) {
+        audio.src = url;
+        audio.play();
+        if (volume === false) {
+            audio.muted = true;
+        }
     }
 }
 
@@ -428,28 +485,22 @@ function getMousePosition(event) {
 }
 
 function loadJsonItemsToShop() {
-    $.ajaxSetup({
-        async: false
-    });
     upgrades[upgrades.length] = [];
-    $.getJSON('https://api.myjson.com/bins/u6q5a', function (data) { //Austauschen durch ein lokale json datei und anderem Algorithmus wegen Chrome
-        console.log(data);
+    if (localStorage.length > 0) {
+        var videoLevel = localStorage.getItem("VideoCard").split(";");
+    }
+    for (var i = 0; i < data.videocards.length; i++) {
         if (localStorage.length > 0) {
-            var videoLevel = localStorage.getItem("VideoCard").split(";");
-        }
-        for (var i = 0; i < data.length; i++) {
-            if (localStorage.length > 0) {
-                var videoTiles = videoLevel[i].split("_");
-                upgrades[0][i] = new Videocard(data[i].name, data[i].price, data[i].costincrease, data[i].targetproperty, data[i].targetincrease, parseFloat(videoTiles[1]));
-                if (videoTiles[2] === "true") {
-                    upgrades[0][i].overclock();
-                }
-            }
-            else {
-                upgrades[0][i] = new Videocard(data[i].name, data[i].price, data[i].costincrease, data[i].targetproperty, data[i].targetincrease, 0);
+            var videoTiles = videoLevel[i].split("_");
+            upgrades[0][i] = new Videocard(data.videocards[i].name, data.videocards[i].price, data.videocards[i].costincrease, data.videocards[i].targetproperty, data.videocards[i].targetincrease, parseFloat(videoTiles[1]));
+            if (videoTiles[2] === "true") {
+                upgrades[0][i].overclock();
             }
         }
-    });
+        else {
+            upgrades[0][i] = new Videocard(data.videocards[i].name, data.videocards[i].price, data.videocards[i].costincrease, data.videocards[i].targetproperty, data.videocards[i].targetincrease, 0);
+        }
+    }
     upgrades[upgrades.length] = [];
     var upgradeTiles;
     if (localStorage.length > 0) {
@@ -457,70 +508,51 @@ function loadJsonItemsToShop() {
     }
     var found = false;
     var z = 0;
-    $.getJSON('https://api.myjson.com/bins/1h8ssa', function (data) { //Austauschen durch ein lokale json datei und anderem Algorithmus wegen Chrome
-        for (var i = 0; i < data.length; i++) {
-            if (upgradeTiles != null && upgradeTiles !== "") {
-                do {
-                    var upgradeSlotTiles = upgradeTiles[z].split("_");
-                    if (data[i].name === upgradeSlotTiles[0]) {
-                        found = true;
-                        upgradeTiles.splice(z, 1);
-                        z = -1;
-                    }
-                    z++;
-                } while (!found && z < upgradeTiles.length);
-                if (found) {
-                    var isBought = (upgradeSlotTiles[1] === 'true');
-                    upgrades[1][i] = new Upgrade(data[i].name, data[i].price, data[i].targetproperty, data[i].targetmultiplier, isBought, data[i].description);
+    for (var i = 0; i < data.upgrades.length; i++) {
+        if (upgradeTiles != null && upgradeTiles !== "") {
+            do {
+                var upgradeSlotTiles = upgradeTiles[z].split("_");
+                if (data.upgrades[i].name === upgradeSlotTiles[0]) {
+                    found = true;
+                    upgradeTiles.splice(z, 1);
+                    z = -1;
                 }
-            }
-            else {
-                upgrades[1][i] = new Upgrade(data[i].name, data[i].price, data[i].targetproperty, data[i].targetmultiplier, false, data[i].description);
+                z++;
+            } while (!found && z < upgradeTiles.length);
+            if (found) {
+                var isBought = (upgradeSlotTiles[1] === 'true');
+                upgrades[1][i] = new Upgrade(data.upgrades[i].name, data.upgrades[i].price, data.upgrades[i].targetproperty, data.upgrades[i].targetmultiplier, isBought, data.upgrades[i].description);
             }
         }
-    });
+        else {
+            upgrades[1][i] = new Upgrade(data.upgrades[i].name, data.upgrades[i].price, data.upgrades[i].targetproperty, data.upgrades[i].targetmultiplier, false, data.upgrades[i].description);
+        }
+    }
     upgrades[upgrades.length] = [];
-    $.getJSON('https://api.myjson.com/bins/bdmdi', function (data) { //Austauschen durch ein lokale json datei und anderem Algorithmus wegen Chrome
-        for (var i = 0; i < data.length; i++) {
-            upgrades[2][i] = new Overclock(data[i].name, data[i].price, data[i].targetCard);
+    z=0;
+    for (var i = 0; i < data.overclocks.length; i++) {
+        var card = getItemByName(data.overclocks[i].targetCard);
+        if(!card.getOverclock()) {
+            upgrades[2][z] = new Overclock(data.overclocks[i].name, data.overclocks[i].price, data.overclocks[i].targetCard);
+            z++;
         }
-    });
-    $.ajaxSetup({
-        async: true
-    });
+        if(card.health===100)
+        {
+            upgrades[2][z] = new XOverclock("X "+data.overclocks[i].name, data.overclocks[i].price, data.overclocks[i].targetCard);
+            z++;
+        }
+    }
+    for (var i = 0; i < data.events.length; i++) {
+        events[i] = new SpecialEvent(data.events[i].name, data.events[i].target, data.events[i].operand, data.events[i].image, data.events[i].duration);
+    }
     var targets = document.getElementsByClassName("shopContent");
     for (var i = 0; i < upgrades[0].length; i++) {
         var newCard = document.createElement("LI");
         var newDiv = document.createElement("div");
         var newImage = document.createElement("IMG");
-        var name = upgrades[0][i].getName().split(" ");
-        z = 0;
-        var text = "";
-        do {
-            text += name[z];
-            z++;
-        } while (z < name.length);
-        z = 0;
-        newImage.src = "images/" + text + ".png";
-        text = "";
-        if (screenMode === "desktop") {
-            newImage.style.width = "10%";
-            newImage.style.height = "10%";
-            newImage.style.float = "left";
-            newImage.style.marginTop = "2%";
-        }
-        else {
-            newImage.style.width = "8%";
-            newImage.style.height = "8%";
-            newImage.style.float = "left";
-            newImage.style.marginTop = "1%";
-        }
-        newCard.style.lineHeight = getLineHeightPerScreenSize();
-        newDiv.appendChild(newImage);
         var newP = document.createElement("P");
-        newP.textContent = upgrades[0][i].toString(0);
-        newDiv.appendChild(newP);
-        newCard.appendChild(newDiv);
+
+        newCard.style.lineHeight = getLineHeightPerScreenSize();
         newCard.classList.add("notAffordable");
         newCard.classList.add("shopItem");
         newCard.style.display = "block";
@@ -543,32 +575,26 @@ function loadJsonItemsToShop() {
         if (upgrades[0][i].getLevel() > 0) {
             newCard.classList.add("bought");
         }
+        text = createStringForImgSource(upgrades[0][i].getName());
+        newImage.src = "images/" + text + ".png";
+        text = "";
+        newImage.classList.add("shopCardImage");
+        newDiv.appendChild(newImage);
+        newP.textContent = upgrades[0][i].toString(0,shopAmount);
+        newDiv.appendChild(newP);
+        newCard.appendChild(newDiv);
         targets[0].appendChild(newCard);
     }
-
+    if(screenMode==="desktop") {
+        videoShopScroll.update();
+    }
     for (i = 0; i < upgrades[1].length; i++) {
         var newUpgrade = document.createElement("LI");
         newDiv = document.createElement("div");
         newImage = document.createElement("IMG");
-        name = upgrades[1][i].getName().split(" ");
-        z = 0;
-        text = "";
-        do {
-            text += name[z];
-            z++;
-        } while (z < name.length);
-        z = 0;
-        newImage.src = "images/" + text + ".png";
-        text = "";
-        newImage.style.width = "5%";
-        newImage.style.height = "5%";
-        newImage.style.float = "left";
-        newImage.style.marginTop = "1%";
-        newUpgrade.style.lineHeight = getLineHeightPerScreenSize();
-        newDiv.appendChild(newImage);
         newP = document.createElement("P");
-        newP.textContent = upgrades[1][i].toString();
-        newDiv.appendChild(newP);
+
+        newUpgrade.style.lineHeight = getLineHeightPerScreenSize();
         newUpgrade.appendChild(newDiv);
         newUpgrade.classList.add("notAffordable");
         newUpgrade.classList.add("shopItem");
@@ -593,6 +619,16 @@ function loadJsonItemsToShop() {
             newUpgrade.classList.add("bought");
             newUpgrade.style.display = "none";
         }
+        text = createStringForImgSource(upgrades[1][i].getName());
+        newImage.src = "images/" + text + ".png";
+        text = "";
+        newImage.style.width = "5%";
+        newImage.style.height = "5%";
+        newImage.style.float = "left";
+        newImage.style.marginTop = "1%";
+        newDiv.appendChild(newImage);
+        newP.textContent = upgrades[1][i].toString();
+        newDiv.appendChild(newP);
         if (screenMode === "desktop") {
             targets[1].appendChild(newUpgrade);
         }
@@ -600,21 +636,16 @@ function loadJsonItemsToShop() {
             targets[0].appendChild(newUpgrade);
         }
     }
+    if(screenMode==="desktop") {
+        upgradeShopScroll.update();
+    }
     for (i = 0; i < upgrades[2].length; i++) {
         var newOverclock = document.createElement("LI");
         newDiv = document.createElement("div");
         newImage = document.createElement("IMG");
-        newImage.src = "images/overclock.png";
-        newImage.style.width = "10%";
-        newImage.style.height = "10%";
-        newImage.style.float = "left";
-        newImage.style.marginTop = "2%";
-        newUpgrade.style.lineHeight = getLineHeightPerScreenSize();
-        newDiv.appendChild(newImage);
         newP = document.createElement("P");
-        newP.textContent = upgrades[2][i].toString();
-        newDiv.appendChild(newP);
-        newOverclock.appendChild(newDiv);
+
+        newOverclock.style.lineHeight = getLineHeightPerScreenSize();
         newOverclock.classList.add("notAffordable");
         newOverclock.classList.add("shopItem");
         newOverclock.style.display = "block";
@@ -638,6 +669,15 @@ function loadJsonItemsToShop() {
             newOverclock.classList.add("bought");
             newOverclock.style.display = "none";
         }
+        newImage.src = "images/overclock.png";
+        newImage.style.width = "10%";
+        newImage.style.height = "10%";
+        newImage.style.float = "left";
+        newImage.style.marginTop = "2%";
+        newDiv.appendChild(newImage);
+        newP.textContent = upgrades[2][i].toString();
+        newDiv.appendChild(newP);
+        newOverclock.appendChild(newDiv);
         if (screenMode === "desktop") {
             targets[2].appendChild(newOverclock);
         }
@@ -646,6 +686,9 @@ function loadJsonItemsToShop() {
         }
     }
     shopItems = document.getElementsByClassName("shopItem");
+    if(screenMode==="desktop") {
+        overclockShopScroll.update();
+    }
 }
 
 function updateStats() {
@@ -751,7 +794,7 @@ function setupNewClickCoin() {
         document.getElementById("myBar").style.width = "100%";
     }
     var drop = document.createElement("IMG");
-    drop.src = "images/drop"+Math.floor((Math.random() * 3) + 1)+".png";
+    drop.src = "images/drop"+Math.floor((Math.random() * 4) + 1)+".png";
     drop.classList.add("drop");
     drop.onclick = function () {
         buildItemGetWindow();
@@ -961,7 +1004,13 @@ function changeShopMode(mode) {
                     items[i].classList.add("affordable");
                     var item = getItemByName(items[i].id);
                     var textObject = items[i].children[0].children[1];
-                    textObject.textContent = item.toString(0);
+                    if(item.constructor.name==="Videocard") {
+                        textObject.textContent = item.toString(0,shopAmount);
+                    }
+                    else
+                    {
+                        textObject.textContent = item.toString();
+                    }
 
                 }
                 else {
@@ -999,7 +1048,7 @@ function eventStart() {
     eventStarted = new Date().getTime();
     actualEvent = events[Math.floor(Math.random() * events.length)];
     if (actualEvent.image !== "") {
-        document.getElementById("clickPicture").src = "images/" + actualEvent.image;
+        document.getElementById("clickPicture").src = actualEvent.image;
     }
     switch (actualEvent.getTarget()) {
         case "all":
@@ -1046,17 +1095,6 @@ function eventEnd() {
     timeToEvent = new Date().getTime() + Math.floor(Math.random() * (1200000 - 120000 + 1)) + 120000;
 }
 
-function loadEvents() {
-    $.ajaxSetup({
-        async: false
-    });
-    $.getJSON('https://api.myjson.com/bins/11h422', function (data) {
-        for (var i = 0; i < data.length; i++) {
-            events[i] = new SpecialEvent(data[i].name, data[i].target, data[i].operand, data[i].image, data[i].duration);
-        }
-    });
-}
-
 function getSpecialMultiplier() {
     if (actualEvent != null) {
         if (actualEvent.getOperand() > 1) {
@@ -1095,7 +1133,7 @@ function itemDescription(itemName) {
     itemImageName += ".png";
     var item = getItemByName(itemName);
     document.getElementById("itemName").textContent = itemName;
-    if (item.constructor.name != "Overclock") {
+    if (item.constructor.name != "Overclock"&&item.constructor.name != "XOverclock") {
         document.getElementById("itemImage").src = "images/" + itemImageName;
     }
     else {
@@ -1112,49 +1150,64 @@ function itemDescription(itemName) {
             var videocard = getItemByName(item.getEffectTarget());
             document.getElementById("itemText").textContent = "Übertaktet die Grafikkarte " + videocard.getName() + ". \n Verdoppelt die Coins Per Second pro Grafikkarte";
             break;
+        case "XOverclock":
+            var videocard = getItemByName(item.getEffectTarget());
+            document.getElementById("itemText").textContent = "Übertaktet die Grafikkarte " + videocard.getName() + " extrem. \n Vervierfacht die Coins Per Second pro Grafikkarte \n Eine 75% Chance besteht das dabei die Grafikkarte kaputt geht.";
+            break;
     }
     document.getElementById("itemShowCase").classList.remove("invisible");
-}
-
-function repairShop() {
-    for (var i = 0; i < upgrades[0].length; i++) {
-        if (isNaN(upgrades[0][i].getLevel())) {
-            {
-                upgrades[0][i].level = 0;
-                var shopItem = getItemInShop(upgrades[0][i].getName());
-                var textObject = shopItem.children[0].children[1];
-                textObject.textContent = upgrades[0][i].toString(0);
-            }
-        }
-    }
 }
 function changeCoinhealthLook()
 {
     var elem = document.getElementById("myProgress");
-    if(elem.tagName==="P")
-    {
-        var newDiv = document.createElement("DIV");
-        newDiv.id="myProgress";
-        newDiv.style.backgroundColor="grey";
-        newDiv.style.width="100%";
-        newDiv.classList=elem.classList;
-        var newBar = document.createElement("DIV");
-        newBar.id = "myBar";
-        newBar.style.width=coinHealth+"%";
-        newDiv.appendChild(newBar);
-        document.getElementById("clickCenter").removeChild(elem);
-        document.getElementById("clickCenter").appendChild(newDiv);
-        document.getElementById("healthSetting").textContent="Coinhealth: Percentage"
+    if(screenMode==="desktop") {
+        if (elem.tagName === "P") {
+            var newDiv = document.createElement("DIV");
+            newDiv.id = "myProgress";
+            newDiv.style.backgroundColor = "grey";
+            newDiv.style.width = "100%";
+            newDiv.classList = elem.classList;
+            var newBar = document.createElement("DIV");
+            newBar.id = "myBar";
+            newBar.style.width = coinHealth + "%";
+            newDiv.appendChild(newBar);
+            document.getElementById("clickCenter").removeChild(elem);
+            document.getElementById("clickCenter").appendChild(newDiv);
+            document.getElementById("healthSetting").textContent = "Coinhealth: Percentage"
+        }
+        else {
+            var newP = document.createElement("P");
+            newP.id = "myProgress";
+            newP.textContent = coinHealth + "%";
+            newP.classList = elem.classList;
+            document.getElementById("clickCenter").removeChild(elem);
+            document.getElementById("clickCenter").appendChild(newP);
+            document.getElementById("healthSetting").textContent = "Coinhealth: Progressbar"
+        }
     }
-    else
-    {
-        var newP = document.createElement("P");
-        newP.id="myProgress";
-        newP.textContent=coinHealth+"%";
-        newP.classList=elem.classList;
-        document.getElementById("clickCenter").removeChild(elem);
-        document.getElementById("clickCenter").appendChild(newP);
-        document.getElementById("healthSetting").textContent="Coinhealth: Progressbar"
+}
+function createStringForImgSource(name){
+    var i = 0;
+    var nameTiles = name.split(" ");
+    var text="";
+
+    do {
+        text += nameTiles[i];
+        i++;
+    } while (i < nameTiles.length);
+    return text;
+}
+
+function toogleMenuByName(name)
+{
+    if(document.getElementById(name).classList.contains("invisible")) {
+        document.getElementById(name).classList.remove("invisible");
+    }
+    else{
+        document.getElementById(name).classList.add("invisible");
     }
 }
 
+function loadChangelog(){
+
+}

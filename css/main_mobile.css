@@ -214,6 +214,7 @@ nav {
     height: 70%;
     width: 80%;
     border: 2px solid black;
+    z-index: 1;
 }
 
 .pageHeader {
@@ -355,6 +356,7 @@ a {
     top:25%;
     position: absolute;
     border: 1.5px solid black;
+    z-index:2;
 }
 #itemImage{
     left:10%;
@@ -386,4 +388,63 @@ a {
     width: 90%;
     list-style-type: none;
     overflow: hidden;
+}
+.shopCardImage{
+    width:10%;
+    height:10%;
+    float:left;
+    margin-top:2%;
+}
+#pointList{
+    margin-top: 20%;
+}
+#pointList ul{
+    margin-left: 5px;
+}
+#pointList li{
+    display: block;
+}
+.menuToggler{
+    width:100%;
+    height: 30px;
+}
+#opensourceList li{
+    display: block;
+}
+.headerMenuTitle{
+    text-align: center;
+    padding: 5px;
+}
+#description{
+    margin: 5px;
+}
+#aboutPage{
+    overflow: auto;
+}
+#xoverclockImage{
+    left:25%;
+    top:10%;
+    position: absolute;
+    height: 50%;
+    width: 50%;
+}#xoverclockInfo{
+     left:10%;
+     top:10%;
+     position: absolute;
+     width:80%;
+     height: 15%;
+     border: 1px solid black;
+ }
+#healthProgesss{
+    top:80%;
+    left:5%;
+    position: absolute;
+    width:80%;
+    background: grey;
+
+}
+#healthBar{
+    width: 100%;
+    height: 5px;
+    background-color: green;
 }

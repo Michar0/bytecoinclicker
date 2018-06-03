@@ -3,7 +3,6 @@
 body {
     color: black;
 }
-
 .upgradeFields {
     border: 1px solid black;
 }
@@ -49,4 +48,10 @@ header{
 }
 #itemShowCase{
     background-color: whitesmoke;
+}
+#xoverclockInfo{
+    background-color: whitesmoke;
+}
+.menuToggler{
+    background-color: rgba(140, 140, 140, 1);
 }

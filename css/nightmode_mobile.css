@@ -30,5 +30,11 @@ body{
     color:#e5e8e3;
 }
 #itemShowCase{
-    background-color: #576f75;
+     background-color: #576f75;
+ }
+#xoverclockInfo{
+    background-color: #68868E;
+}
+.menuToggler{
+    background-color: #41575d;
 }

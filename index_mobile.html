@@ -7,14 +7,15 @@
     <link rel="icon" type="image/png" href="images/favicon.png">
     <link rel="stylesheet" type="text/css" href="css/main_mobile.css">
     <link rel="stylesheet" id="style" type="text/css" href="css/day_mobile.css">
-    <!--Austauschen durch lokale Version-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bowser/1.9.3/bowser.min.js"></script>
-    <!--Austauschen durch lokale Version-->
+    <link rel="stylesheet" type="text/css" href="css/perfect-scrollbar.css">
+    <script src="js/jquery.min.js"></script>
+    <script defer src="js/fontawesome-all.js"></script>
+    <script src="js/perfect-scrollbar.min.js"></script>
     <script src="js/upgrade.js"></script>
     <script src="js/videocard.js"></script>
     <script src="js/overclock.js"></script>
     <script src="js/event.js"></script>
+    <script src="js/data.js"></script>
     <script src="js/scripts.js"></script>
 </head>
 <body onload="loadCache()">
@@ -63,7 +64,7 @@
         <li id="10x" class="shopAmount" onclick="changeShopAmount(10)">10x</li>
     </ul>
     <div class="shop">
-        <ul class="shopContent">
+        <ul id="mobileShop" class="shopContent">
         </ul>
     </div>
 </div>
@@ -78,29 +79,37 @@
 </div>
 <div id="aboutPage" class="invisible page">
     <h1 class="pageHeader">About</h1>
-    <p id="closeChangelog" class="invisible">X</p>
-    <ul id="changeList">
-        <li id="0.5.0.1">
-            <div>
-                <h3>Version 0.5.0.1</h3>
-                <ul class="changeInfos">
-                    <li> - Infomode im Shop hinzugefügt</li>
-                    <br>
-                    <li> - Kleine visuelle Verbesserungen im Einstellungsfenster</li>
-                    <br>
-                    <li> - Overclockingitem für die Radeon R9 295X2</li>
-                    <br>
-                    <li> - Bugfixes</li>
+    <ul id="pointList">
+        <li>
+            <div id="rulesContainer">
+                <div class="menuToggler" onclick="toogleMenuByName('description')">
+                    <h3 class="headerMenuTitle">Übers Spiel</h3>
+                </div>
+                <p id="description" class="invisible">Dieses Spiel namens Bytecoin Clicker gehört zur Genre der <a href="https://de.wikipedia.org/wiki/Clicker_Games">Clicker Games</a>.
+                    Das Grundelement dieses Spieles besteht darin durch Klicken auf den schwarzen Kreis die Ingamewährung ByteCoin zu erhalten. Durch diese Währung ist es einem möglich im Shop Upgrades zukaufen. Diese können z.B die Anzahl der Währung anheben die
+                    pro Sekunde automatisch ermint werden. Da es sich um ein Clicker Game handelt in der es sich um eine Kryptowährung dreht sind hier auch GPUs auffindbar im Shop. Zusätzlich hat dieser schwarze Kreis in der Mitte eine Lebensanzeige. Wenn diese auf
+                    0% heruntefällt wird ein sogenannter "Loot" gedropt. Durch Anklicken dieses "Loot" erhält man eine gewisse Anzahl von der Ingamewährung. Es gibt auch sogenannte "Special Events". Diese tauchen ab und zu oft und haben oft ein positiven Effekt.
+                </p>
+            </div>
+
+        <li>
+            <div id="changelogContainer">
+                <div class="menuToggler" onclick="toogleMenuByName('changelogList')">
+                    <h3 class="headerMenuTitle">Changelog</h3>
+                </div>
+                <ul id="changelogList" class="invisible">
                 </ul>
             </div>
         </li>
-        <li id="0.5">
-            <div>
-                <h3>Version 0.5</h3>
-                <ul class="changeInfos">
-                    <li> - Neue Grafikkarte Radeon R9 295X2</li>
-                    <br> <!-- stupid solution --->
-                    <li> - Bugfixes </li>
+        <li>
+            <div id="opensourceContainer">
+                <div class="menuToggler" onclick="toogleMenuByName('opensourceList')">
+                    <h3 class="headerMenuTitle">Open Source</h3>
+                </div>
+                <ul id="opensourceList" class="invisible">
+                    <li>jQuery <a href="https://github.com/jquery/jquery/blob/master/LICENSE.txt">Lizenz</a></li>
+                    <li>Perfect Scrollbar <a href="https://github.com/utatti/perfect-scrollbar/blob/master/LICENSE">Lizenz</a></li>
+                    <li>Font Awesome by Dave Gandy <a href="http://fontawesome.io">Website</a> <a href="https://creativecommons.org/licenses/by/4.0/">Lizenz</a></li>
                 </ul>
             </div>
         </li>
@@ -115,6 +124,12 @@
     <p id="itemText"></p>
     <h3 id="itemName"></h3>
     <p id="closeP" onclick="document.getElementById('itemShowCase').classList.add('invisible')">X</p>
+</div>
+<div id="xoverclockInfo" class="invisible">
+    <img id="xoverclockImage">
+    <div id="healthProgesss">
+        <div id="healthBar"></div>
+    </div>
 </div>
 <audio class="audioSource" id="audioplayer"></audio>
 <footer id="bottomBar">

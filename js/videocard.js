@@ -7,6 +7,7 @@ class Videocard{
         this.coinsPerSecond = level*effectOperand;
         this.level=level;
         this.overclocked=false;
+        this.health=100;
         if(this.level>0)
         {
             for(var i=0;i<this.level;i++)
@@ -54,6 +55,14 @@ class Videocard{
         this.coinsPerSecond*=2;
         this.effectOperand*=2;
     }
+    extremeOverclock()
+    {
+        this.coinsPerSecond*=4;
+        this.effectOperand*=4;
+    }
+    reduceHealth(){
+        this.health--;
+    }
     underclock()
     {
         this.overclocked=false;
@@ -72,14 +81,23 @@ class Videocard{
         this.price/=this.priceRaise;
         this.price=decimalRound(this.price,0);
     }
-    toString(price)
+    toString(price,shopAmount)
     {
         if(price!==0)
         {
-            return this.name + " x" + this.level + " \n " + price + " \u0E3F";
+            return this.name + " x" + shopAmount + " \n " + price + " \u0E3F    "+"Lv. "+this.level;
         }
         else {
-            return this.name + " x" + this.level + " \n " + this.price + " \u0E3F";
+            return this.name + " x" + shopAmount + " \n " + this.price + " \u0E3F   "+"Lv. "+this.level;
         }
+    }
+    getHealth()
+    {
+        return this.health;
+    }
+    extremeUnderclock()
+    {
+        this.coinsPerSecond/=4;
+        this.effectOperand/=4;
     }
 }
