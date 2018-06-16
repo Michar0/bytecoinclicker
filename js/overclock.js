@@ -1,42 +1,20 @@
-class Overclock{
+class Overclock extends item{
     constructor(name,price,effectTarget){
-        this.name=name;
-        this.price=price;
+        super(name,price);
         this.effectTarget=effectTarget;
     }
 
-    getName(){
-        return this.name;
-    }
-    getPrice(){
-        return this.price;
-    }
     getEffectTarget(){
         return this.effectTarget;
-    }
-    toString()
-    {
-        return this.name+" "+this.price+" \u0E3F";
     }
 }
-class XOverclock{
+class XOverclock extends item{
     constructor(name,price,effectTarget){
-        this.name=name;
-        this.price=price;
+        super(name,price);
         this.effectTarget=effectTarget;
     }
 
-    getName(){
-        return this.name;
-    }
-    getPrice(){
-        return this.price;
-    }
     getEffectTarget(){
         return this.effectTarget;
-    }
-    toString()
-    {
-        return this.name+" "+this.price+" \u0E3F";
     }
 }

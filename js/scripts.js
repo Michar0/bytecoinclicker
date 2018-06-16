@@ -19,12 +19,25 @@ var eventStarted = new Date().getTime();
 var eventDuration = 0;
 var actualEvent;
 var timeToEvent = eventStarted + Math.floor(Math.random() * (1200000 - 120000 + 1)) + 120000;
-const version = 0.503;
+const version = 0.51;
 var previousPlaytime = 0;
 var extremeOverclockCard;
 var videoShopScroll;
 var upgradeShopScroll;
 var overclockShopScroll;
+var plus = function(first, second) {
+    return first+second;
+};
+var minus = function(first, second) {
+    return first-second;
+};
+var multiply = function(first, second) {
+    return first*second;
+};
+var divide = function(first, second) {
+    return first/second;
+};
+
 
 window.onbeforeunload = function(){saveGame()};
 $(document).ready(function () {
@@ -40,6 +53,7 @@ $(document).ready(function () {
         overclockShopScroll = new PerfectScrollbar('#overclockShopContent');
     }
     loadJsonItemsToShop();
+    loadChangelog();
     detectBrowser();
     createStats();
     setInterval(clickAutomatic, 1000);
@@ -70,6 +84,15 @@ $(document).ready(function () {
             togglePage("close");
         }
     });
+    if (version > parseFloat(localStorage.getItem("version")) || localStorage.getItem("version") == null) {
+        document.getElementById("aboutPage").classList.remove("invisible");
+        document.getElementById("closeChangelog").classList.remove("invisible");
+        document.getElementById("closeChangelog").onclick = function () {
+            document.getElementById("closeChangelog").classList.add("invisible");
+            document.getElementById("aboutPage").classList.add("invisible");
+        }
+
+    }
 });
 
 
@@ -165,12 +188,29 @@ function buySellItem(itemName) {
                             break;
 
                         case "Upgrade":
+                        case "LevelUpgrade":
+                            var backup;
                             switch (upgrades[i][y].getEffectTarget()) {
                                 case "coinsPerClick":
-                                    coinsPerClick *= (upgrades[i][y].getMultiplier());
+                                    backup = coinsPerClick;
+                                    coinsPerClick = window[upgrades[i][y].getEffectOperator()];
+                                    coinsPerClick = coinsPerClick(backup,upgrades[i][y].getEffectOperand());
+                                    coinsPerClick = decimalRound(coinsPerClick, 2);
                                     break;
                                 case "coinsPerSecond":
-                                    coinsPerSecond *= (upgrades[i][y].getMultiplier());
+                                    backup = coinsPerSecond;
+                                    coinsPerSecond = window[upgrades[i][y].getEffectOperator()];
+                                    coinsPerSecond = coinsPerSecond(backup,upgrades[i][y].getEffectOperand());
+                                    coinsPerSecond = decimalRound(coinsPerSecond, 2);
+                                    break;
+                                case "all":
+                                    backup = coinsPerClick;
+                                    coinsPerClick = window[upgrades[i][y].getEffectOperator()];
+                                    coinsPerClick = coinsPerClick(backup,upgrades[i][y].getEffectOperand());
+                                    coinsPerClick = decimalRound(coinsPerClick, 2);
+                                    backup = coinsPerSecond;
+                                    coinsPerSecond = window[upgrades[i][y].getEffectOperator()];
+                                    coinsPerSecond = coinsPerSecond(backup,upgrades[i][y].getEffectOperand());
                                     coinsPerSecond = decimalRound(coinsPerSecond, 2);
                                     break;
                                 case "autoloot":
@@ -181,15 +221,24 @@ function buySellItem(itemName) {
                                     }
                                     break;
                             }
+                            var item = getItemInShop(upgrades[i][y].getName());
+                            item.classList.add("bought");
                             if (shopAmount > 1) {
                                 var wastedMoney = upgrades[i][y].getPrice() * (shopAmount - 1);
                                 amountCoins += wastedMoney;
                             }
-                            var item = getItemInShop(upgrades[i][y].getName());
-                            upgrades[i][y].buys();
-                            item.classList.add("bought");
-                            item.style.display = "none";
-                            stats["boughtUpgrades"]++;
+                            if(upgrades[i][y].constructor.name=="LevelUpgrade")
+                            {
+                                upgrades[i][y].raiseLevel();
+                                var textObject = item.children[0].children[1];
+                                textObject.textContent = upgrades[i][y].toString(0,shopAmount);
+                            }
+                            else {
+                                var item = getItemInShop(upgrades[i][y].getName());
+                                upgrades[i][y].buys();
+                                item.style.display = "none";
+                                stats["boughtUpgrades"]++;
+                            }
                             break;
                         case "Overclock":
                             for (var z = 0; z < upgrades[0].length; z++) {
@@ -267,24 +316,52 @@ function buySellItem(itemName) {
                             }
                             break;
                         case "Upgrade":
+                        case "LevelUpgrade":
                             amountCoins += (upgrades[i][y].getPrice());
                             switch (upgrades[i][y].getEffectTarget()) {
                                 case "coinsPerClick":
-                                    coinsPerClick /= (upgrades[i][y].getMultiplier());
+                                    backup = coinsPerClick;
+                                    coinsPerClick = window[reverseOperator(upgrades[i][y].getEffectOperator())];
+                                    coinsPerClick = coinsPerClick(backup,upgrades[i][y].getEffectOperand());
+                                    coinsPerClick = decimalRound(coinsPerClick, 2);
                                     break;
                                 case "coinsPerSecond":
-                                    coinsPerSecond /= (upgrades[i][y].getMultiplier());
-                                    coinsPerSecond = decimalRound(coinsPerSecond, 1);
+                                    backup = coinsPerSecond;
+                                    coinsPerSecond = window[reverseOperator(upgrades[i][y].getEffectOperator())];
+                                    coinsPerSecond = coinsPerSecond(backup,upgrades[i][y].getEffectOperand());
+                                    coinsPerSecond = decimalRound(coinsPerSecond, 2);
+                                    break;
+                                case "all":
+                                    backup = coinsPerClick;
+                                    coinsPerClick = window[reverseOperator(upgrades[i][y].getEffectOperator())];
+                                    coinsPerClick = coinsPerClick(backup,upgrades[i][y].getEffectOperand());
+                                    coinsPerClick = decimalRound(coinsPerClick, 2);
+                                    backup = coinsPerSecond;
+                                    coinsPerSecond = window[reverseOperator(upgrades[i][y].getEffectOperator())];
+                                    coinsPerSecond = coinsPerSecond(backup,upgrades[i][y].getEffectOperand());
+                                    coinsPerSecond = decimalRound(coinsPerSecond, 2);
                                     break;
                                 case "autoloot":
                                     autoloot = false;
                                     break;
                             }
                             var item = getItemInShop(upgrades[i][y].getName());
-                            upgrades[i][y].sell();
-                            item.classList.remove("bought");
-                            item.style.display = "none";
-                            stats["soldUpgrades"]++;
+                            if(upgrades[i][y].constructor.name=="LevelUpgrade")
+                            {
+                                upgrades[i][y].raiseLevel();
+                                var textObject = item.children[0].children[1];
+                                textObject.textContent = upgrades[i][y].toString(0,shopAmount);
+                                if (upgrades[i][y].getLevel() === 0) {
+                                    item.classList.remove("bought");
+                                    item.style.display = "none";
+                                }
+                            }
+                            else {
+                                upgrades[i][y].sell();
+                                item.style.display = "none";
+                                item.classList.remove("bought");
+                                stats["soldUpgrades"]++;
+                            }
                             break;
                         case "Overclock":
                             amountCoins += upgrades[i][y].getPrice();
@@ -366,6 +443,7 @@ function clickAutomatic() {
                     document.getElementById("xoverclockInfo").classList.add("invisible");
                 }
             }
+            extremeOverclockCard=null;
         }
     }
 }
@@ -492,13 +570,13 @@ function loadJsonItemsToShop() {
     for (var i = 0; i < data.videocards.length; i++) {
         if (localStorage.length > 0) {
             var videoTiles = videoLevel[i].split("_");
-            upgrades[0][i] = new Videocard(data.videocards[i].name, data.videocards[i].price, data.videocards[i].costincrease, data.videocards[i].targetproperty, data.videocards[i].targetincrease, parseFloat(videoTiles[1]));
+            upgrades[0][i] = new Videocard(data.videocards[i].name, data.videocards[i].price, data.videocards[i].costincrease, data.videocards[i].targetproperty,"plus",data.videocards[i].targetincrease, parseFloat(videoTiles[1]));
             if (videoTiles[2] === "true") {
                 upgrades[0][i].overclock();
             }
         }
         else {
-            upgrades[0][i] = new Videocard(data.videocards[i].name, data.videocards[i].price, data.videocards[i].costincrease, data.videocards[i].targetproperty, data.videocards[i].targetincrease, 0);
+            upgrades[0][i] = new Videocard(data.videocards[i].name, data.videocards[i].price, data.videocards[i].costincrease, data.videocards[i].targetproperty,"plus",data.videocards[i].targetincrease,0);
         }
     }
     upgrades[upgrades.length] = [];
@@ -521,12 +599,24 @@ function loadJsonItemsToShop() {
             } while (!found && z < upgradeTiles.length);
             if (found) {
                 var isBought = (upgradeSlotTiles[1] === 'true');
-                upgrades[1][i] = new Upgrade(data.upgrades[i].name, data.upgrades[i].price, data.upgrades[i].targetproperty, data.upgrades[i].targetmultiplier, isBought, data.upgrades[i].description);
+                upgrades[1][i] = new Upgrade(data.upgrades[i].name, data.upgrades[i].price, data.upgrades[i].targetproperty, data.upgrades[i].targetoperand,data.upgrades[i].targetoperator, isBought, data.upgrades[i].description);
             }
         }
         else {
-            upgrades[1][i] = new Upgrade(data.upgrades[i].name, data.upgrades[i].price, data.upgrades[i].targetproperty, data.upgrades[i].targetmultiplier, false, data.upgrades[i].description);
+            upgrades[1][i] = new Upgrade(data.upgrades[i].name, data.upgrades[i].price, data.upgrades[i].targetproperty, data.upgrades[i].targetoperand,data.upgrades[i].targetoperator, false, data.upgrades[i].description);
         }
+    }
+    var index =i;
+    for(var y=0;y<data.levelUpgrades.length;y++)
+    {
+        if (upgradeTiles != null && upgradeTiles !== "") {
+            upgradeSlotTiles = upgradeTiles[y].split("_");
+            upgrades[1][index] = new LevelUpgrade(data.levelUpgrades[y].name, data.levelUpgrades[y].price,data.levelUpgrades[y].priceRaise,data.levelUpgrades[y].targetproperty,data.levelUpgrades[y].targetoperand,data.levelUpgrades[y].targetoperator,parseInt(upgradeSlotTiles[1]),data.levelUpgrades[y].description);
+        }
+        else {
+            upgrades[1][index] = new LevelUpgrade(data.levelUpgrades[y].name, data.levelUpgrades[y].price,data.levelUpgrades[y].priceRaise,data.levelUpgrades[y].targetproperty,data.levelUpgrades[y].targetoperand,data.levelUpgrades[y].targetoperator,0,data.levelUpgrades[y].description);
+        }
+        index++;
     }
     upgrades[upgrades.length] = [];
     z=0;
@@ -627,7 +717,13 @@ function loadJsonItemsToShop() {
         newImage.style.float = "left";
         newImage.style.marginTop = "1%";
         newDiv.appendChild(newImage);
-        newP.textContent = upgrades[1][i].toString();
+        if(upgrades[1][i].constructor.name=="LevelUpgrade")
+        {
+            newP.textContent = upgrades[1][i].toString(0,shopAmount);
+        }
+        else {
+            newP.textContent = upgrades[1][i].toString();
+        }
         newDiv.appendChild(newP);
         if (screenMode === "desktop") {
             targets[1].appendChild(newUpgrade);
@@ -952,7 +1048,13 @@ function saveGame() {
     localStorage.setItem("VideoCard", videoLevels);
     var upgradesString = "";
     for (i = 0; i < upgrades[1].length; i++) {
-        upgradesString += upgrades[1][i].getName() + "_" + upgrades[1][i].getBought() + ";";
+        if(upgrades[1][i].constructor.name=="Upgrade") {
+            upgradesString += upgrades[1][i].getName() + "_" + upgrades[1][i].getBought() + ";";
+        }
+        else
+        {
+            upgradesString += upgrades[1][i].getName() + "_" + upgrades[1][i].getLevel() + ";";
+        }
     }
     localStorage.setItem("Upgrades", upgradesString);
     localStorage.setItem("version", version);
@@ -1086,7 +1188,9 @@ function eventEnd() {
     switch (actualEvent.getTarget()) {
         case "all":
             coinsPerSecond /= actualEvent.getOperand();
+            coinsPerSecond = decimalRound(coinsPerSecond,2);
             coinsPerClick /= actualEvent.getOperand();
+            coinsPerClick = decimalRound(coinsPerClick,2);
             break;
     }
     actualEvent = null;
@@ -1144,6 +1248,7 @@ function itemDescription(itemName) {
             document.getElementById("itemText").textContent = "Erhöht die Coins Per Second um " + item.getEffectOperand() + "!";
             break;
         case "Upgrade":
+        case "LevelUpgrade":
             document.getElementById("itemText").textContent = item.getDescription();
             break;
         case "Overclock":
@@ -1209,5 +1314,54 @@ function toogleMenuByName(name)
 }
 
 function loadChangelog(){
+    for(var i=0;i<data.changelog.length;i++)
+    {
+        var newLi = document.createElement("LI");
+        var newD = document.createElement("DIV");
+        var newH3 = document.createElement("H3");
+        var newUL = document.createElement("UL");
+        var z=0;
+        var text="";
+        var version = data.changelog[i].version.toString();
+        newLi.id=data.changelog[i].version;
+        while(z<version.length)
+        {
+           if(!isNaN(version[z-1])&&z!=0&&version[z]!=".")
+           {
+                text+=".";
+           }
+           text+=version[z];
+           z++;
+        }
+        z=0;
+        newH3.textContent="Version "+text;
+        text="";
+        for(var j=0;j<data.changelog[i].text.length;j++)
+        {
+            var newLiChange = document.createElement("LI");
+            newLiChange.textContent=data.changelog[i].text[j];
+            newUL.appendChild(newLiChange);
+        }
+        newD.appendChild(newH3);
+        newD.appendChild(newUL);
+        newLi.appendChild(newD);
+        document.getElementById("changelogList").appendChild(newLi);
+    }
+}
 
+function reverseOperator(operator){
+    if(operator=="plus"){
+        return "minus";
+    }
+    if(operator=="minus")
+    {
+        return "plus";
+    }
+    if(operator=="multiply"){
+        return "divide";
+    }
+    if(operator=="divide")
+    {
+        return "multiply";
+    }
 }

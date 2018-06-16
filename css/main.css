@@ -509,4 +509,8 @@ nav {
 #description{
     margin: 5px;
 }
+#aboutPage{
+    overflow:auto;
+}
+
 
