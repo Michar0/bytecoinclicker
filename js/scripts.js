@@ -19,6 +19,7 @@ var eventStarted = new Date().getTime();
 var eventDuration = 0;
 var actualEvent;
 var timeToEvent = eventStarted + Math.floor(Math.random() * (1200000 - 120000 + 1)) + 120000;
+var items = [];
 const version = 0.51;
 var previousPlaytime = 0;
 var extremeOverclockCard;
@@ -232,6 +233,7 @@ function buySellItem(itemName) {
                                 upgrades[i][y].raiseLevel();
                                 var textObject = item.children[0].children[1];
                                 textObject.textContent = upgrades[i][y].toString(0,shopAmount);
+                                item.classList.add("videocard");
                             }
                             else {
                                 var item = getItemInShop(upgrades[i][y].getName());
@@ -348,7 +350,9 @@ function buySellItem(itemName) {
                             var item = getItemInShop(upgrades[i][y].getName());
                             if(upgrades[i][y].constructor.name=="LevelUpgrade")
                             {
-                                upgrades[i][y].raiseLevel();
+                                amountCoins -= (upgrades[i][y].getPrice());
+                                amountCoins += decimalRound(upgrades[i][y].getPrice() / upgrades[i][y].getPriceRaise(), 0);
+                                upgrades[i][y].reduceLevel();
                                 var textObject = item.children[0].children[1];
                                 textObject.textContent = upgrades[i][y].toString(0,shopAmount);
                                 if (upgrades[i][y].getLevel() === 0) {
@@ -634,6 +638,9 @@ function loadJsonItemsToShop() {
     }
     for (var i = 0; i < data.events.length; i++) {
         events[i] = new SpecialEvent(data.events[i].name, data.events[i].target, data.events[i].operand, data.events[i].image, data.events[i].duration);
+    }
+    for (var i = 0; i < data.items.length; i++) {
+        items[i] = new SpecialItem(data.events[i].name, data.items[i].price,data.items[i].effect,data.items[i].effectProperty);
     }
     var targets = document.getElementsByClassName("shopContent");
     for (var i = 0; i < upgrades[0].length; i++) {
@@ -932,7 +939,6 @@ function buildItemGetWindow() {
         lootScreen.style.top = "83%";
         lootScreen.style.left = "2%";
     }
-
     else {
         lootScreen.style.width = "50%";
         lootScreen.style.height = "15%";
@@ -943,30 +949,45 @@ function buildItemGetWindow() {
     lootScreen.style.border = "1px solid black";
     lootScreen.style.borderRadius = "5%";
     lootScreen.classList.add("lootScreen");
-    var maxLoot = coinsPerSecond*100;
-    if(maxLoot===0)
-    {
-        maxLoot=100;
-    }
-    var minLoot = coinsPerSecond*10;
-    if(minLoot===0)
-    {
-        minLoot=1;
-    }
-    var loot = (Math.floor((Math.random() * maxLoot - minLoot) + minLoot));
-    addCoins(loot);
-    var lootText = document.createElement("P");
-    lootText.textContent = loot+" ByteCoins";
-    if (screenMode === "desktop") {
-        lootText.style.top = "45%";
-        lootText.style.left = "30%";
-    }
-    else {
-        lootText.style.top = "50%";
-        lootText.style.left = "25%";
-    }
-    lootText.style.position = "absolute";
-    lootScreen.appendChild(lootText);
+        var maxLoot = coinsPerSecond * 100;
+        if (maxLoot === 0) {
+            maxLoot = 100;
+        }
+        var minLoot = coinsPerSecond * 10;
+        if (minLoot === 0) {
+            minLoot = 1;
+        }
+        var loot = (Math.floor((Math.random() * maxLoot - minLoot) + minLoot));
+        addCoins(loot);
+        var lootText = document.createElement("P");
+        lootText.textContent = loot+" ByteCoins";
+        if (screenMode === "desktop") {
+            lootText.style.top = "45%";
+            lootText.style.left = "30%";
+        }
+        else {
+            lootText.style.top = "50%";
+            lootText.style.left = "25%";
+        }
+        lootText.style.position = "absolute";
+        lootScreen.appendChild(lootText);
+    // else
+    // {
+    //     var currentLootItem = items[(Math.random()*items.length)];
+    //     var lootImage = document.createElement("IMG");
+    //     lootImage.src = "images/"+createStringForImgSource(currentLootItem.getName())+".png";
+    //     if (screenMode === "desktop") {
+    //         lootImage.style.top = "45%";
+    //         lootImage.style.left = "30%";
+    //     }
+    //     else {
+    //         lootImage.style.top = "50%";
+    //         lootImage.style.left = "25%";
+    //     }
+    //     lootImage.style.position = "absolute";
+    //     lootScreen.appendChild(lootImage);
+    //
+    // }
     var header = document.createElement("P");
     header.textContent = "New Loot";
     header.style.top = "5%";
@@ -1106,7 +1127,7 @@ function changeShopMode(mode) {
                     items[i].classList.add("affordable");
                     var item = getItemByName(items[i].id);
                     var textObject = items[i].children[0].children[1];
-                    if(item.constructor.name==="Videocard") {
+                    if(item.constructor.name==="Videocard"||item.constructor.name==="LevelUpgrade") {
                         textObject.textContent = item.toString(0,shopAmount);
                     }
                     else

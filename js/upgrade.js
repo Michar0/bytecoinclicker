@@ -15,6 +15,22 @@ class item{
     }
 }
 
+class SpecialItem extends item
+{
+    constructor(name,prize,effect,operand)
+    {
+        super(name,prize);
+        this.effect = effect;
+        this.operand = operand;
+    }
+    getEffect()
+    {
+        return this.effect;
+    }
+    getOperand(){
+        return this.operand;
+    }
+}
 class Upgrade extends item{
     constructor(name,price,effectTarget,effectOperand,effectOperator,bought,description){
         super(name,price);
