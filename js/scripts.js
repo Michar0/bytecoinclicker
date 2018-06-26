@@ -39,7 +39,6 @@ var divide = function(first, second) {
     return first/second;
 };
 
-
 window.onbeforeunload = function(){saveGame()};
 $(document).ready(function () {
     if (document.getElementsByClassName("Show").length > 0) {
@@ -94,6 +93,7 @@ $(document).ready(function () {
         }
 
     }
+    changeDayNight();
 });
 
 
@@ -1053,8 +1053,8 @@ function saveGame() {
     localStorage.setItem("Volume", volume);
     localStorage.setItem("Coins", amountCoins);
     localStorage.setItem("CoinHealth", coinHealth);
-    localStorage.setItem("CPS", coinsPerSecond);
-    localStorage.setItem("CPC", coinsPerClick);
+    localStorage.setItem("CPS", (coinsPerSecond/getSpecialMultiplier()));
+    localStorage.setItem("CPC", (coinsPerClick/getSpecialMultiplier()));
     localStorage.setItem("autoloot", autoloot);
     var statisticsString = "";
     var stat = document.getElementsByClassName("stat");

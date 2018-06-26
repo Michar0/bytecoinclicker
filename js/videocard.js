@@ -1,6 +1,6 @@
 class Videocard extends LevelUpgrade{
-    constructor(name,price,priceRaise,effectTarget,effectOperand,effectOperator,level) {
-        super(name,price,priceRaise,effectTarget,effectOperator,effectOperand,level);
+    constructor(name,price,priceRaise,effectTarget,effectOperator,effectOperand,level) {
+        super(name,price,priceRaise,effectTarget,effectOperand,effectOperator,level);
         this.overclocked=false;
         this.health=100;
     }

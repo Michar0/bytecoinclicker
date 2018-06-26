@@ -3,7 +3,8 @@ var data = {
         {"name": "Geforce 8800 GTX", "price": 10, "costincrease": 1.4, "targetproperty": "coinsPerSecond","targetincrease": 0.1},
         {"name": "Radeon HD 4870", "price": 80, "costincrease": 1.4, "targetproperty": "coinsPerSecond", "targetincrease": 0.5},
         {"name": "GTX 280", "price": 200, "costincrease": 1.4, "targetproperty": "coinsPerSecond","targetincrease": 1},
-        {"name": "GTX 295", "price": 400, "costincrease": 1.4, "targetproperty": "coinsPerSecond","targetincrease": 1.5},
+        {"name": "WTX Larrabee","price": 400,"costincrease": 1.4, "targetproperty": "coinsPerSecond", "targetincrease": 2},
+        {"name": "GTX 295", "price": 700, "costincrease": 1.4, "targetproperty": "coinsPerSecond","targetincrease": 2.5},
         {"name": "GTX 480", "price": 950, "costincrease": 1.4, "targetproperty": "coinsPerSecond","targetincrease": 3},
         {"name": "GTX 570", "price": 2000, "costincrease": 1.4, "targetproperty": "coinsPerSecond","targetincrease": 5},
         {"name": "GTX 580", "price": 4500, "costincrease": 1.4, "targetproperty": "coinsPerSecond","targetincrease": 10},
@@ -21,7 +22,8 @@ var data = {
     ],
     "levelUpgrades":[
         {"name": "TigerMiner K1","price":30,"priceRaise":1.5,"targetproperty":"all","targetoperand": 0.1,"targetoperator":"plus","description":"Der erste ASIC Miner von Tiger. \n Erhoeht CoinsPerClick und CoinsPerSecond um 0.1"},
-        {"name": "TigerMiner K2","price":2750,"priceRaise":1.5,"targetproperty":"all","targetoperand": 1,"targetoperator":"plus","description":"Das zweite Werk aus dem Hause Tiger namens TigerMiner K2. \n Erhoeht CoinsPerClick und CoinsPerSecond um 1"}
+        {"name": "TigerMiner K2","price":2750,"priceRaise":1.5,"targetproperty":"all","targetoperand": 1,"targetoperator":"plus","description":"Das zweite Werk aus dem Hause Tiger namens TigerMiner K2. \n Erhoeht CoinsPerClick und CoinsPerSecond um 1"},
+        {"name": "SuperMiner S1","price":300,"priceRaise":1.4,"targetproperty":"all","targetoperand": 0.5,"targetoperator":"plus","description":"Der SuperMiner S1 aus dem Hause Super Inc. Damit wird die Konkurenz kalt gemacht. Erhoeht CoinsPerClick und CoinsPerSecond um 0.5 ."}
     ],
     "upgrades": [
         {"name": "Eisenspitzhacke", "price": 2000, "targetproperty": "coinsPerClick", "targetoperand": 2,"targetoperator":"multiply", "description": "Eine abgenutzte Eisenhacke aus einer alten Mine. \n Verdoppelt die Anzahl der Coins pro Click."},
@@ -41,6 +43,7 @@ var data = {
         {"name": "Overclock Geforce 8800 GTX", "price": 30, "targetCard": "Geforce 8800 GTX"},
         {"name": "Overclock Radeon HD 4870", "price": 150, "targetCard": "Radeon HD 4870"},
         {"name": "Overclock GTX 280", "price": 200, "targetCard": "GTX 280"},
+        {"name": "Overclock WTX Larrabee", "price": 400, "targetCard": "WTX Larrabee"},
         {"name": "Overclock GTX 295", "price": 600, "targetCard": "GTX 295"},
         {"name": "Overclock GTX 480", "price": 1750, "targetCard": "GTX 480"},
         {"name": "Overclock GTX 570", "price": 6550, "targetCard": "GTX 570"},
@@ -61,6 +64,7 @@ var data = {
         {"name": "Bitcoin Rush", "target":"all", "operand":8, "duration":20,"image":"images/bitcoin.png"}
     ],
     "changelog":[
+        {"version":0.512,"text":["- Neue Shopitems", "- Visuelle Anpassungen"]},
         {"version":0.511,"text":["- Balancing der Shopitems","- Bitcoin Rush wurde angepasst. Dauer von 1 Minute auf 20 Sekunden runtergesetzt","- Neue GPUs","- Bugfixes"]},
         {"version":0.51,"text":["- Neue GPUs hinzugefügt ","- Extrem Overclocks hinzugefügt. Hilfreich aber riskant.","- About Page überarbeitet","- Dedizierte ASIC Miner hinzugefügt"]},
         {"version":0.503,"text":["- Neue GPUs hinzugefügt ","- Style der Coinhealthbars aus der Mobile version jetzt auch auf Desktop"]},

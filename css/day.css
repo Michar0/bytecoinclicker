@@ -16,16 +16,6 @@ body {
     color: white;
 }
 
-@keyframes animationFrames {
-    0% {
-        opacity: 0.8;
-    }
-    100% {
-        top: 5%;
-        opacity: 0;
-    }
-}
-
 .lootScreen {
     background-color: whitesmoke;
 }

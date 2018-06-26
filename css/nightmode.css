@@ -21,17 +21,6 @@ body {
     text-shadow: 2px 2px black;
 }
 
-@keyframes animationFrames {
-    0% {
-        opacity: 0.8;
-    }
-    100% {
-        top: 5%;
-        opacity: 0;
-        display: none
-    }
-}
-
 #bottomBar {
     background-color: #68868E;
     color: #e5e8e3;
