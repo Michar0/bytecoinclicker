@@ -45,3 +45,11 @@ header{
 .menuToggler{
     background-color: rgba(140, 140, 140, 1);
 }
+#inventoryButton{
+    border: 1px solid black;
+    color:black;
+}
+#inventoryButton:hover{
+    background-color: black;
+    color:white;
+}

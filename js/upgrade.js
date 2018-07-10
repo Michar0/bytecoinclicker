@@ -17,11 +17,21 @@ class item{
 
 class SpecialItem extends item
 {
-    constructor(name,prize,effect,operand)
+    constructor(name,price,effect,operand,description,level)
     {
-        super(name,prize);
+        super(name,price);
         this.effect = effect;
         this.operand = operand;
+        this.level=level;
+        this.description = description;
+        if (this.level > 0) {
+            for (var i = 0; i < this.level; i++) {
+                price *= priceRaise;
+                price = decimalRound(price, 0);
+            }
+        }
+        this.price = price;
+
     }
     getEffect()
     {
@@ -29,6 +39,29 @@ class SpecialItem extends item
     }
     getOperand(){
         return this.operand;
+    }
+    raiseLevel(){
+        this.level++;
+        var item = getItemByName(this.effect);
+        item.effectOperand+=this.operand;
+    }
+    reduceLevel(){
+        this.level--;
+        var item = getItemByName(this.effect);
+        item.effectOperand-=this.operand;
+    }
+    getDescription(){
+        return this.description;
+    }
+    getName()
+    {
+        return this.name;
+    }
+    getLevel() {
+        return this.level;
+    }
+    toString(){
+        return this.name+" Lv. "+this.level;
     }
 }
 class Upgrade extends item{

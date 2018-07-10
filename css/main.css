@@ -10,7 +10,6 @@
     -ms-user-select: none;
     user-select: none;
     -webkit-user-drag: none;
-    user-drag: none;
 
 }
 
@@ -440,8 +439,8 @@ nav {
     list-style-type: none;
     overflow: hidden;
 }
-#closeChangelog{
-    left:98%;
+.closeButton{
+    left:97%;
     top:2%;
     position: absolute;
     font-weight: bold;
@@ -527,4 +526,58 @@ nav {
         opacity: 0;
     }
 }
+#inventoryButton{
+    background-color: transparent;
+    top:5%;
+    left:90%;
+    position: absolute;
+    padding: 2px;
+    font-size: 20px;
+    cursor: pointer;
+    outline: none;
+}
+#inventory{
+    width:25%;
+    height: 80%;
+    cursor: pointer;
+}
+#inventoryList {
+    border: 1.5px solid black;
+    list-style-type: none;
+    width: 80%;
+    height: 90%;
+    margin-left: 10%;
+    margin-top: 1%;
+}
+#inventoryList li{
+    text-align: center;
+}
+#codeHeader{
+    position: absolute;
+    top:5%;
+    left:35%;
+}
+#codeEntryWindow{
+    position: absolute;
+    top:35%;
+    left:35%;
+    width: 25%;
+    height: 25%;
+    background-color: whitesmoke;
+    border: 1px solid black;
+    z-index: 3;
+
+}
+#codeInput{
+    position: absolute;
+    top: 60%;
+    left:30%;
+}
+#codeButton{
+    position: absolute;
+    top: 80%;
+    left:45%;
+}
+
+
 

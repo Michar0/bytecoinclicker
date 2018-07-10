@@ -38,6 +38,7 @@
 </div>
 <div id="statsPage" class="invisible page">
     <h1 class="pageHeader">Statistics</h1>
+    <p class="closeButton" onclick="togglePage('close')">X</p>
     <ul id="statisticsList">
         <li class="stat" title="coinsEver">Mined ByteCoins ever: 0</li>
         <li class="stat" title="coinsCurrent">ByteCoins in the Bank: 0</li>
@@ -55,7 +56,9 @@
     </ul>
 </div>
 <div id="shopPage" class="invisible page">
+    <p class="closeButton" onclick="togglePage('close')">X</p>
     <h1 class="pageHeader">Shop</h1>
+    <button id="inventoryButton" onclick="togglePage('inventory')">Inventory</button>
     <ul id="buyModes">
         <li id="buy" class="buyMode" onclick="changeShopMode('buy')">Buy</li>
         <li id="sell" onclick="changeShopMode('sell')">Sell</li>
@@ -83,18 +86,20 @@
 </div>
 <div id="settingsPage" class="invisible page">
     <h1 class="pageHeader">Settings</h1>
+    <p class="closeButton" onclick="togglePage('close')">X</p>
     <ul id="settingsList">
         <li class="setting" id="coinSetting" onclick="showCoinHealth()">Hide Coinhealth</li>
         <li class="setting" id="volumeSetting" onclick="changeVolume()">Mute Sound</li>
         <li class="setting" id="modeSetting" onclick="changeDayNight()">Darkmode</li>
-        <li class="setting" onclick="resetGame()">Reset Game</li>
         <li class="setting" id="healthSetting" onclick="changeCoinhealthLook()">Coinhealth: Progessbar</li>
-        <li class="setting" onclick="">Start Tutorial again</li>
+        <li class="setting" onclick="resetGame()">Reset Game</li>
+        <li class="setting" id="exSaveToC" onclick="convertSaveToCode()">Export Save as Code to Clipboard</li>
+        <li class="setting" onclick="document.getElementById('codeEntryWindow').classList.remove('invisible')">Import Save as Code to Game</li>
     </ul>
 </div>
 <div id="aboutPage" class="invisible page">
     <h1 class="pageHeader">About</h1>
-    <p id="closeChangelog" class="invisible">X</p>
+    <p class="closeButton" onclick="togglePage('close')">X</p>
     <ul id="pointList">
     <li>
         <div id="rulesContainer">
@@ -166,6 +171,18 @@
     <div id="healthProgesss">
         <div id="healthBar"></div>
     </div>
+</div>
+<div id="inventory" draggable="true" class="invisible page">
+    <p class="closeButton" onclick="togglePage('close')">X</p>
+    <h1 class="pageHeader">Inventory</h1>
+    <ul id="inventoryList">
+    </ul>
+</div>
+<div id="codeEntryWindow" class="invisible">
+    <p class="closeButton" onclick="document.getElementById('codeEntryWindow').classList.add('invisible')">X</p>
+    <h3 id="codeHeader">Codeeingabe</h3>
+    <input type="text" id="codeInput"><br>
+    <button id="codeButton" onclick="convertCodeToSave(decodeString(document.getElementById('codeInput').value))">Load</button>
 </div>
 <audio class="audioSource" id="audioplayer"></audio>
 <footer id="bottomBar">

@@ -44,4 +44,11 @@ body {
 .menuToggler{
     background-color: #41575d;
 }
-
+#inventoryButton{
+    border: 1px solid #e5e8e3;
+    color:#e5e8e3;
+}
+#inventoryButton:hover{
+    background-color:#e5e8e3;
+    color:#68868E;
+}

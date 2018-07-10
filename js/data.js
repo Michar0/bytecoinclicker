@@ -18,7 +18,9 @@ var data = {
         {"name": "GTX 1180", "price":    4000000, "costincrease": 1.5, "targetproperty": "coinsPerSecond", "targetincrease": 1250},
         {"name": "GTX Titan V", "price": 6000000, "costincrease": 1.5, "targetproperty": "coinsPerSecond","targetincrease": 1500},
         {"name": "GTX Titan Y", "price":10000000, "costincrease": 1.5, "targetproperty": "coinsPerSecond", "targetincrease": 3000},
-        {"name": "GTX Titan Black Y","price": 20000000,"costincrease": 1.5, "targetproperty": "coinsPerSecond", "targetincrease": 4500}
+        {"name": "GTX Titan Black Y","price": 20000000,"costincrease": 1.5, "targetproperty": "coinsPerSecond", "targetincrease": 4500},
+        {"name": "GTX Titan Force","price": 10000,"costincrease": 1.4, "targetproperty": "coinsPerSecond", "targetincrease": 0},
+        {"name": "GTX Titan Omega", "price": 4000000000, "costincrease": 1.5, "targetproperty": "coinsPerSecond","targetincrease": 50000}
     ],
     "levelUpgrades":[
         {"name": "TigerMiner K1","price":30,"priceRaise":1.5,"targetproperty":"all","targetoperand": 0.1,"targetoperator":"plus","description":"Der erste ASIC Miner von Tiger. \n Erhoeht CoinsPerClick und CoinsPerSecond um 0.1"},
@@ -37,7 +39,7 @@ var data = {
         {"name": "AutoLoot", "price": 1000, "targetproperty": "autoloot", "targetoperand": 1,"targetoperator":"multiply", "description": "Für bequeme Menschen oder für Speedrunner oder so ähnlich."}
     ],
     "items": [
-        {"name": "Fortune of Horizon", "price": 5000,"effect":"coinsPerClick","effectProperty":1.5}
+        {"name": "Shard of Force", "price": 50,"effect":"GTX Titan Force","effectProperty":5,"description":"Treibmittel der GTX Titan Force - Pro Shard bekommt die GPU bekommt sie 5 CoinsPerSecond dazu."}
     ],
     "overclocks": [
         {"name": "Overclock Geforce 8800 GTX", "price": 30, "targetCard": "Geforce 8800 GTX"},
@@ -64,6 +66,7 @@ var data = {
         {"name": "Bitcoin Rush", "target":"all", "operand":8, "duration":20,"image":"images/bitcoin.png"}
     ],
     "changelog":[
+        {"version":0.52,"text":["- Neue Shopitems", "- Spielstand nun als Code exportierbar und importierbar als Code","- Items hinzugefügt","- Visuelle Anpassungen","- Vorläufiges Ende der Updates"]},
         {"version":0.512,"text":["- Neue Shopitems", "- Visuelle Anpassungen"]},
         {"version":0.511,"text":["- Balancing der Shopitems","- Bitcoin Rush wurde angepasst. Dauer von 1 Minute auf 20 Sekunden runtergesetzt","- Neue GPUs","- Bugfixes"]},
         {"version":0.51,"text":["- Neue GPUs hinzugefügt ","- Extrem Overclocks hinzugefügt. Hilfreich aber riskant.","- About Page überarbeitet","- Dedizierte ASIC Miner hinzugefügt"]},
